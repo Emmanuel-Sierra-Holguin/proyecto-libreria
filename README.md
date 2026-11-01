@@ -141,7 +141,7 @@ feature/exit-flow: Flujo de confirmación al salir.
 
 [x] Evidencia de commits y merges estructurados mediante Git Flow.
 
-# 🚀 Fase: Bootstrap del Proyecto (feature/project-bootstrap)
+# 🚀 Fase inicial : Bootstrap del Proyecto (feature/project-bootstrap)
 
 Se ha inicializado la estructura base del sistema de consola en C# para la biblioteca:
 - **`BibliotecaMenu.csproj`**: Archivo de proyecto y configuración general de .NET.
