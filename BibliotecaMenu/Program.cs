@@ -29,26 +29,24 @@ OPCIONES:
                 Console.Write("Selecciona una opcion: ");
                 String bibliotecario = Console.ReadLine() ?? "";
 
-                if(int.TryParse(bibliotecario, out int Menu))
-                {
-                    switch (Menu)
+                    switch (bibliotecario)
                     {
-                         case 1:
+                         case "1":
                          ShowBooksMenu();
                         break;
-                         case 2:
+                         case "2":
                          ShowUsersMenu();
                         break;
-                         case 3:
+                         case "3":
                          ShowloansMenu();
                         break;
-                         case 4:
+                         case "4":
                          ShowSearchReportsMenu();
                         break;
-                         case 5:
+                         case "5":
                          showSavedatamenu();
                         break;
-                         case 6:
+                         case "6":
                           ConfirmExitAndSave();
                           Exit = true;
                         break;
@@ -59,52 +57,84 @@ OPCIONES:
                         break;
                     }
                 }
-                else
-                {
-                    Console.Clear();
-                    Console.WriteLine("ERROR!: Opcion no valida");
-                    ShowReturnMenu();
-                    continue;
-                }
+            }
+        
+
+        // MODULO LIBROS
+        static void ShowBooksMenu()
+        {
+            bool volverMenu = false;
+            while (volverMenu)
+            {
+                Console.Clear();
+                Console.WriteLine(@"
+                ");
+
+                string bibliotecario = Console.ReadLine() ?? "";               
             }
         }
 
-        // 
-        static void ShowBooksMenu()
-            {
-                Console.Clear();
-                Console.WriteLine("--> [Modulo de libros]");
-                ShowReturnMenu();
-            }
+            // MODULO USUARIOS
+            
             static void ShowUsersMenu()
+        {
+            bool volverMenu = false;
+            while (volverMenu)
             {
                 Console.Clear();
-                Console.WriteLine("--> [Modulo de Usuarios]");
-                ShowReturnMenu();
+                Console.WriteLine(@"");
+
+                string bibliotecario = Console.ReadLine() ?? "";              
             }
-            static void ShowloansMenu()
+        }
+
+            // MODULO PRESTAMOS
+           static void ShowloansMenu()
+        {
+            bool volverMenu = false;
+            while (volverMenu)
             {
                 Console.Clear();
-                Console.WriteLine("--> [Modulo de Prestamos]");
-                ShowReturnMenu();
+                Console.WriteLine(@"");
+
+                string bibliotecario = Console.ReadLine() ?? "";
+              
             }
-            static void ShowSearchReportsMenu()
+        }
+            // MENU BUSQUEDAS Y REPORTES
+           static void ShowSearchReportsMenu()
+        {
+            bool volverMenu = false;
+            while (volverMenu)
             {
                 Console.Clear();
-                Console.WriteLine("--> [Modulo de Busquedas y Reportes]");
-                ShowReturnMenu();
+                Console.WriteLine(@"");
+
+                string bibliotecario = Console.ReadLine() ?? "";             
             }
-            static void showSavedatamenu()
+        }
+
+            //MODULO GUARDAR / CARGAR DATOS
+           static void showSavedatamenu()
+        {
+            bool volverMenu = false;
+            while (volverMenu)
             {
                 Console.Clear();
-                Console.WriteLine("--> [Modulo de Guardar / Cargar Datos]");
-                ShowReturnMenu();
+                Console.WriteLine(@"");
+
+                string bibliotecario = Console.ReadLine() ?? "";              
             }
+        }
+
+            // MODULO SALIDA
             static void ConfirmExitAndSave()
             {
                 Console.Clear();
                 Console.WriteLine("--> Saliendo del sistema...");
             } 
+
+            // PAUSA GENERAL
             static void ShowReturnMenu()
             {
                 Console.WriteLine("volver al menu");

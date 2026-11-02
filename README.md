@@ -224,7 +224,6 @@ Se ha inicializado y consolidado la arquitectura base del sistema de biblioteca 
 
 ### 🛠️ Cambios y Características Implementadas:
 - **Arquitectura Modular Padre-Hijo:** Se estructuró una función central (`ShowMainMenu`) encargada de enrutar el flujo de ejecución hacia cinco submódulos independientes.
-- **Blindaje de Entradas (`int.TryParse`):** Implementación de controles de validación para evitar cierres inesperados ante ingresos de datos erróneos por parte del usuario.
 - **Control de Flujo con Banderas:** Uso de un bucle de control booleano (`Exit`) para mantener el sistema activo y permitir un cierre de ciclo limpio.
-- **Función Reutilizable de Retorno:** Se incorporó `ShowReturnMenu()` para estandarizar la pausa de pantalla y facilitar la navegación fluida de regreso al menú principal.
+- **Función Reutilizable de Retorno:** Se incorporó `ShowReturnMenu()` para estandarizar la pausa de pantalla y facilitar la navegación fluida de regreso al menú principal cuando el usuario cometa un error en la opcion.
 - **Estabilidad Visual y Pruebas:** Funciones preliminares configuradas con bloques de prueba para verificar la correcta redirección y respuesta de cada submódulo.
