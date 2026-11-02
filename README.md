@@ -14,7 +14,7 @@ Instructor: Carlos Navia
 
 Fecha / Hora de Inicio: 28/10/2026 - 14:04 PM
 
-🎯 Descripción de la Actividad
+# 🎯 Descripción de la Actividad
 
 Desarrollo de un sistema de consola en C# que implementa un menú interactivo y navegable para la gestión de una biblioteca. En esta Parte 1, el objetivo principal es estructurar la lógica de navegación (menús y submenús) mediante métodos estáticos y estructuras de control.
 
@@ -85,6 +85,14 @@ feature/exit-flow: Flujo de confirmación al salir.
 
 🗺️ Estructura del Menú Interactivo
 
+Menú principal
+1. Libros
+2. Usuarios
+3. Préstamos
+4. Búsquedas y reportes
+5. Guardar / Cargar datos
+6. Salir
+
 1. Libros
    1.1. Registrar libro
    1.2. Listar libros
@@ -141,6 +149,66 @@ feature/exit-flow: Flujo de confirmación al salir.
 
 [x] Evidencia de commits y merges estructurados mediante Git Flow.
 
+📋 Checklist de funciones sugeridas (nombres exactos recomendados)
+
+Menús y navegación
+• ShowMainMenu()
+• ShowBooksMenu()
+• ShowUsersMenu()
+• ShowLoansMenu()
+• ShowSearchReportsMenu()
+• showSavedatamenu()
+• ConfirmExitAndSave()
+• ShowReturnMenu()
+
+
+1) Libros
+• RegisterBook()
+• ListBooksMenu()
+• ListBooksAll()
+• ListBooksAvailable()
+• ListBooksBorrowed()
+• ViewBookDetail()
+• UpdateBookMenu()
+• EditBookTitle()
+• EditBookAuthor()
+• EditBookYearCategory()
+• DeleteBook()
+
+2) Usuarios
+• RegisterUser()
+• ListUsers()
+• ViewUserDetail()
+• UpdateUserMenu()
+• EditUserName()
+• EditUserContact()
+• ToggleUserActiveStatus()
+• DeleteUser()
+
+3) Préstamos
+• CreateLoan() (imprime validaciones sugeridas)
+• ListLoansMenu()
+• ListLoansAll()
+• ListLoansActive()
+• ListLoansClosed()
+• ViewLoanDetail()
+• RegisterReturn()
+• DeleteLoan()
+
+4) Búsquedas y reportes
+• SearchBook()
+• SearchUser()
+• ReportsMenu() (o ShowReportsMenu())
+• ReportByUser()
+• ReportByBook()
+• ReportOverdue()
+• ReportSummary()
+
+5) Guardar / cargar
+• SaveData()
+• LoadData()
+• ResetData()
+
 # 🚀 Fase inicial : Bootstrap del Proyecto (feature/project-bootstrap)
 
 Se ha inicializado la estructura base del sistema de consola en C# para la biblioteca:
@@ -149,3 +217,14 @@ Se ha inicializado la estructura base del sistema de consola en C# para la bibli
 - **Carpetas `bin/` y `obj/`**: Directorios autogenerados por el compilador para el almacenamiento temporal de binarios.
 - **`.gitignore`**: Configurado para omitir archivos de compilación, temporales del IDE y dependencias locales.
 - **`README.md`**: Bitácora de seguimiento y documentación del desarrollo por iteraciones (Git Flow).
+
+# 🚀 Fase 1: Menú de Navegación e Infraestructura Base (`feature/main-menu-navigation`)
+
+Se ha inicializado y consolidado la arquitectura base del sistema de biblioteca bajo un paradigma estrictamente procedural.
+
+### 🛠️ Cambios y Características Implementadas:
+- **Arquitectura Modular Padre-Hijo:** Se estructuró una función central (`ShowMainMenu`) encargada de enrutar el flujo de ejecución hacia cinco submódulos independientes.
+- **Blindaje de Entradas (`int.TryParse`):** Implementación de controles de validación para evitar cierres inesperados ante ingresos de datos erróneos por parte del usuario.
+- **Control de Flujo con Banderas:** Uso de un bucle de control booleano (`Exit`) para mantener el sistema activo y permitir un cierre de ciclo limpio.
+- **Función Reutilizable de Retorno:** Se incorporó `ShowReturnMenu()` para estandarizar la pausa de pantalla y facilitar la navegación fluida de regreso al menú principal.
+- **Estabilidad Visual y Pruebas:** Funciones preliminares configuradas con bloques de prueba para verificar la correcta redirección y respuesta de cada submódulo.
