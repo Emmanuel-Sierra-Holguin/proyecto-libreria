@@ -174,6 +174,7 @@ Menús y navegación
 • EditBookAuthor()
 • EditBookYearCategory()
 • DeleteBook()
+• ShowReturnMenu()
 
 2) Usuarios
 • RegisterUser()
@@ -227,3 +228,16 @@ Se ha inicializado y consolidado la arquitectura base del sistema de biblioteca 
 - **Control de Flujo con Banderas:** Uso de un bucle de control booleano (`Exit`) para mantener el sistema activo y permitir un cierre de ciclo limpio.
 - **Función Reutilizable de Retorno:** Se incorporó `ShowReturnMenu()` para estandarizar la pausa de pantalla y facilitar la navegación fluida de regreso al menú principal cuando el usuario cometa un error en la opcion.
 - **Estabilidad Visual y Pruebas:** Funciones preliminares configuradas con bloques de prueba para verificar la correcta redirección y respuesta de cada submódulo.
+
+
+# 🚀 Fase 2: Menu de libros (`feature/books-menu`)
+Se ha implementado de forma completa el CRUD del Módulo de Libros bajo un modelo estrictamente procedural.
+
+### 🛠️ Cambios y Características Implementadas:
+Estado Global en Memoria: Declaración de variables globales simples para simular la persistencia y gestión de datos de un libro a la vez sin usar clases ni colecciones.
+
+- Operaciones CRUD Completas: Implementación de funciones estáticas para Registrar, Listar (Todos / Disponibles / Prestados), Ver Detalle por ID, Actualizar campos individualmente y Eliminar.
+
+- Navegación e Interacción Estable: Corrección de bucles while con negación (!volverMenu) y control de parpadeos en consola mediante pausas de pantalla estandarizadas con ShowReturnMenu().
+
+- Integración al Menú Principal: Enrutamiento funcional del menú de libros desde ShowMainMenu con validación básica de opciones ingresadas.
