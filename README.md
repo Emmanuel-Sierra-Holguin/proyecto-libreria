@@ -241,3 +241,15 @@ Estado Global en Memoria: Declaración de variables globales simples para simula
 - Navegación e Interacción Estable: Corrección de bucles while con negación (!volverMenu) y control de parpadeos en consola mediante pausas de pantalla estandarizadas con ShowReturnMenu().
 
 - Integración al Menú Principal: Enrutamiento funcional del menú de libros desde ShowMainMenu con validación básica de opciones ingresadas.
+
+# 🚀 Fase 3: Módulo de Usuarios (`feature/users-menu`)
+Se ha implementado de forma completa el módulo de gestión de usuarios bajo el paradigma estrictamente procedural del proyecto.
+
+### 🛠️ Cambios y Características Implementadas:
+- Estado Global en Memoria: Declaración de variables globales (usuarioID, usuarioNombre, usuarioContacto, usuarioActivo) para simular la persistencia y gestión de un único usuario activo a la vez sin necesidad de clases ni colecciones complejas.
+
+- Operaciones CRUD Esenciales: Creación de funciones estáticas para el registro de usuarios (incorporando la configuración de estado activo/inactivo mediante validación de texto con .ToLower()), listados generales, consulta detallada por documento/ID, actualización segmentada (nombre, contacto y alternancia de estado) y eliminación con reseteo de variables.
+
+- Navegación e Interfaz Estabilizada: Integración de un submenú independiente controlado por bucles while con negación (!volverMenu) y pausas de pantalla estandarizadas mediante ShowReturnMenu().
+
+- Enrutamiento Principal: Conexión limpia y directa del submódulo de usuarios desde la función central ShowMainMenu.

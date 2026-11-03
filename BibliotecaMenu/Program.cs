@@ -12,7 +12,13 @@ namespace Bibliotecamenu
         static String libroCategoria = "";
         static String libroAño = "";
         static bool libroDisponible = false;
+        // variables globales del modulo usuarios
+        static String usuarioID = "";
+        static String usuarioNombre = "";
+        static String usuarioContacto = "";
+        static bool usuarioActivo;
 
+        
 
         static void Main(string[] args){
         ShowMainMenu();
@@ -412,14 +418,238 @@ OPCIONES:
             static void ShowUsersMenu()
         {
             bool volverMenu = false;
-            while (volverMenu)
+            while (!volverMenu)
             {
                 Console.Clear();
                 Console.WriteLine(@"
-                ");
-
-                string bibliotecario = Console.ReadLine() ?? "";              
+=== MENU USUARIOS ===                
+1.Registrar
+2.Listar usuario
+3.Ver detaller usuario
+4.Actualizar usuario
+5.Eliminar usuario
+6. regresar al menu
+======================
+");
+                Console.Write("elegir Opcion:");   
+                string bibliotecario = Console.ReadLine() ?? "";
+                switch (bibliotecario)
+                {
+                    case"1":
+                    RegisterUser();
+                    break;
+                    case"2":
+                    ListUsers();
+                    break;
+                    case"3":
+                    ViewUserDetail();
+                    break;
+                    case"4":
+                    UpdateUserMenu();
+                    break;
+                    case"5":
+                    DeleteUser();
+                    break;
+                    case "6":
+                    volverMenu = true;
+                    break;
+                    default:
+                    Console.Clear();
+                    Console.WriteLine("ERROR!: Opcion no valida");
+                    ShowReturnMenu();
+                    break;
+                }              
             }
+        }
+
+        // Modulo Registrar usuario
+        static void RegisterUser()
+        {
+            Console.Clear();
+            Console.WriteLine("=== REGISTRO USUARIO ===");
+
+             Console.Write("ID: ");
+            usuarioID = Console.ReadLine() ?? "";
+             Console.Write("Nombre: ");
+            usuarioNombre = Console.ReadLine() ?? "";
+             Console.Write("Numero/correo: ");
+            usuarioContacto = Console.ReadLine() ?? "";
+            Console.WriteLine("¿activar usuario? (Si/No)");
+            string activo = Console.ReadLine() ?? "";
+            if(activo.ToLower() == "si")
+            {
+                usuarioActivo = true;
+            }
+            else
+            {
+                usuarioActivo = false;
+            }
+
+            Console.WriteLine("usuario registrado");
+            ShowReturnMenu(); 
+        }
+        // Modulo listar usuarios
+        static void ListUsers()
+        {
+            Console.Clear();
+            Console.WriteLine("=== LISTA USUARIO ===");
+
+            if(usuarioID != "")
+            {
+                string estado = usuarioActivo ? "activado" : "desactivado";
+                string detalle = $@"
+ID:{usuarioID}
+Nombre:{usuarioNombre}
+Contacto:{usuarioContacto}
+estado:{estado}
+";
+              Console.WriteLine(detalle);
+            }
+            else
+            {
+                Console.WriteLine("no hay usuarios registrados");
+            }
+            ShowReturnMenu();
+        }
+        // Modulo detalle usuario
+        static void ViewUserDetail()
+        {
+            Console.Clear();
+            Console.WriteLine("== DETALLE USUARIO ==");
+            Console.Write("ingresa el ID");
+            string buscarID = Console.ReadLine() ?? "";
+
+            if(usuarioID != "" && buscarID == usuarioID)
+            {
+                         string estado = usuarioActivo ? "activado" : "desactivado";
+                string detalle = $@"
+ID:{usuarioID}
+Nombre:{usuarioNombre}
+Contacto:{usuarioContacto}
+estado:{estado}
+";
+            Console.WriteLine(detalle);
+            }
+            else
+            {
+                Console.WriteLine("usuario no encontrado");
+            }
+            ShowReturnMenu();
+        }
+        // Modulo actualizar usuario
+        static void UpdateUserMenu()
+        {
+            bool volverMenu = false;
+            while(!volverMenu){
+                Console.Clear();
+                Console.WriteLine(@"
+=== ACTUALIZAR USUARIO ===
+1. Editar Nombre
+2. Editar Contacto
+3. Activar/Desactivar
+4. volver al menu
+============================
+");
+                Console.Write("escribir opcion:");
+                string bibliotecario = Console.ReadLine() ?? "";
+
+                switch (bibliotecario)
+                {
+                    case"1":
+                    EditUserName();
+                    break;
+                    case"2":
+                    EditUserContact();
+                    break;
+                    case"3":
+                    ToggleUserActiveStatus();
+                    break;
+                    case"4":
+                    volverMenu = true;
+                    break;
+                    default:
+                    Console.Clear();
+                    Console.WriteLine("ERROR!: Opcion no valida");
+                    ShowReturnMenu();
+                    break;
+                }
+            }
+        }
+        // submodulos actualizacion usuario
+        static void EditUserName()
+        {
+            Console.Clear();
+            Console.WriteLine("== EDITAR NOMBRE ==");
+            Console.Write("buscar usuario ID:");
+            string buscarID = Console.ReadLine() ?? "";
+            if(usuarioID != "" && buscarID == usuarioID)
+            {
+                Console.Write("Nuevo nombre: ");
+                usuarioNombre = Console.ReadLine() ?? "";
+                Console.WriteLine("Nombre actualizado con exito");
+            }
+            else
+            {
+                Console.WriteLine("Usuario no encontrado.");
+            }
+            ShowReturnMenu();
+        }
+        static void EditUserContact()
+        {
+            Console.Clear();
+            Console.WriteLine("== EDITAR CONTACTO ==");
+            Console.Write("buscar usuario ID:");
+            string buscarID = Console.ReadLine() ?? "";
+            if(usuarioID != "" && buscarID == usuarioID)
+            {
+                Console.Write("Nuevo Numero/Correo: ");
+                usuarioContacto = Console.ReadLine() ?? "";
+                Console.WriteLine("Contacto actualizado con exito");
+            }
+            else
+            {
+                Console.WriteLine("Usuario no encontrado.");
+            }
+            ShowReturnMenu();
+        }
+        static void ToggleUserActiveStatus()
+        {
+            Console.Clear();
+            Console.WriteLine("== EDITAR ESTADO ==");
+            Console.Write("buscar usuario ID:");
+            string buscarID = Console.ReadLine() ?? "";
+            if(usuarioID != "" && buscarID == usuarioID)
+            {
+                usuarioActivo = !usuarioActivo;
+                string estado = usuarioActivo ? "activado" : "desactivado";
+                Console.WriteLine($"Usuario estado:{estado}, actualizado con exito");
+            }
+            else
+            {
+                Console.WriteLine("Usuario no encontrado.");
+            }
+            ShowReturnMenu();
+        }
+        // Modulo eliminar usuario
+        static void DeleteUser()
+        {
+            Console.Clear();
+            Console.WriteLine("== ELIMINAR USUARIO ==");
+            Console.Write("ingresa el ID: ");
+            string buscarID = Console.ReadLine() ?? "";
+            if(usuarioID != "" && buscarID == usuarioID)
+            {
+                usuarioID = "";
+                usuarioNombre = "";
+                usuarioContacto = "";
+                usuarioActivo = false;
+                Console.WriteLine("¡Usuario eliminado con éxito!");
+            }
+            else
+            {
+                                Console.WriteLine("Usuario no encontrado.");
+            }
+            ShowReturnMenu();
         }
 
             // MODULO PRESTAMOS
@@ -471,7 +701,7 @@ OPCIONES:
             // PAUSA GENERAL
             static void ShowReturnMenu()
             {
-                Console.WriteLine("volver al menu");
+                Console.WriteLine("volver al menu anterior");
                 Console.Write("presiona cualquier tecla: ");
                 Console.ReadKey();
             }
