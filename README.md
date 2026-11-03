@@ -255,7 +255,7 @@ Se ha implementado de forma completa el módulo de gestión de usuarios bajo el 
 - Enrutamiento Principal: Conexión limpia y directa del submódulo de usuarios desde la función central ShowMainMenu.
 
 
-## 🚀 Fase 4: Módulo de Préstamos y Validaciones Cruzadas
+# 🚀 Fase 4: Módulo de Préstamos y Validaciones Cruzadas
 
 En esta fase se completa el ciclo del MVP del Sistema de Gestión de Biblioteca, implementando la lógica procedural para la administración de préstamos temporales, control de estados de libros/usuarios y restricciones de integridad entre módulos.
 
@@ -266,3 +266,14 @@ En esta fase se completa el ciclo del MVP del Sistema de Gestión de Biblioteca,
   - Impedimento de eliminación de libros o usuarios si poseen un préstamo activo en curso.
   - Actualización automática de disponibilidad del libro (`libroDisponible = true`) tras concretar la devolución o al eliminar un registro de préstamo activo por excepción.
 - **Listados Filtrados y Detalle (`ListLoansMenu` / `ViewLoanDetail`):** Consulta por submenús para visualizar todos los préstamos, solo activos, cerrados/devueltos, o el detalle por `prestamoID`.
+
+
+# 🚀Fase 5: Modulo de busquedas y reportes (`feature/search-reports-menu`)
+
+En esta fase se completa el módulo de Búsquedas y Reportes del Sistema de Gestión de Biblioteca, implementando la lógica procedural para la localización de registros por múltiples criterios y la generación de reportes consolidados en tiempo real (por usuario, por libro, préstamos vencidos y resumen general del estado del sistema).
+
+### 📊 Módulo de Reportes (Fase 5)
+- **Menú de Reportes (`ReportsMenu`):** Centraliza la navegación hacia los cuatro reportes del sistema.
+- **Préstamos por Usuario y Libro (`ReportByUser` y `ReportByBook`):** Filtran y muestran la información detallada del historial y estado de préstamos según el ID ingresado.
+- **Seguimiento de Vencidos (`ReportOverdue`):** Identifica y muestra los préstamos activos pendientes de devolución y su fecha límite.
+- **Resumen General (`ReportSummary`):** Presenta un consolidado en tiempo real con contadores de libros (disponibles/prestados) y el estado dinámico del usuario y préstamo registrado mediante condicionales `if-else` limpios.
