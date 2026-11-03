@@ -253,3 +253,16 @@ Se ha implementado de forma completa el módulo de gestión de usuarios bajo el 
 - Navegación e Interfaz Estabilizada: Integración de un submenú independiente controlado por bucles while con negación (!volverMenu) y pausas de pantalla estandarizadas mediante ShowReturnMenu().
 
 - Enrutamiento Principal: Conexión limpia y directa del submódulo de usuarios desde la función central ShowMainMenu.
+
+
+## 🚀 Fase 4: Módulo de Préstamos y Validaciones Cruzadas
+
+En esta fase se completa el ciclo del MVP del Sistema de Gestión de Biblioteca, implementando la lógica procedural para la administración de préstamos temporales, control de estados de libros/usuarios y restricciones de integridad entre módulos.
+
+### 🛠️ Características Principales
+- **Registro de Préstamo (`CreateLoan`):** Asignación automática de marcas de tiempo (`DateTime.Now` con formato `dd/MM/yyyy`), definición de fecha límite, vinculación con un registro activo de usuario (`usuarioActivo`) y libro disponible (`libroDisponible`).
+- **Control de Estados y Trazabilidad:** Manejo de fechas de devolución diferidas (`fechaDevolucion` inicializada en `"Pendiente"` o `"N/A"`) y control de estado dinámico (`"Activo"` / `"Devuelto"`).
+- **Validaciones e Integridad Cruzada:**
+  - Impedimento de eliminación de libros o usuarios si poseen un préstamo activo en curso.
+  - Actualización automática de disponibilidad del libro (`libroDisponible = true`) tras concretar la devolución o al eliminar un registro de préstamo activo por excepción.
+- **Listados Filtrados y Detalle (`ListLoansMenu` / `ViewLoanDetail`):** Consulta por submenús para visualizar todos los préstamos, solo activos, cerrados/devueltos, o el detalle por `prestamoID`.
