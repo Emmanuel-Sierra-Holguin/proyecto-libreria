@@ -966,15 +966,319 @@ Estado prestamo:{estadoprestamo}
            static void ShowSearchReportsMenu()
         {
             bool volverMenu = false;
-            while (volverMenu)
+            while (!volverMenu)
             {
                 Console.Clear();
-                Console.WriteLine(@"");
-
-                string bibliotecario = Console.ReadLine() ?? "";             
+                Console.WriteLine(@"
+=== BUSQUEDAS Y REPORTES ===
+1.Buscar libro
+2.Buscar usuario
+3.Reportes
+4.volver a menu principal                
+");
+                Console.Write("elegir opcion: ");
+                string bibliotecario = Console.ReadLine() ?? "";
+                switch (bibliotecario)
+                {
+                    case"1":
+                    SearchBook();
+                    break;
+                    case"2":
+                    SearchUser();
+                    break;
+                    case"3":
+                    ReportsMenu();
+                    break;
+                    case"4":
+                    volverMenu = true;
+                    break;
+                    default:
+                    Console.Clear();
+                    Console.WriteLine("ERROR!: Opcion no valida");
+                    ShowReturnMenu();
+                    break;
+                }             
             }
         }
+            // Modulo Buscar libros
+            static void SearchBook()
+        {
+            Console.Clear();
+            Console.WriteLine(@"
+=== BUSCAR LIBRO ===
+1. Buscar por ID
+2. Buscar por Titulo
+3. Buscar por Autor
+4. Buscar por Categoria
+====================");
 
+            if (libroID == "")
+            {
+                Console.WriteLine("\n[AVISO]: No hay ningún libro registrado en el sistema actualmente.");
+                ShowReturnMenu();
+                return;
+            }
+
+            bool encontrado = false;
+            Console.Write("elegir opcion: ");
+            string opcion = Console.ReadLine() ?? "";
+            switch (opcion)
+            {
+                case"1":
+                Console.Write("Ingresar por ID: ");
+                String LIBID = Console.ReadLine() ?? "";
+                if (LIBID == libroID) encontrado = true;
+                break;
+                case"2":
+                Console.Write("Ingresar por Titulo: ");
+                String LIBTitulo = Console.ReadLine() ?? "";
+                if (LIBTitulo == libroTitulo) encontrado = true;
+                break;
+                case"3":
+                Console.Write("Ingresar por Autor: ");
+                String LIBAutor = Console.ReadLine() ?? "";
+                if (LIBAutor == libroAutor) encontrado = true;
+                break;
+                case"4":
+                Console.Write("Ingresar la Categoria: ");
+                String LIBCAT = Console.ReadLine() ?? "";
+                if (LIBCAT == libroCategoria) encontrado = true;
+                break;
+                default:
+                Console.WriteLine("ERROR!: Opcion no valida");
+                break;
+            }
+            if (encontrado)
+            {
+                string estado = libroDisponible ? "Disponible" : "Prestado";
+                Console.WriteLine($@"
+[¡LIBRO ENCONTRADO!]:
+- ID: {libroID}
+- Título: {libroTitulo}
+- Autor: {libroAutor}
+- Categoría: {libroCategoria}
+- Año: {libroAño}
+- Estado: {estado}
+- estado prestamo:{estadoprestamo}
+");
+            }
+            else
+            {
+                Console.WriteLine("no se encontro ningun libro por ese dato");
+            }
+            ShowReturnMenu();
+        }
+            //Modulo buscar usuario
+            static void SearchUser()
+        {
+            Console.Clear();
+    Console.WriteLine(@"
+=== 4.2 BUSCAR USUARIO ===
+1. Buscar por ID / Documento
+2. Buscar por Nombre
+============================");
+    Console.Write("Selecciona el criterio de búsqueda: ");
+    string opcion = Console.ReadLine() ?? "";
+
+    if(usuarioID == "")
+            {
+            Console.WriteLine("\n[AVISO]: No hay ningún usuario registrado en el sistema actualmente.");
+            ShowReturnMenu();
+             return; 
+            }
+            bool encontrado = false;
+            if(opcion == "1")
+            {
+                Console.Write("ingresa el ID: ");
+                String USRID = Console.ReadLine() ?? "";
+                if(USRID == usuarioID) encontrado = true;
+            }
+            else if(opcion == "2")
+            {
+                Console.Write("ingresa el Nombre: ");
+                String USRNombre = Console.ReadLine() ?? "";
+                if(USRNombre == usuarioNombre) encontrado = true;
+            }
+            if (encontrado)
+    {
+        string estadoU = usuarioActivo ? "Activado" : "Desactivado";
+        Console.WriteLine($@"
+[¡USUARIO ENCONTRADO!]:
+- ID: {usuarioID}
+- Nombre: {usuarioNombre}
+- Contacto: {usuarioContacto}
+- Estado: {estadoU}
+- estado prestamo: {estadoprestamo}
+");
+    }
+    else
+    {
+        Console.WriteLine("\n[RESULTADO]: No se encontró ningún usuario con ese criterio.");
+    }
+    ShowReturnMenu();
+        }
+        // Modulo Reportes
+        static void ReportsMenu()
+        {
+            bool volverMenu = false;
+            while (!volverMenu)
+            {
+                Console.Clear();
+                Console.WriteLine(@"
+=== MENÚ DE REPORTES ===
+1. Préstamos por usuario
+2. Préstamos por libro
+3. Préstamos vencidos
+4. Resumen general
+5. Volver
+========================
+");
+             Console.Write("Selecciona el reporte: ");
+             string bibliotecario = Console.ReadLine() ?? "";
+                switch (bibliotecario)
+                {
+                    case"1":
+                    ReportByUser();
+                    break;
+                    case"2":
+                    ReportByBook();
+                    break;
+                    case"3":
+                    ReportOverdue();
+                    break;
+                    case"4":
+                    ReportSummary();
+                    break;
+                    case"5":
+                    volverMenu = true;
+                    break;
+                    default:
+                    Console.Clear();
+                    Console.WriteLine("ERROR!: Opcion no valida");
+                    ShowReturnMenu();
+                    break;
+                }
+            }
+        }
+        // subModulos reportes
+        static void ReportByUser()
+        {
+            Console.Clear();
+    Console.WriteLine("=== REPORTE: PRÉSTAMOS POR USUARIO ===");
+    Console.Write("Ingresa el ID del usuario: ");
+    string buscarID = Console.ReadLine() ?? "";
+
+    if (usuarioID != "" && buscarID == usuarioID)
+    {
+        if (prestamoActivo || !prestamoActivo)
+        {
+            Console.WriteLine($@"
+- Usuario{usuarioNombre} 
+- usuario ID: {usuarioID}
+- ID Préstamo: {prestamoID}
+- Fecha inicio: {fechaInicio} 
+- Fecha límite: {fechaLimite}
+- Estado del préstamo: {estadoprestamo}");
+        }
+        else
+        {
+            Console.WriteLine($"\nEl usuario '{usuarioNombre}' no tiene préstamos registrados.");
+        }
+    }
+    else
+    {
+        Console.WriteLine("\nUsuario no encontrado.");
+    }
+    ShowReturnMenu();
+        }
+        static void ReportByBook()
+        {
+            Console.Clear();
+    Console.WriteLine("=== REPORTE: PRÉSTAMOS POR LIBRO ===");
+    Console.Write("Ingresa el ID del libro: ");
+    string buscarID = Console.ReadLine() ?? "";
+
+    if (libroID != "" && buscarID == usuarioID)
+    {
+        if (prestamoActivo || !prestamoActivo)
+        {
+Console.WriteLine($@"\n
+- Libro: {libroTitulo} 
+- Libro ID: {libroID}
+- prestamo ID: {prestamoID}
+- Fecha inicio: {fechaInicio}
+- Fecha límite: {fechaLimite}
+- Estado del préstamo: {estadoprestamo}");
+        }
+        else
+        {
+            Console.WriteLine($"\nEl libro: '{libroTitulo}' no tiene préstamos registrados.");
+        }
+    }
+    else
+    {
+        Console.WriteLine("\nlibro no encontrado.");
+    }
+    ShowReturnMenu();
+        }
+        static void ReportOverdue()
+        {
+            Console.Clear();
+            Console.WriteLine("=== REPORTE: PRÉSTAMOS VENCIDOS ===");
+
+    if (prestamoActivo)
+    {
+Console.WriteLine($@"Préstamo activo en seguimiento:
+- ID Préstamo: {prestamoID}
+- Usuario: {usuarioNombre}
+- Libro: {libroTitulo}
+- Fecha Límite registrada: {fechaLimite}
+- Estado: {estadoprestamo}");
+    }
+    else
+    {
+        Console.WriteLine("\nNo hay préstamos activos pendientes de vencimiento en este momento.");
+    }
+    ShowReturnMenu();
+        }
+        static void ReportSummary()
+        {
+            Console.Clear();
+    Console.WriteLine("=== REPORTE: RESUMEN GENERAL ===");
+
+   
+    int totalLibros = libroID != "" ? 1 : 0;
+    int disponibles = (libroID != "" && libroDisponible) ? 1 : 0;
+    int prestados = (libroID != "" && !libroDisponible) ? 1 : 0;
+
+   
+    string infoUsuario = "Ninguno";
+    if (usuarioID != "")
+    {
+        string estadoUsr = usuarioActivo ? "Activo" : "Desactivado";
+        infoUsuario = $"{usuarioNombre} ({estadoUsr})";
+    }
+
+  
+    string infoPrestamo = "Ninguno";
+    if (prestamoID != "")
+    {
+        infoPrestamo = $"{prestamoID} prestamo en curso. Estado del prestamo: {estadoprestamo}";
+    }
+
+  
+    Console.WriteLine($@"
+--------------------------------------------------
+Total de libros en sistema: {totalLibros}
+- Libros disponibles:       {disponibles}
+- Libros prestados:         {prestados}
+
+Usuario registrado:        {infoUsuario}
+Préstamo en curso:         {infoPrestamo}
+--------------------------------------------------");
+
+    ShowReturnMenu();
+        }
             //MODULO GUARDAR / CARGAR DATOS
            static void showSavedatamenu()
         {
