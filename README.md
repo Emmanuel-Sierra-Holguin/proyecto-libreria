@@ -277,3 +277,10 @@ En esta fase se completa el módulo de Búsquedas y Reportes del Sistema de Gest
 - **Préstamos por Usuario y Libro (`ReportByUser` y `ReportByBook`):** Filtran y muestran la información detallada del historial y estado de préstamos según el ID ingresado.
 - **Seguimiento de Vencidos (`ReportOverdue`):** Identifica y muestra los préstamos activos pendientes de devolución y su fecha límite.
 - **Resumen General (`ReportSummary`):** Presenta un consolidado en tiempo real con contadores de libros (disponibles/prestados) y el estado dinámico del usuario y préstamo registrado mediante condicionales `if-else` limpios.
+
+# 🚀Fase6: Modulo de guardado y reseteo de datos(`feature/persistence-menu`)
+
+### 💾 Persistencia de Datos y Cierre Seguro (Fase 6)
+- **Guardar y Cargar (`SaveData` y `LoadData`):** Permiten exportar e importar el estado actual del sistema (libros, usuarios y préstamos) a archivos de texto plano mediante `System.IO`.
+- **Reinicio del Sistema (`ResetData`):** Limpia las variables globales y elimina los archivos físicos del disco previa confirmación de seguridad.
+- **Salida Inteligente (`ConfirmExitAndSave`):** Valida si el usuario ha guardado su sesión; si hay datos pendientes, le pregunta si desea guardarlos, imprime un recibo de confirmación y cierra la aplicación de forma limpia.
