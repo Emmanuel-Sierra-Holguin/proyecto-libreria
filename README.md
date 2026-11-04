@@ -278,9 +278,10 @@ En esta fase se completa el módulo de Búsquedas y Reportes del Sistema de Gest
 - **Seguimiento de Vencidos (`ReportOverdue`):** Identifica y muestra los préstamos activos pendientes de devolución y su fecha límite.
 - **Resumen General (`ReportSummary`):** Presenta un consolidado en tiempo real con contadores de libros (disponibles/prestados) y el estado dinámico del usuario y préstamo registrado mediante condicionales `if-else` limpios.
 
-# 🚀Fase6: Modulo de guardado y reseteo de datos(`feature/persistence-menu`)
+# 🚀 Fase 6: Módulo de Guardar y Cargar Datos (feature/persistence-menu)
+### 💾 Persistencia Simulada y Cierre Seguro (Fase 6)
+Guardar y Cargar Simulado (SaveData y LoadData): Simulan el almacenamiento y la recuperación del estado actual del sistema (libros, usuarios y préstamos) en memoria RAM mediante confirmaciones visuales por consola, sin manipular archivos físicos del disco duro (System.IO).
 
-### 💾 Persistencia de Datos y Cierre Seguro (Fase 6)
-- **Guardar y Cargar (`SaveData` y `LoadData`):** Permiten exportar e importar el estado actual del sistema (libros, usuarios y préstamos) a archivos de texto plano mediante `System.IO`.
-- **Reinicio del Sistema (`ResetData`):** Limpia las variables globales y elimina los archivos físicos del disco previa confirmación de seguridad.
-- **Salida Inteligente (`ConfirmExitAndSave`):** Valida si el usuario ha guardado su sesión; si hay datos pendientes, le pregunta si desea guardarlos, imprime un recibo de confirmación y cierra la aplicación de forma limpia.
+Reinicio del Sistema (ResetData): Restablece todas las variables globales a su estado inicial en cero, previa confirmación interactiva de seguridad por parte del usuario (Si/No).
+
+Salida Inteligente (ConfirmExitAndSave): Evalúa si la sesión cuenta con cambios guardados en memoria; de lo contrario, solicita al usuario confirmación para guardar antes de salir e imprime un recibo visual de confirmación con los registros procesados para cerrar la consola de forma segura.
