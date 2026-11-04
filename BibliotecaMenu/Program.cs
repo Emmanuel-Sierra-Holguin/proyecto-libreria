@@ -30,7 +30,8 @@ namespace Bibliotecamenu
    static string archivoUsuarios = "usuarios.txt";
   static string archivoPrestamos = "prestamos.txt";
 
-        
+        //variables global general
+        static bool datosGuardados = false;
 
         static void Main(string[] args){
         ShowMainMenu();
@@ -53,7 +54,7 @@ OPCIONES:
 5. Guardar / Cargar datos
 6. Salir
 =====================  ");
-                Console.Write("Selecciona una opcion: ");
+                Console.Write("Seleccionar una opcion: ");
                 String bibliotecario = Console.ReadLine() ?? "";
 
                     switch (bibliotecario)
@@ -95,18 +96,18 @@ OPCIONES:
             {
                 Console.Clear();
                 Console.WriteLine(@"
-=== MENÚ PRINCIPAL BIBLIOTECA ===
+=== MENÚ LIBROS ===
 OPCIONES:
-1 Registrar libro
-2 Listar libros
-3 Ver detalle de libro
-4 Actualizar libro
-5 Eliminst libro
-6 volver al menu
+1. Registrar libro
+2. Listar libros
+3. Ver detalle de libro
+4. Actualizar libro
+5. Eliminar libro
+6. volver al menu
 =====================
                 ");
 
-                Console.Write("seleccionar opcion: ");
+                Console.Write("seleccionar una opcion: ");
                 String bibliotecario = Console.ReadLine() ?? "";
                 switch (bibliotecario)
                 {
@@ -210,13 +211,15 @@ OPCIONES:
             {
                 string estado = libroDisponible ? "si" : "no";
 string detalle = $@"
+===============================
 ID: {libroID},
 Titulo: {libroTitulo},
 Autor: {libroAutor},
 Categoria: {libroCategoria},
 Año: {libroAño},
 Disponible: {estado} 
-estado prestamo:{estadoprestamo}"; 
+estado prestamo:{estadoprestamo}
+================================"; 
 Console.WriteLine(detalle);
             }
             else
@@ -233,13 +236,15 @@ Console.WriteLine(detalle);
             {
 
 string detalle = $@"
+===============================
 ID: {libroID},
 Titulo: {libroTitulo},
 Autor: {libroAutor},
 Categoria: {libroCategoria},
 Año: {libroAño},
 Disponible: si 
-estado prestamo:{estadoprestamo}"; 
+estado prestamo:{estadoprestamo}
+==============================="; 
                 Console.WriteLine(detalle);
             }
             else
@@ -255,13 +260,15 @@ estado prestamo:{estadoprestamo}";
             if(libroID != "" && !libroDisponible)
             {
 string detalle = $@"
+===============================
 ID: {libroID}
 Titulo: {libroTitulo}
 Autor: {libroAutor}
 Categoria: {libroCategoria}
 Año: {libroAño}
 Disponible: no 
-estado prestamo:{estadoprestamo}"; 
+estado prestamo:{estadoprestamo}
+==============================="; 
                 Console.WriteLine(detalle);
             }
             else
@@ -282,13 +289,16 @@ estado prestamo:{estadoprestamo}";
             {
                 string estado = libroDisponible ? "si" : "no";
 string detalle = $@"
+===============================
 ID: {libroID}
 Titulo: {libroTitulo}
 Autor: {libroAutor}
 Categoria: {libroCategoria}
 Año: {libroAño}
 Disponible: {estado}
-estado prestamo:{estadoprestamo}";
+estado prestamo:{estadoprestamo}
+===============================";
+
                 Console.WriteLine(detalle);
             }
             else
@@ -312,7 +322,7 @@ OPCIONES:
 3 editar año / categoria
 4 volver menu
 ===================");
-            Console.Write("opcion:");
+            Console.Write("seleccionar una opcion: ");
             string bibliotecario = Console.ReadLine() ?? "";
             switch (bibliotecario)
             {
@@ -451,7 +461,7 @@ OPCIONES:
 3.Ver detaller usuario
 4.Actualizar usuario
 5.Eliminar usuario
-6. regresar al menu
+6.regresar al menu
 ======================
 ");
                 Console.Write("elegir Opcion:");   
@@ -640,7 +650,7 @@ estado de prestamo:{estadoprestamo}
         static void ToggleUserActiveStatus()
         {
             Console.Clear();
-            Console.WriteLine("== EDITAR ESTADO ==");
+            Console.WriteLine("== CAMBIAR ESTADO ==");
             Console.Write("buscar usuario ID:");
             string buscarID = Console.ReadLine() ?? "";
             if(usuarioID != "" && buscarID == usuarioID)
@@ -700,7 +710,8 @@ OPCION:
 3.Ver detalle de prestamo
 4.Registrar devolucion
 5.Eliminar prestamo
-6. volver a menu        
+6.volver a menu       
+======================= 
 ");
                 Console.Write("elegir opcion: ");
                 string bibliotecario = Console.ReadLine() ?? "";
@@ -756,7 +767,9 @@ OPCION:
             }
             else
             {
-                Console.Write("ingresar ID prestamo");
+                Console.Clear();
+                Console.WriteLine("== REGISTRAR PRESTAMO ==");
+                Console.Write("ingresar ID prestamo: ");
                 prestamoID = Console.ReadLine() ?? "";
                 libroDisponible = false;
                 prestamoActivo = true;
@@ -784,8 +797,9 @@ OPCION:
 OPCION:
 1.TODOS 
 2.ACTIVOS
-3.Cerratos (devueltos)
-4. volver a menu        
+3.Cerrados (devueltos)
+4.volver a menu        
+=========================
 ");
                 Console.Write("elegir opcion: ");
                 string bibliotecario = Console.ReadLine() ?? "";
@@ -819,6 +833,7 @@ OPCION:
             if(prestamoID != "")
             {
                 string detalle = $@"
+=================================
 prestamo ID:{prestamoID}
 usuario ID:{usuarioID}
 libro ID:{libroID}
@@ -827,7 +842,8 @@ libro Titulo:{libroTitulo}
 Fecha inicio:{fechaInicio}
 Fecha Limite:{fechaLimite}
 fecha devolucion: {fechaDevolucion}
-Estado prestamo:{estadoprestamo}               
+Estado prestamo:{estadoprestamo} 
+===================================              
 ";
         Console.WriteLine(detalle);
 
@@ -845,6 +861,7 @@ Estado prestamo:{estadoprestamo}
             if(prestamoID != "" && prestamoActivo)
             {
                 string detalle = $@"
+================================
 prestamo ID:{prestamoID}
 usuario ID:{usuarioID}
 libro ID:{libroID}
@@ -853,13 +870,14 @@ libro Titulo:{libroTitulo}
 Fecha inicio:{fechaInicio}
 Fecha Limite:{fechaLimite}
 fecha Devolucion:{fechaDevolucion}
-Estado prestamo:{estadoprestamo}               
+Estado prestamo:{estadoprestamo}
+==================================               
 ";
                  Console.WriteLine(detalle);
             }
             else
             {
-                Console.WriteLine("No hay registros de préstamos en el sistema.");
+                Console.WriteLine("No hay prestamos activos en este momento.");
             }
             ShowReturnMenu();
         }
@@ -870,6 +888,7 @@ Estado prestamo:{estadoprestamo}
             if(prestamoID != "" && !prestamoActivo)
             {
                 string detalle = $@"
+=================================
 prestamo ID:{prestamoID}
 usuario ID:{usuarioID}
 libro ID:{libroID}
@@ -877,13 +896,14 @@ Usuario Nombre:{usuarioNombre}
 libro Titulo:{libroTitulo}
 Fecha inicio:{fechaInicio}
 Fecha devolucion:{fechaDevolucion}
-Estado prestamo:{estadoprestamo}               
+Estado prestamo:{estadoprestamo}   
+===================================            
 ";
                  Console.WriteLine(detalle);
             }
             else
             {
-                Console.WriteLine("No hay registros de préstamos en el sistema.");
+                Console.WriteLine("No hay registros de préstamos cerrados en este momento.");
             }
             ShowReturnMenu();
         }
@@ -942,7 +962,7 @@ Estado prestamo:{estadoprestamo}
         {
             Console.Clear();
             Console.WriteLine("== ELIMINAR PRESTAMO ==");
-            Console.Write("ID prestamo:");
+            Console.Write("ID prestamo: ");
             string buscarID = Console.ReadLine() ?? "";
 
             if (prestamoID != "" && buscarID == prestamoID)
@@ -979,7 +999,8 @@ Estado prestamo:{estadoprestamo}
 1.Buscar libro
 2.Buscar usuario
 3.Reportes
-4.volver a menu principal                
+4.volver a menu principal      
+=============================          
 ");
                 Console.Write("elegir opcion: ");
                 string bibliotecario = Console.ReadLine() ?? "";
@@ -1082,7 +1103,7 @@ Estado prestamo:{estadoprestamo}
 1. Buscar por ID / Documento
 2. Buscar por Nombre
 ============================");
-    Console.Write("Selecciona el criterio de búsqueda: ");
+    Console.Write("Seleccionar opcion: ");
     string opcion = Console.ReadLine() ?? "";
 
     if(usuarioID == "")
@@ -1138,7 +1159,7 @@ Estado prestamo:{estadoprestamo}
 5. Volver
 ========================
 ");
-             Console.Write("Selecciona el reporte: ");
+             Console.Write("Seleccionar opcion: ");
              string bibliotecario = Console.ReadLine() ?? "";
                 switch (bibliotecario)
                 {
@@ -1178,12 +1199,14 @@ Estado prestamo:{estadoprestamo}
         if (prestamoActivo || !prestamoActivo)
         {
             Console.WriteLine($@"
+==================================
 - Usuario{usuarioNombre} 
 - usuario ID: {usuarioID}
 - ID Préstamo: {prestamoID}
 - Fecha inicio: {fechaInicio} 
 - Fecha límite: {fechaLimite}
-- Estado del préstamo: {estadoprestamo}");
+- Estado del préstamo: {estadoprestamo}
+======================================");
         }
         else
         {
@@ -1207,13 +1230,15 @@ Estado prestamo:{estadoprestamo}
     {
         if (prestamoActivo || !prestamoActivo)
         {
-Console.WriteLine($@"\n
+Console.WriteLine($@"
+===============================
 - Libro: {libroTitulo} 
 - Libro ID: {libroID}
 - prestamo ID: {prestamoID}
 - Fecha inicio: {fechaInicio}
 - Fecha límite: {fechaLimite}
-- Estado del préstamo: {estadoprestamo}");
+- Estado del préstamo: {estadoprestamo}
+======================================");
         }
         else
         {
@@ -1233,12 +1258,15 @@ Console.WriteLine($@"\n
 
     if (prestamoActivo)
     {
-Console.WriteLine($@"Préstamo activo en seguimiento:
+Console.WriteLine($@"
+===============================
+Préstamo activo en seguimiento:
 - ID Préstamo: {prestamoID}
 - Usuario: {usuarioNombre}
 - Libro: {libroTitulo}
 - Fecha Límite registrada: {fechaLimite}
-- Estado: {estadoprestamo}");
+- Estado: {estadoprestamo}
+=============================");
     }
     else
     {
@@ -1284,8 +1312,10 @@ Préstamo en curso:         {infoPrestamo}
 
     ShowReturnMenu();
         }
-            //MODULO GUARDAR / CARGAR DATOS
-           static void showSavedatamenu()
+  // ==========================================
+        // 5. MÓDULO GUARDAR / CARGAR DATOS (Simulado)
+        // ==========================================
+        static void showSavedatamenu()
         {
             bool volverMenu = false;
             while (!volverMenu)
@@ -1297,159 +1327,123 @@ Préstamo en curso:         {infoPrestamo}
 2. Cargar datos
 3. Reiniciar datos (Vaciar todo)
 4. Volver al menú principal
-==============================                                
-");
-                Console.Write("elegir opcion: ");
+==============================");
+                Console.Write("Selecciona una opción: ");
                 string bibliotecario = Console.ReadLine() ?? "";
                 switch (bibliotecario)
                 {
-                    case"1":
-                    SaveData();
-                    break;
-                    case"2":
-                    LoadData();
-                    break;
-                    case"3":
-                    ResetData();
-                    break;
-                    case"4":
-                    volverMenu = true;
-                    break;
+                    case "1":
+                        SaveData();
+                        break;
+                    case "2":
+                        LoadData();
+                        break;
+                    case "3":
+                        ResetData();
+                        break;
+                    case "4":
+                        volverMenu = true;
+                        break;
                     default:
-                    Console.Clear();
-                    Console.WriteLine("ERROR!: Opcion no valida");
-                    ShowReturnMenu();
-                    break;
-                }              
+                        Console.Clear();
+                        Console.WriteLine("[ERROR]: Opción no válida.");
+                        ShowReturnMenu();
+                        break;
+                }
             }
         }
-        // Modulo 
+
+        // Simulación de guardado
         static void SaveData()
- {
-    Console.Clear();
-    Console.WriteLine("=== GUARDAR DATOS ===");
-
-    // Guardar Libro
-    if (libroID != "")
-    {
-        string[] datosLibro = { libroID, libroTitulo, libroAutor, libroCategoria, libroAño, libroDisponible.ToString() };
-        File.WriteAllLines(archivoLibros, datosLibro);
-    }
-
-    // Guardar Usuario
-    if (usuarioID != "")
-    {
-        string[] datosUsuario = { usuarioID, usuarioNombre, usuarioContacto, usuarioActivo.ToString() };
-        File.WriteAllLines(archivoUsuarios, datosUsuario);
-    }
-
-    // Guardar Préstamo
-    if (prestamoID != "")
-    {
-        string[] datosPrestamo = { prestamoID, prestamoActivo.ToString(), fechaInicio, fechaLimite, fechaDevolucion, estadoprestamo };
-        File.WriteAllLines(archivoPrestamos, datosPrestamo);
-    }
-
-    Console.WriteLine("¡Datos guardados con éxito en archivos de texto!");
-    ShowReturnMenu();
- }
-
- static void LoadData()
-{
-    Console.Clear();
-    Console.WriteLine("=== CARGAR DATOS ===");
-
-    // Cargar Libro
-    if (File.Exists(archivoLibros))
-    {
-        string[] lineas = File.ReadAllLines(archivoLibros);
-        if (lineas.Length >= 6)
         {
-            libroID = lineas[0];
-            libroTitulo = lineas[1];
-            libroAutor = lineas[2];
-            libroCategoria = lineas[3];
-            libroAño = lineas[4];
-            libroDisponible = bool.Parse(lineas[5]);
+            Console.Clear();
+            Console.WriteLine("=== GUARDAR DATOS ===");
+            Console.WriteLine("[SIMULACIÓN]: Guardando el estado actual del sistema en memoria...");
+            Console.WriteLine("¡Datos guardados con éxito de manera simulada!");
+            datosGuardados = true;
+            ShowReturnMenu();
         }
-    }
 
-    // Cargar Usuario
-    if (File.Exists(archivoUsuarios))
-    {
-        string[] lineas = File.ReadAllLines(archivoUsuarios);
-        if (lineas.Length >= 4)
+        // Simulación de carga
+        static void LoadData()
         {
-            usuarioID = lineas[0];
-            usuarioNombre = lineas[1];
-            usuarioContacto = lineas[2];
-            usuarioActivo = bool.Parse(lineas[3]);
+            Console.Clear();
+            Console.WriteLine("=== CARGAR DATOS ===");
+            Console.WriteLine("[SIMULACIÓN]: Leyendo registros simulados previamente...");
+            Console.WriteLine("¡Datos cargados con éxito en el sistema!");
+            datosGuardados = true;
+            ShowReturnMenu();
         }
-    }
 
-    // Cargar Préstamo
-    if (File.Exists(archivoPrestamos))
-    {
-        string[] lineas = File.ReadAllLines(archivoPrestamos);
-        if (lineas.Length >= 6)
+        // Simulación de reinicio con confirmación (S/N)
+        static void ResetData()
         {
-            prestamoID = lineas[0];
-            prestamoActivo = bool.Parse(lineas[1]);
-            fechaInicio = lineas[2];
-            fechaLimite = lineas[3];
-            fechaDevolucion = lineas[4];
-            estadoprestamo = lineas[5];
-        }
-    }
+            Console.Clear();
+            Console.WriteLine("=== REINICIAR DATOS ===");
+            Console.Write("¿Está seguro de reiniciar y vaciar todos los datos del sistema? (Si/No): ");
+            string confirmacion = Console.ReadLine() ?? "";
 
-    Console.WriteLine("¡Datos cargados con éxito desde los archivos!");
-    ShowReturnMenu();
-}
-
-
-static void ResetData()
-{
-    Console.Clear();
-    Console.WriteLine("=== REINICIAR DATOS ===");
-    Console.Write("¿Está seguro de reiniciar y borrar todos los datos del sistema? (Si/No): ");
-    string confirmacion = Console.ReadLine() ?? "";
-
-    if (confirmacion.ToLower() == "si")
-    {
-        // Reset Variables Libros
-        libroID = ""; libroTitulo = ""; libroAutor = ""; libroCategoria = ""; libroAño = ""; libroDisponible = false;
-
-        // Reset Variables Usuarios
-        usuarioID = ""; usuarioNombre = ""; usuarioContacto = ""; usuarioActivo = false;
-
-        // Reset Variables Préstamos
-        prestamoID = ""; prestamoActivo = false; fechaInicio = ""; fechaLimite = ""; fechaDevolucion = "N/A"; estadoprestamo = "inactivo";
-
-        // Eliminar archivos creados
-        if (File.Exists(archivoLibros)) File.Delete(archivoLibros);
-        if (File.Exists(archivoUsuarios)) File.Delete(archivoUsuarios);
-        if (File.Exists(archivoPrestamos)) File.Delete(archivoPrestamos);
-
-        Console.WriteLine("\n¡El sistema ha sido limpiado y reiniciado a cero con éxito!");
-    }
-    else
-    {
-        Console.WriteLine("\nOperación cancelada. Los datos no fueron modificados.");
-    }
-
-    ShowReturnMenu();
-}
-            // MODULO SALIDA
-            static void ConfirmExitAndSave()
+            if (confirmacion.ToLower() == "si")
             {
-                Console.Clear();
-                Console.WriteLine("--> Saliendo del sistema...");
-            } 
+                // Limpiamos las variables globales en RAM
+                libroID = ""; libroTitulo = ""; libroAutor = ""; libroCategoria = ""; libroAño = ""; libroDisponible = false;
+                usuarioID = ""; usuarioNombre = ""; usuarioContacto = ""; usuarioActivo = false;
+                prestamoID = ""; prestamoActivo = false; fechaInicio = ""; fechaLimite = ""; fechaDevolucion = "N/A"; estadoprestamo = "inactivo";
 
+                datosGuardados = false;
+                Console.WriteLine("\n[SIMULACIÓN]: ¡El sistema ha sido limpiado y reiniciado a cero con éxito!");
+            }
+            else
+            {
+                Console.WriteLine("\n[SIMULACIÓN]: Operación cancelada. Los datos no fueron modificados.");
+            }
+            ShowReturnMenu();
+        }
+
+        // ==========================================
+        // 6. MÓDULO SALIDA INTELIGENTE CON RECIBO SIMULADO
+        // ==========================================
+        static void ConfirmExitAndSave()
+        {
+            Console.Clear();
+            Console.WriteLine("=== SALIDA DEL SISTEMA ===");
+
+            if (!datosGuardados)
+            {
+                Console.WriteLine("[AVISO]: Hay cambios recientes en el sistema que no se han guardado.");
+                Console.Write("¿Deseas guardar los datos antes de salir? (Si/No): ");
+                string respuesta = Console.ReadLine() ?? "";
+
+                if (respuesta.ToLower() == "si")
+                {
+                    datosGuardados = true;
+                    Console.Clear();
+                    Console.WriteLine(@"
+==================================================
+        🧾 RECIBO DE GUARDADO Y CIERRE (SIMULACIÓN)
+==================================================
+ Estado: ¡Datos guardados correctamente en memoria!
+- Libro registrado ID:  " + (libroID != "" ? libroID : "Ninguno") + @"
+- Usuario registrado ID:" + (usuarioID != "" ? usuarioID : "Ninguno") + @"
+- Préstamo en curso ID: " + (prestamoID != "" ? prestamoID : "Ninguno") + @"
+==================================================");
+                }
+                else
+                {
+                    Console.WriteLine("\n[AVISO]: Saliendo sin guardar los cambios recientes...");
+                }
+            }
+            else
+            {
+                Console.WriteLine("Los datos ya se encontraban guardados previamente en memoria.");
+            }
+
+            Console.WriteLine("\n--> Saliendo del sistema. ¡Hasta pronto!");
+        }
             // PAUSA GENERAL
             static void ShowReturnMenu()
             {
-                Console.WriteLine("volver al menu anterior");
+                Console.WriteLine("\nvolver al menu anterior");
                 Console.Write("presiona cualquier tecla: ");
                 Console.ReadKey();
             }
