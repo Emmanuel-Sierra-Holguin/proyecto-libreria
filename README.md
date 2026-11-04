@@ -284,3 +284,27 @@ En esta fase se completa el módulo de Búsquedas y Reportes del Sistema de Gest
 - **Guardar y Cargar (`SaveData` y `LoadData`):** Permiten exportar e importar el estado actual del sistema (libros, usuarios y préstamos) a archivos de texto plano mediante `System.IO`.
 - **Reinicio del Sistema (`ResetData`):** Limpia las variables globales y elimina los archivos físicos del disco previa confirmación de seguridad.
 - **Salida Inteligente (`ConfirmExitAndSave`):** Valida si el usuario ha guardado su sesión; si hay datos pendientes, le pregunta si desea guardarlos, imprime un recibo de confirmación y cierra la aplicación de forma limpia.
+
+
+# 📌 Resumen de la Fase Final: Simulación Pura en Consola
+Alineación 100% con la Rúbrica SENA:
+
+Se eliminó completamente la dependencia de persistencia física en disco duro (System.IO, archivos .txt).
+
+El sistema opera únicamente en memoria RAM mediante programación estructurada y funciones estáticas, garantizando cero POO y cero colecciones reales.
+
+Módulo de Guardar / Cargar Simulado:
+
+SaveData(): Confirma y muestra el guardado simulado del estado del sistema en memoria.
+
+LoadData(): Simula la lectura de registros previamente cargados.
+
+ResetData(): Solicita confirmación interactiva (Si/No) antes de vaciar las variables globales en memoria RAM.
+
+Salida Inteligente con Recibo en Pantalla:
+
+ConfirmExitAndSave(): Evalúa la bandera datosGuardados. Si hay cambios pendientes, consulta si se desea guardar antes de salir y genera en consola un recibo visual resumido (Acroform/Ticket) con los IDs activos de libro, usuario y préstamo procesados durante la sesión.
+
+Navegación y Validaciones:
+
+Mantiene el control mediante bucles while y bloques switch/case con sus opciones default para captura de entradas inválidas, garantizando opciones operativas de volver, confirmar y salir.
