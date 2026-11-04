@@ -25,10 +25,8 @@ namespace Bibliotecamenu
         static String fechaLimite = "";
         static String fechaDevolucion = "N/A";
         static String estadoprestamo = "inactivo";
-        //variables globales guardar datos
-  static string archivoLibros = "libros.txt";
-   static string archivoUsuarios = "usuarios.txt";
-  static string archivoPrestamos = "prestamos.txt";
+
+
 
         //variables global general
         static bool datosGuardados = false;
