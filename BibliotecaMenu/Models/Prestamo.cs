@@ -45,6 +45,18 @@ namespace BibliotecaMenu.Models
             libro.Disponible = false;
         }
 
+        //METODOS
+        public bool EstaVencido()
+        {
+            if (Estado == EstadoPrestamo.Activo && DateTime.Now > FechaLimite)
+            {
+                Estado = EstadoPrestamo.Activo;
+                return true;
+            }
+            return Estado == EstadoPrestamo.Vencido;
+        }
+
+        
 
     }
 }
