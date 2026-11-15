@@ -55,6 +55,10 @@ namespace system_books.Models
     ===========================
 ";
         }
-        
+
+        public override string ToString()
+        {
+            return ResumenCorto();
+        }
     }
 }
