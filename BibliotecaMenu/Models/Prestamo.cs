@@ -20,7 +20,10 @@ namespace BibliotecaMenu.Models
         public  EstadoPrestamo Estado {get; set;} = EstadoPrestamo.Activo;
         public bool PrestamoActivo {get; set;} = true;
 
-        
+        //CONSTRUCTOR VACIO
+        public Prestamo()
+        {
+        }
 
 
     }
