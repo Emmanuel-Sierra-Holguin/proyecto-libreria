@@ -33,5 +33,11 @@ namespace system_books.Models
             Anio = anio;
             Disponible = true;
         }
+
+        //METODOS 
+        public string ResumenCorto()
+        {
+            return $"[{Id}] {Titulo} - {Autor} ({Anio})";
+        }
     }
 }
