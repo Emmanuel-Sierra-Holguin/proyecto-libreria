@@ -35,6 +35,15 @@ namespace Bibliotecamenu
 
         static void Main(string[] args){
         ShowMainMenu();
+        PruebaPoo();
+        }
+        // METODO DE PRUEBA
+        static void PruebaPoo()
+        {
+            Console.WriteLine(@"
+            ===================================
+            SISTEMA DE BIBLIOTECA - PRUEBAS POO
+            ===================================");
         }
 
         // Funcion de menu principal 
