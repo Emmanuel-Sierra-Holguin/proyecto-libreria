@@ -62,7 +62,11 @@ namespace BibliotecaMenu.Models
             TimeSpan diferencia = fechafin - FechaInicio;
             return diferencia.Days;
         }
-        
 
+        public string Resumen()
+        {
+            EstaVencido();
+            return $"[{Id}] Libro: {LibroTitulo} | Usuario: {UsuarioNombre} | Estado: {Estado}";
+        }
     }
 }
