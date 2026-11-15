@@ -23,6 +23,16 @@ namespace BibliotecaMenu.Models
             Telefono = "";
             Activo = true;
         }
-        
+        //CONSTRUCTOR COMPLETO
+        public Usuario(string nombre,string correo,string telefono)
+        {
+            contadorIsbn++;
+            Id = "LIB-" + contadorIsbn;
+
+            Nombre = nombre;
+            Correo = correo;
+            Telefono = telefono;
+            Activo = true;
+        }
     }
 }
