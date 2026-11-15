@@ -50,7 +50,7 @@ namespace BibliotecaMenu.Models
         {
             if (Estado == EstadoPrestamo.Activo && DateTime.Now > FechaLimite)
             {
-                Estado = EstadoPrestamo.Activo;
+                Estado = EstadoPrestamo.Vencido;
                 return true;
             }
             return Estado == EstadoPrestamo.Vencido;
@@ -63,7 +63,7 @@ namespace BibliotecaMenu.Models
             return diferencia.Days;
         }
 
-        public string Resumen()
+        public string ResumenCorto()
         {
             EstaVencido();
             return $"[{Id}] Libro: {LibroTitulo} | Usuario: {UsuarioNombre} | Estado: {Estado}";
@@ -83,12 +83,15 @@ namespace BibliotecaMenu.Models
   - Fecha Inicio: {FechaInicio:dd/MM/yyyy}
   - Fecha Limite: {FechaLimite:dd/MM/yyyy}
   - Fecha Devolucion: {textoDevolucion}
-  - Dias Transcurridos: {DiasTranscurridos}
+  - Dias Transcurridos: {DiasTranscurridos()}
   - Estado Prestamo: {Estado}
     ===========================
 ";
         }
 
-        
+        public override string ToString()
+        {
+            return ResumenCorto();
+        }
     }
 }
