@@ -5,7 +5,7 @@ namespace BibliotecaMenu.Models
     public class Usuario
     {
         // CONTADOR ESTÁTICO GLOBAL (Para generar IDs automáticos)
-        private static int contadorIsbn = 100;
+        private static int contadorUsuario = 100;
 
         //PROPIEDADES
         public string Id {get; set;} = string.Empty;
@@ -18,12 +18,12 @@ namespace BibliotecaMenu.Models
         public Usuario()
         {
         }
-        
+
         //CONSTRUCTOR COMPLETO
         public Usuario(string nombre,string correo,string telefono)
         {
-            contadorIsbn++;
-            Id = "USU-" + contadorIsbn;
+            contadorUsuario++;
+            Id = "USU-" + contadorUsuario;
 
             Nombre = nombre;
             Correo = correo;
