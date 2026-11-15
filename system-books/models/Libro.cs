@@ -5,7 +5,7 @@ namespace system_books.Models
     public class libro
     {
         //PROPIEDADES
-        public string id {get; set;}
+        public string Id {get; set;}
         public string Titulo {get; set;}
          public string Autor {get; set;}
         public string Categoria {get; set;}
@@ -15,13 +15,23 @@ namespace system_books.Models
         // CONSTRUCTOR VACIO
         public libro()
         {
-            id = "";
+            Id = "";
             Titulo = "";
             Autor = "";
             Categoria = "";
             Anio = "";
             Disponible = true;
         }
-        
+
+        //CONSTRUCTOR COMPLETO
+        public libro(string id, string titulo, string autor, string categoria, string anio )
+        {
+            Id = id;
+            Titulo = titulo;
+            Autor = autor;
+            Categoria = categoria;
+            Anio = anio;
+            Disponible = true;
+        }
     }
 }
