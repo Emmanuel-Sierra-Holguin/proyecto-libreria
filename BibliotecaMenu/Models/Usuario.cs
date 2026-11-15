@@ -13,5 +13,16 @@ namespace BibliotecaMenu.Models
         public string Correo {get; set;}
         public string Telefono {get; set;}
         public bool Activo { get; set; }
+
+        //CONSTRUCTOR VACIO
+        public Usuario()
+        {
+            Id = "";
+            Nombre = "";
+            Correo = "";
+            Telefono = "";
+            Activo = true;
+        }
+        
     }
 }
