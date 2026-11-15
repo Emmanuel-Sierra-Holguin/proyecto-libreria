@@ -12,7 +12,7 @@ namespace BibliotecaMenu.Models
         public string Titulo {get; set;} = string.Empty;
          public string Autor {get; set;} = string.Empty;
         public string Categoria {get; set;} = string.Empty;
-         public string Anio {get; set;} = string.Empty;
+         public int Anio {get; set;}
         public bool Disponible {get; set;} = true;
         
         // CONSTRUCTOR VACIO
@@ -21,7 +21,7 @@ namespace BibliotecaMenu.Models
         }
 
         //CONSTRUCTOR COMPLETO
-        public Libro( string titulo, string autor, string categoria, string anio )
+        public Libro( string titulo, string autor, string categoria, int anio )
         {
             contadorIsbn++;
             Id = "LIB-" + contadorIsbn;
@@ -36,7 +36,7 @@ namespace BibliotecaMenu.Models
         //METODOS 
         public string ResumenCorto()
         {
-            string estadoTexto = Disponible ? "Si" : "No";
+            string estadoTexto = Disponible ? "Disponible" : "Prestado";
             return $"[{Id}] {Titulo} - {Autor} ({estadoTexto})";
         }
         public string DetalleCompleto()

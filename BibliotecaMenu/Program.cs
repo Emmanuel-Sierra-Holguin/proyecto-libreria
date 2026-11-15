@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq.Expressions;
+using BibliotecaMenu.Models;
 
 
 namespace Bibliotecamenu
@@ -44,6 +45,12 @@ namespace Bibliotecamenu
             ===================================
             SISTEMA DE BIBLIOTECA - PRUEBAS POO
             ===================================");
+
+            // CREAR 2 LIBROS
+            Libro libro1 = new Libro("Clean Code","Robert C. Martin","Ingenieria de Software", 2008);
+            Libro libro2 = new Libro("Cien años de soledad", "Gabriel García Márquez", "Literatura", 1967);
+
+            
         }
 
         // Funcion de menu principal 
