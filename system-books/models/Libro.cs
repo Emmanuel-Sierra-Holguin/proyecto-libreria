@@ -11,5 +11,17 @@ namespace system_books.Models
         public string Categoria {get; set;}
          public string Anio {get; set;}
         public bool Disponible {get; set;}
+        
+        // CONSTRUCTOR VACIO
+        public libro()
+        {
+            id = "";
+            Titulo = "";
+            Autor = "";
+            Categoria = "";
+            Anio = "";
+            Disponible = true;
+        }
+        
     }
 }
