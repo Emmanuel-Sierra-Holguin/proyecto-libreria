@@ -68,5 +68,27 @@ namespace BibliotecaMenu.Models
             EstaVencido();
             return $"[{Id}] Libro: {LibroTitulo} | Usuario: {UsuarioNombre} | Estado: {Estado}";
         }
+
+          public string DetalleCompleto()
+        {
+            EstaVencido();
+            string textoDevolucion = FechaDevolucion.HasValue ? FechaDevolucion.Value.ToString("dd/MM/yyyy") : "pendiente";
+            return $@"
+  ===========================
+  DETALLE COMPLETO DE PRESTAMO
+  ===========================
+  - ID: {Id}
+  - LibroId: {LibroId} | Titulo: {LibroTitulo}
+  - UsuarioId: {UsuarioId} | Nombre: {UsuarioNombre}
+  - Fecha Inicio: {FechaInicio:dd/MM/yyyy}
+  - Fecha Limite: {FechaLimite:dd/MM/yyyy}
+  - Fecha Devolucion: {textoDevolucion}
+  - Dias Transcurridos: {DiasTranscurridos}
+  - Estado Prestamo: {Estado}
+    ===========================
+";
+        }
+
+        
     }
 }
