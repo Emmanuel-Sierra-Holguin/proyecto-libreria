@@ -27,12 +27,17 @@ namespace BibliotecaMenu.Models
         public Usuario(string nombre,string correo,string telefono)
         {
             contadorIsbn++;
-            Id = "LIB-" + contadorIsbn;
+            Id = "USU-" + contadorIsbn;
 
             Nombre = nombre;
             Correo = correo;
             Telefono = telefono;
             Activo = true;
+        }
+        // METODOS
+          public string ResumenCorto()
+        {
+            return $"[{Id}] {Nombre} - {Correo} ({Telefono})";
         }
     }
 }
