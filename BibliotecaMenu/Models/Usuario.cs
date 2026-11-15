@@ -33,7 +33,7 @@ namespace BibliotecaMenu.Models
         // METODOS
           public string ResumenCorto()
         {
-            string estadoTexto = Activo ? "inactivo" : "activo"; 
+            string estadoTexto = Activo ? "Activo" : "Inactivo"; 
             return $"[{Id}] {Nombre} - {Correo} ({estadoTexto})";
         }
          public string DetalleCompleto()
