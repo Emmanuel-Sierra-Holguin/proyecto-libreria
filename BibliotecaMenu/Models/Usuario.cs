@@ -39,5 +39,20 @@ namespace BibliotecaMenu.Models
         {
             return $"[{Id}] {Nombre} - {Correo} ({Telefono})";
         }
+         public string DetalleCompleto()
+        {
+            string estadoTexto = Activo ? "Si" : "No";
+            return $@"
+  ===========================
+  DETALLE COMPLETO DE USUARIO
+  ===========================
+  - ID: {Id}
+  - Nombre: {Nombre}
+  - Autor: {Correo}
+  - Telefono: {Telefono}
+  - Activado: {estadoTexto}
+    ===========================
+";
+        }
     }
 }

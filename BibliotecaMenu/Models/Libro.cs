@@ -49,7 +49,7 @@ namespace BibliotecaMenu.Models
             string estadoTexto = Disponible ? "Si" : "No";
             return $@"
   ===========================
-  DETALLE COMPLETO DEL LIBRO
+  DETALLE COMPLETO DE LIBRO
   ===========================
   - ID: {Id}
   - Titulo: {Titulo}
