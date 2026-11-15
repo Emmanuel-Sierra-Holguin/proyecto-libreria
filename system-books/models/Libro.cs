@@ -2,7 +2,7 @@ using System;
 
 namespace system_books.Models
 {
-    public class libro
+    public class Libro
     {
         //PROPIEDADES
         public string Id {get; set;}
@@ -13,7 +13,7 @@ namespace system_books.Models
         public bool Disponible {get; set;}
         
         // CONSTRUCTOR VACIO
-        public libro()
+        public Libro()
         {
             Id = "";
             Titulo = "";
@@ -24,7 +24,7 @@ namespace system_books.Models
         }
 
         //CONSTRUCTOR COMPLETO
-        public libro(string id, string titulo, string autor, string categoria, string anio )
+        public Libro(string id, string titulo, string autor, string categoria, string anio )
         {
             Id = id;
             Titulo = titulo;
