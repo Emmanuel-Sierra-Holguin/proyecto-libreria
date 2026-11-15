@@ -4,6 +4,9 @@ namespace BibliotecaMenu.Models
 {
     public class Libro
     {
+        // CONTADOR ESTÁTICO GLOBAL (Para generar IDs automáticos)
+        private static int contadorIsbn = 100;
+
         //PROPIEDADES
         public string Id {get; set;}
         public string Titulo {get; set;}
@@ -24,9 +27,11 @@ namespace BibliotecaMenu.Models
         }
 
         //CONSTRUCTOR COMPLETO
-        public Libro(string id, string titulo, string autor, string categoria, string anio )
+        public Libro( string titulo, string autor, string categoria, string anio )
         {
-            Id = id;
+            contadorIsbn++;
+            Id = "LIB-" + contadorIsbn;
+
             Titulo = titulo;
             Autor = autor;
             Categoria = categoria;
