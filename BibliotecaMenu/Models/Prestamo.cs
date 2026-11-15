@@ -25,6 +25,26 @@ namespace BibliotecaMenu.Models
         {
         }
 
+        //CONSTRUCTOR COMPLETO
+        public Prestamo(Libro libro, Usuario usuario, int diasPlazo = 7)
+        {
+            contadorPrestamo++;
+            Id = "PRE-" + contadorPrestamo;
+
+            LibroId = libro.Id;
+            UsuarioId = usuario.Id;
+            LibroTitulo = libro.Titulo;
+            UsuarioNombre = usuario.Nombre;
+
+            FechaInicio = DateTime.Now;
+            FechaLimite = FechaInicio.AddDays(diasPlazo);
+            FechaDevolucion = null;
+            Estado = EstadoPrestamo.Activo;
+            PrestamoActivo = true;
+
+            libro.Disponible = false;
+        }
+
 
     }
 }
