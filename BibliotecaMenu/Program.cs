@@ -50,6 +50,9 @@ namespace Bibliotecamenu
             Libro libro1 = new Libro("Clean Code","Robert C. Martin","Ingenieria de Software", 2008);
             Libro libro2 = new Libro("Cien años de soledad", "Gabriel García Márquez", "Literatura", 1967);
 
+            //CREAR 2 USUARIOS
+            Usuario usuario1 = new Usuario("Emmanuel Sierra", "emmanuel.sierra@email.com", "3001234567");
+            Usuario usuario2 = new Usuario("Sofía Ramírez", "sofia.ramirez@email.com", "3119876543");
             
         }
 
