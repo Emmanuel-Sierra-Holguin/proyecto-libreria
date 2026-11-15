@@ -1,6 +1,6 @@
 using System;
 
-namespace system_books.Models
+namespace BibliotecaMenu.Models
 {
     public class Libro
     {
