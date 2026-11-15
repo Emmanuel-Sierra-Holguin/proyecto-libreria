@@ -8,21 +8,17 @@ namespace BibliotecaMenu.Models
         private static int contadorIsbn = 100;
 
         //PROPIEDADES
-        public string Id {get; set;}
-        public string Nombre {get; set;}
-        public string Correo {get; set;}
-        public string Telefono {get; set;}
-        public bool Activo { get; set; }
+        public string Id {get; set;} = string.Empty;
+        public string Nombre {get; set;} = string.Empty;
+        public string Correo {get; set;} = string.Empty;
+        public string Telefono {get; set;} = string.Empty;
+        public bool Activo { get; set; } = true;
 
         //CONSTRUCTOR VACIO
         public Usuario()
         {
-            Id = "";
-            Nombre = "";
-            Correo = "";
-            Telefono = "";
-            Activo = true;
         }
+        
         //CONSTRUCTOR COMPLETO
         public Usuario(string nombre,string correo,string telefono)
         {
@@ -37,7 +33,8 @@ namespace BibliotecaMenu.Models
         // METODOS
           public string ResumenCorto()
         {
-            return $"[{Id}] {Nombre} - {Correo} ({Telefono})";
+            string estadoTexto = Activo ? "inactivo" : "activo"; 
+            return $"[{Id}] {Nombre} - {Correo} ({estadoTexto})";
         }
          public string DetalleCompleto()
         {
@@ -53,6 +50,10 @@ namespace BibliotecaMenu.Models
   - Activado: {estadoTexto}
     ===========================
 ";
+        }
+         public override string ToString()
+        {
+            return ResumenCorto();
         }
     }
 }
