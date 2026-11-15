@@ -182,10 +182,3 @@ dotnet run
 
 ---
 
-## 🎞️ Evidencia de Ejecución de Git
-
-### 1. `git branch`
-![evidencia](img/Prueba1.png)
-
-### 2. `git log --oneline --graph --all`
-![evidencia](img/Prueba2.png)
