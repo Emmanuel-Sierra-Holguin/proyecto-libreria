@@ -53,7 +53,15 @@ namespace Bibliotecamenu
             //CREAR 2 USUARIOS
             Usuario usuario1 = new Usuario("Emmanuel Sierra", "emmanuel.sierra@email.com", "3001234567");
             Usuario usuario2 = new Usuario("Sofía Ramírez", "sofia.ramirez@email.com", "3119876543");
-            
+
+            // PRUEBA
+            Console.WriteLine("--- ESTADO INICIAL DE LOS OBJETOS ---");
+            Console.WriteLine(libro1.ToString());
+            Console.WriteLine(libro2.ToString());
+            Console.WriteLine(usuario1.ToString());
+            Console.WriteLine(usuario2.ToString());
+            Console.WriteLine("\n----------------------------------------\n");
+
         }
 
         // Funcion de menu principal 
