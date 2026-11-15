@@ -56,6 +56,12 @@ namespace BibliotecaMenu.Models
             return Estado == EstadoPrestamo.Vencido;
         }
 
+        public int DiasTranscurridos()
+        {
+            DateTime fechafin = FechaDevolucion ?? DateTime.Now;
+            TimeSpan diferencia = fechafin - FechaInicio;
+            return diferencia.Days;
+        }
         
 
     }
