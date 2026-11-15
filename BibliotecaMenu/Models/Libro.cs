@@ -8,22 +8,16 @@ namespace BibliotecaMenu.Models
         private static int contadorIsbn = 100;
 
         //PROPIEDADES
-        public string Id {get; set;}
-        public string Titulo {get; set;}
-         public string Autor {get; set;}
-        public string Categoria {get; set;}
-         public string Anio {get; set;}
-        public bool Disponible {get; set;}
+        public string Id {get; set;} = string.Empty;
+        public string Titulo {get; set;} = string.Empty;
+         public string Autor {get; set;} = string.Empty;
+        public string Categoria {get; set;} = string.Empty;
+         public string Anio {get; set;} = string.Empty;
+        public bool Disponible {get; set;} = true;
         
         // CONSTRUCTOR VACIO
         public Libro()
         {
-            Id = "";
-            Titulo = "";
-            Autor = "";
-            Categoria = "";
-            Anio = "";
-            Disponible = true;
         }
 
         //CONSTRUCTOR COMPLETO
@@ -42,14 +36,15 @@ namespace BibliotecaMenu.Models
         //METODOS 
         public string ResumenCorto()
         {
-            return $"[{Id}] {Titulo} - {Autor} ({Anio})";
+            string estadoTexto = Disponible ? "Si" : "No";
+            return $"[{Id}] {Titulo} - {Autor} ({estadoTexto})";
         }
         public string DetalleCompleto()
         {
             string estadoTexto = Disponible ? "Si" : "No";
             return $@"
   ===========================
-  DETALLE COMPLETO DEL LIBRO
+  DETALLE COMPLETO DE LIBRO
   ===========================
   - ID: {Id}
   - Titulo: {Titulo}
