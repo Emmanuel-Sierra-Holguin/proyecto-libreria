@@ -10,13 +10,15 @@ namespace BibliotecaMenu.Models
         public string Id {get; set;} = string.Empty;
         public string LibroId {get; set;} = string.Empty;
         public string UsuarioId {get; set;} = string.Empty;
-        public string libroTitulo {get; set;} = string.Empty;
-        public string usuarioNombre {get; set;} = string.Empty;
-        public string fechaInicio {get; set;} = string.Empty;
-        public string fechaLimite {get; set;} = string.Empty;
-        public string fechaDevolucion {get; set;} = "Pendiente";
+        public string LibroTitulo {get; set;} = string.Empty;
+        public string UsuarioNombre {get; set;} = string.Empty;
+        //FECHAS
+        public DateTime FechaInicio {get; set;}  
+        public DateTime FechaLimite {get; set;}  
+        public DateTime? FechaDevolucion {get; set;} = null;
+        // ESTADO Y CONTROL
         public  EstadoPrestamo Estado {get; set;} = EstadoPrestamo.Activo;
-        public bool prestamoActivo {get; set;} = true;
+        public bool PrestamoActivo {get; set;} = true;
 
         
 
