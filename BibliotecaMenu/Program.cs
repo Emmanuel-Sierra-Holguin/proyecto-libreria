@@ -62,6 +62,10 @@ namespace Bibliotecamenu
             Console.WriteLine(usuario2.ToString());
             Console.WriteLine("\n----------------------------------------\n");
 
+            //CREAR PRESTAMO
+            Prestamo prestamo1 = new Prestamo(libro1,usuario1, 7);
+            
+
         }
 
         // Funcion de menu principal 
