@@ -39,5 +39,22 @@ namespace system_books.Models
         {
             return $"[{Id}] {Titulo} - {Autor} ({Anio})";
         }
+        public string DetalleCompleto()
+        {
+            string estadoTexto = Disponible ? "Si" : "No";
+            return $@"
+  ===========================
+  DETALLE COMPLETO DEL LIBRO
+  ===========================
+  - ID: {Id}
+  - Titulo: {Titulo}
+  - Autor: {Autor}
+  - Categoria: {Categoria}
+  - Año: {Anio}
+  - Disponible: {estadoTexto}
+    ===========================
+";
+        }
+        
     }
 }
