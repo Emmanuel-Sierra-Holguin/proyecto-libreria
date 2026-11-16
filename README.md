@@ -27,9 +27,6 @@ Este proyecto consiste en el desarrollo de un sistema de gestión bibliotecaria 
 
 ```text
 └── 📁 proyecto-libreria
-    ├── 📁 img/
-    │   ├── 🖼️ Prueba1.png
-    │   └── 🖼️ Prueba2.png
     └── 📁 BibliotecaMenu
         ├── 📁 bin/
         ├── 📁 obj/
