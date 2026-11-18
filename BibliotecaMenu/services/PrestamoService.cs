@@ -6,6 +6,6 @@ namespace BibliotecaMenu.Services
 {
     public class PrestamoService
     {
-        private List<Prestamo> prestamo = new List<Prestamo>();
+        private List<Prestamo> prestamos = new List<Prestamo>();
     }
 }
