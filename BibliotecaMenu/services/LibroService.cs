@@ -77,5 +77,14 @@ namespace BibliotecaMenu.Services
             return false;
         }
         
+        // ORDENAR POR AÑO 
+        public List<Libro> OrdenarPorAnio()
+        {
+            // Hacemos una copia de la lista para no desordenar la original
+            List<Libro> listaOrdenada = new List<Libro>(libros);
+            listaOrdenada.Sort((a, b) => a.Anio.CompareTo(b.Anio));
+            return listaOrdenada;
+        }
+        
     }
 }
