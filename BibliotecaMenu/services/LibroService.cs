@@ -22,5 +22,35 @@ namespace BibliotecaMenu.Services
         {
             return libros;
         }
+        // BUSQUEDAS `POR CRITERIO
+        public List<Libro> BuscarPorTitulo(string titulo)
+        {
+            List<Libro> resultados = new List<Libro>();
+
+            foreach (Libro libro in libros)
+            {
+                if (libro.Titulo.ToLower().Contains(titulo.ToLower()))
+                {
+                    resultados.Add(libro);
+                }
+            }
+
+            return resultados;
+        }
+
+         public List<Libro> BuscarPorAutor(string autor)
+        {
+            List<Libro> resultados = new List<Libro>();
+
+            foreach (Libro libro in libros)
+            {
+                if (libro.Autor.ToLower().Contains(autor.ToLower()))
+                {
+                    resultados.Add(libro);
+                }
+            }
+
+            return resultados;
+        }
     }
 }
