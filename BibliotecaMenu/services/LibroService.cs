@@ -85,6 +85,38 @@ namespace BibliotecaMenu.Services
             listaOrdenada.Sort((a, b) => a.Anio.CompareTo(b.Anio));
             return listaOrdenada;
         }
+
+        // KPI (Contadores)
+        public int TotalLibros()
+        {
+            return libros.Count;
+        }
+
+        public int LibrosDisponibles()
+        {
+            int contador = 0;
+            foreach (Libro libro in libros)
+            {
+                if(libro.Disponible == true)
+                {
+                    contador++;
+                }
+            }
+            return contador;
+        }
+
+        public int LibrosPrestados()
+        {
+            int contador = 0;
+            foreach (Libro libro in libros)
+            {
+                if(libro.Disponible == true)
+                {
+                    contador++;
+                }
+            }
+            return contador;
+        }
         
     }
 }
