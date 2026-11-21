@@ -22,7 +22,18 @@ namespace BibliotecaMenu.Services
         {
             return libros;
         }
-        // BUSQUEDAS `POR CRITERIO
+        // BUSQUEDAS POR CRITERIO
+        public Libro BuscarPorId(string id)
+        {
+            foreach(Libro libro in libros)
+            {
+                if(libro.Id.ToLower() == id.ToLower())
+                {
+                    return libro;
+                }
+            }
+            return null;
+        }
         public List<Libro> BuscarPorTitulo(string titulo)
         {
             List<Libro> resultados = new List<Libro>();
@@ -52,5 +63,7 @@ namespace BibliotecaMenu.Services
 
             return resultados;
         }
+
+        
     }
 }
