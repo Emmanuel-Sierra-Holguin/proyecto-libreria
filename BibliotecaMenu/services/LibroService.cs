@@ -7,5 +7,14 @@ namespace BibliotecaMenu.Services
     public class LibroServicio
     {
         private List<Libro> libros = new List<Libro>();
+
+        public void AgregarLibro(Libro libro)
+        {
+            if(libro != null)
+            {
+                libros.Add(libro);
+            }
+        }
+
     }
 }
