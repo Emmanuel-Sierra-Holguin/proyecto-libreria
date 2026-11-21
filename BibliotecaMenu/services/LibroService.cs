@@ -4,7 +4,7 @@ using BibliotecaMenu.Models;
 
 namespace BibliotecaMenu.Services
 {
-    public class LibroServicio
+    public class LibroService
     {
         // LISTA PRIVADA
         private List<Libro> libros = new List<Libro>();
