@@ -77,6 +77,13 @@ namespace BibliotecaMenu.Services
             }
             return false;
         }
-        //
+        // ORDENAR POR NOMBRE
+        public List<Usuario> OrdenarPorNombre()
+        {
+            // Hacemos una copia de la lista para no desordenar la original
+            List<Usuario> listaOrdenada = new List<Usuario>(usuarios);
+            listaOrdenada.Sort((a, b) => string.Compare(a.Nombre, b.Nombre, StringComparison.OrdinalIgnoreCase));
+            return listaOrdenada;
+        }
     }
 }
