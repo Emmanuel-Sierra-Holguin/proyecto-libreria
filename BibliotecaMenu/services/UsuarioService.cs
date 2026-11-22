@@ -17,5 +17,10 @@ namespace BibliotecaMenu.Services
                 usuarios.Add(usuario);
             }
         } 
+         // OBTENER TODOS LOS USUARIOS
+        public List<Usuario> ObtenerTodos()
+        {
+            return usuarios;
+        }
     }
 }
