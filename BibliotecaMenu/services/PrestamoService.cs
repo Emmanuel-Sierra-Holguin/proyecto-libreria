@@ -107,6 +107,36 @@ namespace BibliotecaMenu.Services
             listaOrdenada.Sort((a, b) => a.FechaLimite.CompareTo(b.FechaLimite));
             return listaOrdenada;
         }
+        // REGISTRAR DEVOLUCION
+        public bool RegistrarDevolucion(string idPrestamo, LibroService libroService)
+        {
+            Prestamo encontrado = BuscarPorId(idPrestamo);
+
+            if (encontrado == null)
+            {
+                return false;
+            }
+
+            if (encontrado.Estado == EstadoPrestamo.Devuelto || encontrado.PrestamoActivo == false)
+            {
+                return false;
+            }
+
+            encontrado.FechaDevolucion = DateTime.Now;
+            encontrado.Estado = EstadoPrestamo.Devuelto;
+            encontrado.PrestamoActivo = false;
+
+            if (libroService != null)
+            {
+                Libro libro = libroService.BuscarPorId(encontrado.LibroId);
+                if (libro != null)
+                {
+                    libro.Disponible = true;
+                }
+            }
+
+            return true;
+        }
         
     }
 }
