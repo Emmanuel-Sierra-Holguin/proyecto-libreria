@@ -36,6 +36,68 @@ namespace BibliotecaMenu.Services
 
             return prestamos;
         }
+        // BUSQUEDAS POR CRITERIOS
+        public List<Prestamo> ObtenerActivos()
+        {
+            List<Prestamo> activos = new List<Prestamo>();
+
+            foreach (Prestamo prestamo in prestamos)
+            {
+                prestamo.EstaVencido();
+
+                if (prestamo.PrestamoActivo == true && prestamo.Estado == EstadoPrestamo.Activo)
+                {
+                    activos.Add(prestamo);
+                }
+            }
+
+            return activos;
+        }
+
+        public List<Prestamo> ObtenerDevueltos()
+        {
+            List<Prestamo> devueltos = new List<Prestamo>();
+
+            foreach (Prestamo prestamo in prestamos)
+            {
+                if (prestamo.Estado == EstadoPrestamo.Devuelto)
+                {
+                    devueltos.Add(prestamo);
+                }
+            }
+
+            return devueltos;
+        }
+
         
+        public List<Prestamo> ObtenerVencidos()
+        {
+            List<Prestamo> vencidos = new List<Prestamo>();
+
+            foreach (Prestamo prestamo in prestamos)
+            {
+                if (prestamo.EstaVencido())
+                {
+                    vencidos.Add(prestamo);
+                }
+            }
+
+            return vencidos;
+        }
+
+        
+        public Prestamo BuscarPorId(string id)
+        {
+            foreach (Prestamo prestamo in prestamos)
+            {
+                if (prestamo.Id.ToLower() == id.ToLower())
+                {
+                    prestamo.EstaVencido();
+                    return prestamo;
+                }
+            }
+
+            return null;
+        }
     }
 }
