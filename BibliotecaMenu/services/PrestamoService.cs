@@ -99,5 +99,14 @@ namespace BibliotecaMenu.Services
 
             return null;
         }
+        // ORDENAR PRESTAMOS POR FECHA LIMITE
+        public List<Prestamo> OrdenarPorFechaLimite()
+        {
+            // Hacemos una copia de la lista para no desordenar la original
+            List<Prestamo> listaOrdenada = new List<Prestamo>(prestamos);
+            listaOrdenada.Sort((a, b) => a.FechaLimite.CompareTo(b.FechaLimite));
+            return listaOrdenada;
+        }
+        
     }
 }
