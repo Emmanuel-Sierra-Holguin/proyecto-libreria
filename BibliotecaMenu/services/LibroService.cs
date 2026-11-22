@@ -63,6 +63,22 @@ namespace BibliotecaMenu.Services
 
             return resultados;
         }
+        // ACTUALIZAR LIBRO
+        public bool ActualizarLibro(string id, string nuevoTitulo, string nuevoAutor, string nuevaCategoria, int nuevoAnio)
+        {
+            Libro libroEncontrado = BuscarPorId(id);
+
+            if (libroEncontrado != null)
+            {
+                libroEncontrado.Titulo = nuevoTitulo;
+                libroEncontrado.Autor = nuevoAutor;
+                libroEncontrado.Categoria = nuevaCategoria;
+                libroEncontrado.Anio = nuevoAnio;
+                return true;
+            }
+
+            return false;
+        }
 
         //ELIMINAR LIBRO POR ID
         public bool EliminarLibro(string id)
