@@ -22,5 +22,34 @@ namespace BibliotecaMenu.Services
         {
             return usuarios;
         }
+         // BUSQUEDAS POR CRITERIO
+        public Usuario BuscarPorId(string id)
+        {
+            foreach (Usuario usuario in usuarios)
+            {
+                if (usuario.Id.ToLower() == id.ToLower())
+                {
+                    return usuario;
+                }
+            }
+
+            return null;
+        }
+
+        public List<Usuario> BuscarPorNombre(string nombre)
+        {
+            List<Usuario> resultados = new List<Usuario>();
+
+            foreach (Usuario usuario in usuarios)
+            {
+                if (usuario.Nombre.ToLower().Contains(nombre.ToLower()))
+                {
+                    resultados.Add(usuario);
+                }
+            }
+
+            return resultados;
+        }
+
     }
 }

@@ -45,7 +45,7 @@ namespace BibliotecaMenu.Models
   ===========================
   - ID: {Id}
   - Nombre: {Nombre}
-  - Autor: {Correo}
+  - Correo: {Correo}
   - Telefono: {Telefono}
   - Activado: {estadoTexto}
     ===========================
