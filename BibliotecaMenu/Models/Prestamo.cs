@@ -31,18 +31,24 @@ namespace BibliotecaMenu.Models
             contadorPrestamo++;
             Id = "PRE-" + contadorPrestamo;
 
-            LibroId = libro.Id;
-            UsuarioId = usuario.Id;
-            LibroTitulo = libro.Titulo;
-            UsuarioNombre = usuario.Nombre;
+            if (libro != null)
+            {
+                LibroId = libro.Id;
+                LibroTitulo = libro.Titulo;
+                libro.Disponible = false;
+            }
+
+            if (usuario != null)
+            {
+                UsuarioId = usuario.Id;
+                UsuarioNombre = usuario.Nombre;
+            }
 
             FechaInicio = DateTime.Now;
             FechaLimite = FechaInicio.AddDays(diasPlazo);
             FechaDevolucion = null;
             Estado = EstadoPrestamo.Activo;
             PrestamoActivo = true;
-
-            libro.Disponible = false;
         }
 
         //METODOS
