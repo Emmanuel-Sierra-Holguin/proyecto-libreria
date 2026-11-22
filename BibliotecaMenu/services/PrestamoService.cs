@@ -9,7 +9,7 @@ namespace BibliotecaMenu.Services
         //LISTA PRIVADA
         private List<Prestamo> prestamos = new List<Prestamo>();
 
-        // 1. CREAR / REGISTRAR PRESTAMO
+        //  CREAR / REGISTRAR PRESTAMO
         public bool CrearPrestamo(Libro libro, Usuario usuario, int diasPlazo = 7)
         {
             if (libro == null || usuario == null)
@@ -26,5 +26,16 @@ namespace BibliotecaMenu.Services
             prestamos.Add(nuevoPrestamo);
             return true;
         }
+        //  OBTENER TODOS LOS PRESTAMOS
+        public List<Prestamo> ObtenerTodos()
+        {
+            foreach (Prestamo prestamo in prestamos)
+            {
+                prestamo.EstaVencido();
+            }
+
+            return prestamos;
+        }
+        
     }
 }
