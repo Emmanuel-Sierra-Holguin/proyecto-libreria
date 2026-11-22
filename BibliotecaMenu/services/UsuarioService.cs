@@ -18,6 +18,10 @@ namespace BibliotecaMenu.Services
             }
         }
         // OBTENER TODOS LOS USUARIOS
-        
+        public List<Usuario> ObtenerTodos()
+        {
+            return usuarios;
+        }
+
     }
 }
