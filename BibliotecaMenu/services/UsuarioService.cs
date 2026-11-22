@@ -65,6 +65,18 @@ namespace BibliotecaMenu.Services
 
             return false;
         }
+          //ELIMINAR LIBRO POR ID
+        public bool EliminarUsuario(string id)
+        {
+            Usuario usuarioEncontrado = BuscarPorId(id);
 
+            if(usuarioEncontrado != null)
+            {
+                usuarios.Remove(usuarioEncontrado);
+                return true;
+            }
+            return false;
+        }
+        //
     }
 }
