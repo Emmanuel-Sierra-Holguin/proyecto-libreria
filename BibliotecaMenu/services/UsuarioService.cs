@@ -50,6 +50,21 @@ namespace BibliotecaMenu.Services
 
             return resultados;
         }
+           // ACTUALIZAR USUARIO
+        public bool ActualizarUsuario(string id, string nuevoNombre, string nuevoCorreo, string nuevoTelefono)
+        {
+            Usuario usuarioEncontrado = BuscarPorId(id);
+
+            if (usuarioEncontrado != null)
+            {
+                usuarioEncontrado.Nombre = nuevoNombre;
+                usuarioEncontrado.Correo = nuevoCorreo;
+                usuarioEncontrado.Telefono = nuevoTelefono;
+                return true;
+            }
+
+            return false;
+        }
 
     }
 }
