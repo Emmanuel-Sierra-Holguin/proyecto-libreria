@@ -65,7 +65,7 @@ namespace BibliotecaMenu.Services
 
             return false;
         }
-          //ELIMINAR LIBRO POR ID
+          //ELIMINAR USUARIO POR ID
         public bool EliminarUsuario(string id)
         {
             Usuario usuarioEncontrado = BuscarPorId(id);
@@ -84,6 +84,37 @@ namespace BibliotecaMenu.Services
             List<Usuario> listaOrdenada = new List<Usuario>(usuarios);
             listaOrdenada.Sort((a, b) => string.Compare(a.Nombre, b.Nombre, StringComparison.OrdinalIgnoreCase));
             return listaOrdenada;
+        }
+        // KPI (Contadores)
+        public int TotalUsuarios()
+        {
+            return usuarios.Count;
+        }
+
+        public int UsuarioActivo()
+        {
+            int contador = 0;
+            foreach (Usuario usuario in usuarios)
+            {
+                if(usuario.Activo == true)
+                {
+                    contador++;
+                }
+            }
+            return contador;
+        }
+
+        public int UsuarioDesactivado()
+        {
+            int contador = 0;
+            foreach (Usuario usuario in usuarios)
+            {
+                if(usuario.Activo == false)
+                {
+                    contador++;
+                }
+            }
+            return contador;
         }
     }
 }
