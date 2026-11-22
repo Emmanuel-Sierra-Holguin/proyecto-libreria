@@ -137,6 +137,27 @@ namespace BibliotecaMenu.Services
 
             return true;
         }
-        
+        //  ELIMINAR PRESTAMO
+        public bool EliminarPrestamo(string idPrestamo, LibroService libroService)
+        {
+            Prestamo encontrado = BuscarPorId(idPrestamo);
+
+            if (encontrado == null)
+            {
+                return false;
+            }
+
+            if (encontrado.PrestamoActivo == true && libroService != null)
+            {
+                Libro libro = libroService.BuscarPorId(encontrado.LibroId);
+                if (libro != null)
+                {
+                    libro.Disponible = true;
+                }
+            }
+
+            prestamos.Remove(encontrado);
+            return true;
+        }
     }
 }
