@@ -149,7 +149,7 @@ OPCIONES:
             Console.Clear();
             Console.WriteLine("=== REGISTRO LIBRO ===");
 
-            // Propiedades temporales
+            // Variables temporales
              Console.Write("Titulo: ");
             string Titulo = Console.ReadLine() ?? "";
              Console.Write("Autor: ");
@@ -186,7 +186,7 @@ OPCIONES:
             ShowReturnMenu(); 
         }
 
-        // Modulo lista
+        // Modulo lista Libro Menu
         static void ListBookMenu()
         {
              bool volverMenu = false;
@@ -227,79 +227,107 @@ OPCIONES:
             }
         }
 
-        //submodulos lista
+        //SUBMODULO LISTA TODOS LOS LIBROS
         static void ListBooksAll()
         {
             Console.Clear();
-            Console.WriteLine("== lista todos los libros");
-            if(libroID != "")
-            {
-                string estado = libroDisponible ? "si" : "no";
-string detalle = $@"
-===============================
-ID: {libroID},
-Titulo: {libroTitulo},
-Autor: {libroAutor},
-Categoria: {libroCategoria},
-Año: {libroAño},
-Disponible: {estado} 
-estado prestamo:{estadoprestamo}
-================================"; 
-Console.WriteLine(detalle);
-            }
-            else
-            {
-                Console.WriteLine("libro no registrado todavia");
-            }
-            ShowReturnMenu();
-        }
-        static void ListBooksAvailable()
-        {
-            Console.Clear();
-            Console.WriteLine("== lista todos los libros");
-            if(libroID != "" && libroDisponible)
-            {
+            Console.WriteLine("=== LISTAR TODOS LOS LIBROS ===");
 
-string detalle = $@"
-===============================
-ID: {libroID},
-Titulo: {libroTitulo},
-Autor: {libroAutor},
-Categoria: {libroCategoria},
-Año: {libroAño},
-Disponible: si 
-estado prestamo:{estadoprestamo}
-==============================="; 
-                Console.WriteLine(detalle);
+            //llamamos a la lista de libros.service
+            List<Libro> listaLibros = libroService.ObtenerTodos();
+
+            // verificamos que tengamos libros registrados.
+            if(listaLibros.Count == 0)
+            {
+                Console.WriteLine("\nERROR!: No hay libros registrados por el momento.");
             }
             else
             {
-                Console.WriteLine("libro no disponible");
+                // si tenemos libros registrados, pasamos a leer los libros en la lista y mostrar su detallecompleto
+                foreach(Libro libro in listaLibros)
+                {
+                    Console.WriteLine(libro. DetalleCompleto());
+                }
             }
             ShowReturnMenu();
         }
+
+        // Submodulo Listar Libros Disponibles
+      static void ListBooksAvailable()
+        {
+    Console.Clear();
+    Console.WriteLine("=== lista todos los libros Disponibles ===");
+
+    // Llamamos a la lista de LibroService
+    List<Libro> listaLibros = libroService.ObtenerTodos();
+
+    //  Primero verificamos si hay libros registrados en general
+    if (listaLibros.Count == 0)
+    {
+        Console.WriteLine("\n[AVISO]: No hay libros registrados por el momento.");
+        ShowReturnMenu();
+        return;
+    }
+
+    int encontrados = 0;
+
+    //  Recorremos la lista y mostramos solo los disponibles
+    foreach (Libro libro in listaLibros)
+    {
+        if (libro.Disponible)
+        {
+            Console.WriteLine(libro.ResumenCorto());
+            encontrados++;
+        }
+    }
+
+    //  Si había libros registrados pero ninguno estaba disponible
+    if (encontrados == 0)
+    {
+        Console.WriteLine("\n[AVISO]: Hay libros registrados, pero ninguno esta disponible en este momento.");
+    }
+
+    ShowReturnMenu();
+         }
+         // Submodulo Listar Libros Prestados
         static void ListBooksBorrowed()
         {
+
             Console.Clear();
-            Console.WriteLine("== lista todos los libros");
-            if(libroID != "" && !libroDisponible)
+            Console.WriteLine("=== LISTA LIBROS PRESTADOS ===");
+         
+          // Llamamos a la lista de LibroService
+          List<Libro> listaLibros = libroService.ObtenerTodos();
+          
+        //  Primero verificamos si hay libros registrados en general
+          if(listaLibros.Count == 0)
             {
-string detalle = $@"
-===============================
-ID: {libroID}
-Titulo: {libroTitulo}
-Autor: {libroAutor}
-Categoria: {libroCategoria}
-Año: {libroAño}
-Disponible: no 
-estado prestamo:{estadoprestamo}
-==============================="; 
-                Console.WriteLine(detalle);
+                Console.WriteLine("\n[AVISO]: No hay libros registrados por el momento.");
+                ShowReturnMenu();
+                return;
             }
-            else
+
+            int encontrados = 0;
+
+             //  Recorremos la lista y mostramos solo los prestamos
+            foreach(Libro libro in listaLibros)
             {
-                Console.WriteLine("libro no prestado");
+                if (!libro.Disponible)
+                {
+                    Console.WriteLine(libro.ResumenCorto());
+                    encontrados++;
+                }
             }
+
+    //  Si había libros registrados pero ninguno tiene un prestamo
+
+            if(encontrados == 0)
+            {
+                Console.WriteLine("\n[AVISO]: Hay libros registrados, pero ninguno tiene un prestamo en este momento.");                
+            }
+
+
+          
             ShowReturnMenu();
         }
 

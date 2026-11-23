@@ -113,7 +113,7 @@ namespace BibliotecaMenu.Services
             int contador = 0;
             foreach (Libro libro in libros)
             {
-                if(libro.Disponible == true)
+                if(libro.Disponible)
                 {
                     contador++;
                 }
@@ -126,7 +126,7 @@ namespace BibliotecaMenu.Services
             int contador = 0;
             foreach (Libro libro in libros)
             {
-                if(libro.Disponible == false)
+                if(!libro.Disponible)
                 {
                     contador++;
                 }
