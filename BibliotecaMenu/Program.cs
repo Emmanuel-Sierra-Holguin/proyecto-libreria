@@ -40,58 +40,8 @@ namespace Bibliotecamenu
         static UsuarioService usuarioService = new UsuarioService();
         static PrestamoService prestamoService = new PrestamoService();
         static void Main(string[] args){
-        PruebaPoo();
         ShowMainMenu();
         }
-        // METODO DE PRUEBA
-        static void PruebaPoo()
-        {
-            Console.WriteLine(@"
-    ===================================
-    SISTEMA DE BIBLIOTECA - PRUEBAS POO
-    ===================================");
-
-            // CREAR 2 LIBROS
-            Libro libro1 = new Libro("Clean Code","Robert C. Martin","Ingenieria de Software", 2008);
-            Libro libro2 = new Libro("Cien años de soledad", "Gabriel García Márquez", "Literatura", 1967);
-
-            //CREAR 2 USUARIOS
-            Usuario usuario1 = new Usuario("Emmanuel Sierra", "emmanuel.sierra@email.com", "3001234567");
-            Usuario usuario2 = new Usuario("Sofía Ramírez", "sofia.ramirez@email.com", "3119876543");
-
-            // PRUEBA
-            Console.WriteLine("--- ESTADO INICIAL DE LOS OBJETOS ---");
-            Console.WriteLine("\nRESUMEN LIBROS");
-            Console.WriteLine(libro1.ToString());
-            Console.WriteLine(libro2.ToString());
-            Console.WriteLine("\nRESUMEN USUARIOS");
-            Console.WriteLine(usuario1.ToString());
-            Console.WriteLine(usuario2.ToString());
-            Console.WriteLine("\nDETALLE LIBRO");
-            Console.WriteLine(libro1.DetalleCompleto());
-            Console.WriteLine("\nDETALLE USUARIO");
-            Console.WriteLine(usuario1.DetalleCompleto());
-            Console.WriteLine("\n----------------------------------------\n");
-
-            //CREAR PRESTAMO
-            Prestamo prestamo1 = new Prestamo(libro1,usuario1, 7);
-
-            //VALIDACIONES
-            Console.WriteLine("=== PRUEBAS Y VALIDACIONES ===\n");
-
-            // Resumenes y Detalles
-            Console.WriteLine("Resumen Corto: ");
-            Console.WriteLine(prestamo1.ToString());
-
-            Console.WriteLine("\nDetalle: ");
-            Console.WriteLine(prestamo1.DetalleCompleto());
-
-            Console.WriteLine("\n========================================");
-            Console.WriteLine("   PRUEBAS FINALIZADAS CON ÉXITO        ");
-            Console.WriteLine("========================================");
-            ShowReturnMenu();
-        }
-
         // Funcion de menu principal 
 
     static void ShowMainMenu()
@@ -1502,5 +1452,60 @@ Préstamo en curso:         {infoPrestamo}
                 Console.Write("presiona cualquier tecla: ");
                 Console.ReadKey();
             }
+    //           static void PruebaPoo()
+    //     {
+    //         Console.WriteLine(@"
+    // ===================================
+    // SISTEMA DE BIBLIOTECA - PRUEBAS POO
+    // ===================================");
+
+    //         // CREAR 2 LIBROS
+    //         Libro libro1 = new Libro("Clean Code","Robert C. Martin","Ingenieria de Software", 2008);
+    //         Libro libro2 = new Libro("Cien años de soledad", "Gabriel García Márquez", "Literatura", 1967);
+
+    //         //CREAR 2 USUARIOS
+    //         Usuario usuario1 = new Usuario("Emmanuel Sierra", "emmanuel.sierra@email.com", "3001234567");
+    //         Usuario usuario2 = new Usuario("Sofía Ramírez", "sofia.ramirez@email.com", "3119876543");
+
+    //         // PRUEBA
+    //         Console.WriteLine("--- ESTADO INICIAL DE LOS OBJETOS ---");
+    //         Console.WriteLine("\nRESUMEN LIBROS");
+    //         Console.WriteLine(libro1.ToString());
+    //         Console.WriteLine(libro2.ToString());
+    //         Console.WriteLine("\nRESUMEN USUARIOS");
+    //         Console.WriteLine(usuario1.ToString());
+    //         Console.WriteLine(usuario2.ToString());
+    //         Console.WriteLine("\nDETALLE LIBRO");
+    //         Console.WriteLine(libro1.DetalleCompleto());
+    //         Console.WriteLine("\nDETALLE USUARIO");
+    //         Console.WriteLine(usuario1.DetalleCompleto());
+    //         Console.WriteLine("\n----------------------------------------\n");
+
+    //         //CREAR PRESTAMO
+    //         Prestamo prestamo1 = new Prestamo(libro1,usuario1, 7);
+
+    //         //VALIDACIONES
+    //         Console.WriteLine("=== PRUEBAS Y VALIDACIONES ===\n");
+
+    //         // Resumenes y Detalles
+    //         Console.WriteLine("Resumen Corto: ");
+    //         Console.WriteLine(prestamo1.ToString());
+
+    //         Console.WriteLine("\nDetalle: ");
+    //         Console.WriteLine(prestamo1.DetalleCompleto());
+
+    //         Console.WriteLine("\n========================================");
+    //         Console.WriteLine("   PRUEBAS FINALIZADAS CON ÉXITO        ");
+    //         Console.WriteLine("========================================");
+    //         ShowReturnMenu();
+    //     }
+        static void CargarDatosPrueba()
+        {
+            // Creamos libros
+            Libro libro1 = new Libro("Clean Code", "Robert C. Martin", "Ingenieria de Software", 2008);
+            Libro libro2 = new Libro("Cien años de soledad", "Gabriel Garcia Marquez", "Literatura", 1967);
+            Libro libro3 = new Libro("El Principito", "Antoine de Saint-Exupery", "Fantasia", 1943);
+        }
+
     }
 }
