@@ -93,7 +93,7 @@ OPCIONES:
             }
         
 
-        // MODULO LIBROS
+        // MODULO LIBROS MENU
         static void ShowBooksMenu()
         {
             bool volverMenu = false;
@@ -143,26 +143,46 @@ OPCIONES:
             }
         }
 
-        // Modulo registro       
+        // Modulo registro Libro       
         static void RegisterBook()
         {
             Console.Clear();
             Console.WriteLine("=== REGISTRO LIBRO ===");
 
-             Console.Write("ID: ");
-            libroID = Console.ReadLine() ?? "";
+            // Propiedades temporales
              Console.Write("Titulo: ");
-            libroTitulo = Console.ReadLine() ?? "";
+            string Titulo = Console.ReadLine() ?? "";
              Console.Write("Autor: ");
-            libroAutor = Console.ReadLine() ?? "";
+            string Autor = Console.ReadLine() ?? "";
              Console.Write("Categoria: ");
-            libroCategoria = Console.ReadLine() ?? "";
+            string Categoria = Console.ReadLine() ?? "";
              Console.Write("Año: ");
-            libroAño = Console.ReadLine() ?? "";
+            string Anio = Console.ReadLine() ?? "";
 
-            libroDisponible = true;
+            if (string.IsNullOrWhiteSpace(Titulo) || string.IsNullOrWhiteSpace(Autor) || string.IsNullOrWhiteSpace(Categoria)) 
+            {
+                Console.WriteLine("\nERROR!: campo vacio, porfavor diligenciar lo solicitado.");
+                ShowReturnMenu();
+                return;
+            }
 
-            Console.WriteLine("libro registrado");
+
+            // int.TryParse intenta convertir texto a int sin lanzar excepción si escriben letras
+            if(!int.TryParse(Anio, out int anio))
+            {
+                Console.WriteLine("\nERROR!: El año debe ser un numero entero valido.");
+                ShowReturnMenu();
+                return;
+            }
+
+            // Instanciamos el modelo Libro (genera Id automáticamente y Disponible = true)
+            Libro nuevoLibro = new  Libro(Titulo,Autor,Categoria,anio);
+             
+             // Lo guardamos en la lista privada dentro de LibroService
+            libroService.AgregarLibro(nuevoLibro);
+
+            Console.WriteLine("\n¡libro registrado exitosamente!");
+            Console.WriteLine(nuevoLibro.ToString());
             ShowReturnMenu(); 
         }
 
