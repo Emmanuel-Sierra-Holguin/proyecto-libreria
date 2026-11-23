@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq.Expressions;
 using BibliotecaMenu.Models;
+using BibliotecaMenu.Services;
 
 
 namespace Bibliotecamenu
@@ -34,6 +35,10 @@ namespace Bibliotecamenu
         //variables global general
         static bool datosGuardados = false;
 
+        // INSTANCIAS DE SERVICIOS (administran las listas de cada módulo)
+        static LibroService libroService = new LibroService();
+        static UsuarioService usuarioService = new UsuarioService();
+        static PrestamoService prestamoService = new PrestamoService();
         static void Main(string[] args){
         PruebaPoo();
         ShowMainMenu();
