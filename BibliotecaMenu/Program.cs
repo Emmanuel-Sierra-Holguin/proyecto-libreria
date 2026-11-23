@@ -1506,7 +1506,7 @@ Préstamo en curso:         {infoPrestamo}
             Libro libro2 = new Libro("Cien años de soledad", "Gabriel Garcia Marquez", "Literatura", 1967);
             Libro libro3 = new Libro("El Principito", "Antoine de Saint-Exupery", "Fantasia", 1943);
 
-            //Guardamos Libros en list
+            //Guardamos Libros en service
             libroService.AgregarLibro(libro1);
             libroService.AgregarLibro(libro2);
             libroService.AgregarLibro(libro3);
@@ -1514,6 +1514,13 @@ Préstamo en curso:         {infoPrestamo}
             // Usuarios crear
             Usuario usuario1 = new Usuario("Raul girardo","raul@gmail.com","3001234567");
             Usuario usuario2 = new Usuario("juan","juanin@gmail.com","3034876643");
+
+            //Guardamos usuario en service
+            usuarioService.AgregarUsuario(usuario1);
+            usuarioService.AgregarUsuario(usuario2);
+
+            // creamos prestamo
+            prestamoService.CrearPrestamo(libro1, usuario1, 7);
         }
 
     }
