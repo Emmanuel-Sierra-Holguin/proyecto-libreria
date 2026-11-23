@@ -1505,6 +1505,15 @@ Préstamo en curso:         {infoPrestamo}
             Libro libro1 = new Libro("Clean Code", "Robert C. Martin", "Ingenieria de Software", 2008);
             Libro libro2 = new Libro("Cien años de soledad", "Gabriel Garcia Marquez", "Literatura", 1967);
             Libro libro3 = new Libro("El Principito", "Antoine de Saint-Exupery", "Fantasia", 1943);
+
+            //Guardamos Libros en list
+            libroService.AgregarLibro(libro1);
+            libroService.AgregarLibro(libro2);
+            libroService.AgregarLibro(libro3);
+
+            // Usuarios crear
+            Usuario usuario1 = new Usuario("Raul girardo","raul@gmail.com","3001234567");
+            Usuario usuario2 = new Usuario("juan","juanin@gmail.com","3034876643");
         }
 
     }
