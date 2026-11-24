@@ -26,6 +26,26 @@ namespace BibliotecaMenu.Services
             prestamos.Add(nuevoPrestamo);
             return true;
         }
+
+        // Verifica si el usuario tiene algun prestamo pendiente de devolucion
+        public bool TienePrestamoActivoUsuario(string usuarioId)
+        {
+            foreach (Prestamo prestamo in prestamos)
+            {
+                // Actualiza el estado si el prestamo ya paso de la fecha limite
+                prestamo.EstaVencido();
+
+                // Coincide con el usuario del prestamo y revisa que aun no este devuelto
+                if (prestamo.UsuarioId.ToLower() == usuarioId.ToLower() &&
+                    prestamo.PrestamoActivo == true &&
+                    prestamo.Estado != EstadoPrestamo.Devuelto)
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
         //  OBTENER TODOS LOS PRESTAMOS
         public List<Prestamo> ObtenerTodos()
         {

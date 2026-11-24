@@ -403,12 +403,16 @@ OPCIONES:
             Console.Clear();
             Console.WriteLine("== EDITAR TITULO ==");
             Console.Write("Buscar por ID: ");
+            // Limpia espacios sobrantes del ID ingresado
             string BuscarId = (Console.ReadLine() ?? "").Trim();
 
-            // Busca el libro por ID y detiene el flujo si no existe
-            Libro? libro = BuscarLibroConAviso(BuscarId);
+            // Busca el libro por ID en el servicio
+            Libro libro = libroService.BuscarPorId(BuscarId);
+            // Detiene el proceso si no se encuentra un libro con ese ID
             if (libro == null)
             {
+                Console.WriteLine("\nlibro no encontrado.");
+                ShowReturnMenu();
                 return;
             }
             
@@ -433,12 +437,16 @@ OPCIONES:
             Console.Clear();
             Console.WriteLine("== EDITAR AUTOR ==");
             Console.Write("buscar por ID: ");
+            // Limpia espacios sobrantes del ID ingresado
             string BuscarId = (Console.ReadLine() ?? "").Trim();
 
-            // Busca el libro por ID y detiene el flujo si no existe
-            Libro? libro = BuscarLibroConAviso(BuscarId);
+            // Busca el libro por ID en el servicio
+            Libro libro = libroService.BuscarPorId(BuscarId);
+            // Detiene el proceso si no se encuentra un libro con ese ID
             if (libro == null)
             {
+                Console.WriteLine("\nlibro no encontrado.");
+                ShowReturnMenu();
                 return;
             }
                 // procedemos a solicitar el nuevo autor del libro
@@ -462,12 +470,16 @@ OPCIONES:
             Console.Clear();
             Console.WriteLine("== editar año / categoria ==");
             Console.Write("buscar por ID: ");
+            // Limpia espacios sobrantes del ID ingresado
             string BuscarId = (Console.ReadLine() ?? "").Trim();
 
-            // Busca el libro por ID y detiene el flujo si no existe
-            Libro? libro = BuscarLibroConAviso(BuscarId);
+            // Busca el libro por ID en el servicio
+            Libro libro = libroService.BuscarPorId(BuscarId);
+            // Detiene el proceso si no se encuentra un libro con ese ID
             if (libro == null)
             {
+                Console.WriteLine("\nlibro no encontrado.");
+                ShowReturnMenu();
                 return;
             }
             
@@ -525,12 +537,16 @@ OPCIONES:
           Console.Clear();
           Console.WriteLine("=== ELIMINAR LIBRO ===");
           Console.Write("ingresar id: ");
+          // Limpia espacios sobrantes del ID ingresado
           string BuscarId = (Console.ReadLine() ?? "").Trim();
 
-            // Busca el libro por ID y detiene el flujo si no existe
-            Libro? libro = BuscarLibroConAviso(BuscarId);
+            // Busca el libro por ID en el servicio
+            Libro libro = libroService.BuscarPorId(BuscarId);
+            // Detiene el proceso si no se encuentra un libro con ese ID
             if (libro == null)
             {
+                Console.WriteLine("\nlibro no encontrado.");
+                ShowReturnMenu();
                 return;
             }
             if (!libro.Disponible)
@@ -544,6 +560,7 @@ OPCIONES:
             Console.WriteLine("\nLibro encontrado:");
             Console.WriteLine(libro.ResumenCorto());
             Console.Write("¿Seguro que deseas eliminarlo? (si/no): ");
+            // Normaliza la confirmacion para aceptar mayusculas o espacios accidentales
             string confirmar = (Console.ReadLine() ?? "").Trim().ToLower();
             if (confirmar != "si")
             {
@@ -567,7 +584,7 @@ OPCIONES:
                 Console.WriteLine(@"
 === MENU USUARIOS ===                
 1.Registrar
-2.Listar usuario
+2.Listar usuarios
 3.Ver detaller usuario
 4.Actualizar usuario
 5.Eliminar usuario
@@ -609,45 +626,55 @@ OPCIONES:
         static void RegisterUser()
         {
             Console.Clear();
-            Console.WriteLine("=== REGISTRO USUARIO ===");
+            Console.WriteLine("=== REGISTRAR USUARIO ===");
+            // Limpia espacios al inicio y al final en los campos ingresados
+            Console.Write("Nombre: ");
+            string nombre = (Console.ReadLine() ?? "").Trim();
+            Console.Write("Correo: ");
+            string correo = (Console.ReadLine() ?? "").Trim();
+            Console.Write("Telefono: ");
+            string telefono = (Console.ReadLine() ?? "").Trim();
 
-             Console.Write("ID: ");
-            usuarioID = Console.ReadLine() ?? "";
-             Console.Write("Nombre: ");
-            usuarioNombre = Console.ReadLine() ?? "";
-             Console.Write("Numero/correo: ");
-            usuarioContacto = Console.ReadLine() ?? "";
-            Console.WriteLine("¿activar usuario? (Si/No)");
-            string activo = Console.ReadLine() ?? "";
-            if(activo.ToLower() == "si")
+            // Evita registrar si falta algun dato obligatorio
+            if (string.IsNullOrWhiteSpace(nombre) || string.IsNullOrWhiteSpace(correo) || string.IsNullOrWhiteSpace(telefono))
             {
-                usuarioActivo = true;
-            }
-            else
-            {
-                usuarioActivo = false;
+                Console.WriteLine("\nERROR!: campo vacio, porfavor diligenciar lo solicitado.");
+                ShowReturnMenu();
+                return;
             }
 
-            Console.WriteLine("usuario registrado");
+            // Crea la instancia del modelo con ID automatico y estado activo por defecto
+            Usuario nuevoUsuario = new Usuario(nombre, correo, telefono);
+
+            // Pregunta si desea dejar el usuario activo o inactivo al momento de crearlo
+            Console.Write("¿activar usuario? (Si/No): ");
+            string activo = (Console.ReadLine() ?? "").Trim().ToLower();
+            nuevoUsuario.Activo = activo == "si";
+
+            // Guarda el objeto en la lista privada administrada por el servicio
+            usuarioService.AgregarUsuario(nuevoUsuario);
+
+            Console.WriteLine("\nusuario registrado");
+            Console.WriteLine(nuevoUsuario.ToString());
             ShowReturnMenu(); 
         }
+
         // Modulo listar usuarios
         static void ListUsers()
         {
             Console.Clear();
             Console.WriteLine("=== LISTA USUARIO ===");
+            // Obtiene la lista de usuarios almacenados en el servicio
+            List<Usuario> listaUsuarios = usuarioService.ObtenerTodos();
 
-            if(usuarioID != "")
+            // Verifica si existen usuarios antes de intentar recorrerlos
+            if (listaUsuarios.Count > 0)
             {
-                string estado = usuarioActivo ? "activado" : "desactivado";
-                string detalle = $@"
-ID:{usuarioID}
-Nombre:{usuarioNombre}
-Contacto:{usuarioContacto}
-estado:{estado}
-estado de prestamo{estadoprestamo}
-";
-              Console.WriteLine(detalle);
+                // Recorre cada usuario guardado y muestra su informacion resumida
+                foreach (Usuario usuario in listaUsuarios)
+                {
+                    Console.WriteLine(usuario.ResumenCorto());
+                }
             }
             else
             {
@@ -660,20 +687,16 @@ estado de prestamo{estadoprestamo}
         {
             Console.Clear();
             Console.WriteLine("== DETALLE USUARIO ==");
-            Console.Write("ingresa el ID");
-            string buscarID = Console.ReadLine() ?? "";
+            Console.Write("ingresa el ID: ");
+            string BuscarId = (Console.ReadLine() ?? "").Trim();
 
-            if(usuarioID != "" && buscarID == usuarioID)
+            // Busca el usuario correspondiente al ID en el servicio
+            Usuario usuario = usuarioService.BuscarPorId(BuscarId);
+
+            // Muestra la informacion completa si se encontro el usuario
+            if (usuario != null)
             {
-                         string estado = usuarioActivo ? "activado" : "desactivado";
-                string detalle = $@"
-ID:{usuarioID}
-Nombre:{usuarioNombre}
-Contacto:{usuarioContacto}
-estado:{estado}
-estado de prestamo:{estadoprestamo}
-";
-            Console.WriteLine(detalle);
+                Console.WriteLine(usuario.DetalleCompleto());
             }
             else
             {
@@ -721,17 +744,34 @@ estado de prestamo:{estadoprestamo}
             }
         }
         // submodulos actualizacion usuario
+        // submodulo editar nombre usuario
         static void EditUserName()
         {
             Console.Clear();
             Console.WriteLine("== EDITAR NOMBRE ==");
             Console.Write("buscar usuario ID:");
-            string buscarID = Console.ReadLine() ?? "";
-            if(usuarioID != "" && buscarID == usuarioID)
+            string BuscarId= (Console.ReadLine() ?? "").Trim();
+           
+           // Busca el usuario por ID en el servicio
+            Usuario usuario = usuarioService.BuscarPorId(BuscarId);
+
+            if (usuario != null)
             {
-                Console.Write("Nuevo nombre: ");
-                usuarioNombre = Console.ReadLine() ?? "";
-                Console.WriteLine("Nombre actualizado con exito");
+                Console.Write($"Nombre actual ({usuario.Nombre}) - Nuevo nombre: ");
+                // Limpia espacios sobrantes del nuevo nombre
+                string nuevoNombre = (Console.ReadLine() ?? "").Trim();
+
+                // Evita guardar un nombre vacio o solo con espacios
+                if (string.IsNullOrWhiteSpace(nuevoNombre))
+                {
+                    Console.WriteLine("\nERROR!: El nombre no puede quedar vacio.");
+                    ShowReturnMenu();
+                    return;
+                }
+
+                // Actualiza el nombre manteniendo correo y telefono actuales del usuario
+                bool actualizado = usuarioService.ActualizarUsuario(usuario.Id, nuevoNombre, usuario.Correo, usuario.Telefono);
+                Console.WriteLine(actualizado ? "Nombre actualizado con exito" : "No se pudo actualizar el usuario.");
             }
             else
             {
@@ -739,17 +779,33 @@ estado de prestamo:{estadoprestamo}
             }
             ShowReturnMenu();
         }
+        //submodulo edita Contacto de usuario
         static void EditUserContact()
         {
             Console.Clear();
             Console.WriteLine("== EDITAR CONTACTO ==");
-            Console.Write("buscar usuario ID:");
-            string buscarID = Console.ReadLine() ?? "";
-            if(usuarioID != "" && buscarID == usuarioID)
+            Console.Write("buscar usuario ID: ");
+            string BuscarId = (Console.ReadLine() ?? "").Trim();
+
+            // Busca el usuario por ID en el servicio
+            Usuario usuario = usuarioService.BuscarPorId(BuscarId);
+            if (usuario != null)
             {
-                Console.Write("Nuevo Numero/Correo: ");
-                usuarioContacto = Console.ReadLine() ?? "";
-                Console.WriteLine("Contacto actualizado con exito");
+                Console.Write($"Correo actual ({usuario.Correo}) - Nuevo correo (Enter para mantener): ");
+                // Limpia espacios sobrantes de la entrada de correo
+                string entradaCorreo = (Console.ReadLine() ?? "").Trim();
+                // Conserva el correo actual si el campo se deja vacio
+                string nuevoCorreo = string.IsNullOrWhiteSpace(entradaCorreo) ? usuario.Correo : entradaCorreo;
+
+                Console.Write($"Telefono actual ({usuario.Telefono}) - Nuevo telefono (Enter para mantener): ");
+                // Limpia espacios sobrantes de la entrada de telefono
+                string entradaTelefono = (Console.ReadLine() ?? "").Trim();
+                // Conserva el telefono actual si el campo se deja vacio
+                string nuevoTelefono = string.IsNullOrWhiteSpace(entradaTelefono) ? usuario.Telefono : entradaTelefono;
+
+                // Actualiza correo y telefono manteniendo el nombre actual del usuario
+                bool actualizado = usuarioService.ActualizarUsuario(usuario.Id, usuario.Nombre, nuevoCorreo, nuevoTelefono);
+                Console.WriteLine(actualizado ? "Contacto actualizado con exito" : "No se pudo actualizar el usuario.");
             }
             else
             {
@@ -757,16 +813,20 @@ estado de prestamo:{estadoprestamo}
             }
             ShowReturnMenu();
         }
+        //submodulo edita si esta activo o inactivo el usuario
         static void ToggleUserActiveStatus()
         {
             Console.Clear();
             Console.WriteLine("== CAMBIAR ESTADO ==");
             Console.Write("buscar usuario ID:");
-            string buscarID = Console.ReadLine() ?? "";
-            if(usuarioID != "" && buscarID == usuarioID)
+            string BuscarId = (Console.ReadLine() ?? "").Trim();
+            // Busca el usuario por ID en el servicio
+            Usuario usuario = usuarioService.BuscarPorId(BuscarId);
+            if (usuario != null)
             {
-                usuarioActivo = !usuarioActivo;
-                string estado = usuarioActivo ? "activado" : "desactivado";
+                // Invierte el estado activo/inactivo del usuario encontrado
+                usuario.Activo = !usuario.Activo;
+                string estado = usuario.Activo ? "activado" : "desactivado";
                 Console.WriteLine($"Usuario estado:{estado}, actualizado con exito");
             }
             else
@@ -781,27 +841,41 @@ estado de prestamo:{estadoprestamo}
             Console.Clear();
             Console.WriteLine("== ELIMINAR USUARIO ==");
             Console.Write("ingresa el ID: ");
-            string buscarID = Console.ReadLine() ?? "";
-            if(usuarioID != "" && buscarID == usuarioID)
+            string BuscarId = (Console.ReadLine() ?? "").Trim();
+
+            // Busca el usuario por ID en el servicio
+            Usuario usuario = usuarioService.BuscarPorId(BuscarId);
+            if (usuario == null)
             {
-                if (prestamoActivo)
-                {
-                    Console.WriteLine("!ADVERTENCIA: el prestamo esta activo.");
-                }
-                else
-                {
-                usuarioID = "";
-                usuarioNombre = "";
-                usuarioContacto = "";
-                usuarioActivo = false;
-                Console.WriteLine("¡Usuario eliminado con éxito!");
-                }
-              
+                Console.WriteLine("Usuario no encontrado.");
+                ShowReturnMenu();
+                return;
             }
-            else
+
+            // Bloquea el borrado si el usuario tiene un libro prestado sin devolver
+            if (prestamoService.TienePrestamoActivoUsuario(usuario.Id))
             {
-                                Console.WriteLine("Usuario no encontrado.");
+                Console.WriteLine("\n!ADVERTENCIA: No se puede eliminar un usuario con prestamos activos.");
+                ShowReturnMenu();
+                return;
             }
+
+            // Muestra el usuario encontrado y solicita confirmacion antes de borrar
+            Console.WriteLine("\nUsuario encontrado:");
+            Console.WriteLine(usuario.ResumenCorto());
+            Console.Write("¿Seguro que deseas eliminarlo? (si/no): ");
+            // Normaliza la respuesta para aceptar mayusculas o espacios accidentales
+            string confirmar = (Console.ReadLine() ?? "").Trim().ToLower();
+            if (confirmar != "si")
+            {
+                Console.WriteLine("\nEliminacion cancelada.");
+                ShowReturnMenu();
+                return;
+            }
+
+            // Elimina el usuario de la lista en memoria a traves del servicio
+            bool eliminado = usuarioService.EliminarUsuario(usuario.Id);
+            Console.WriteLine(eliminado ? "\n¡Usuario eliminado con éxito!" : "\nNo se pudo eliminar el usuario.");
             ShowReturnMenu();
         }
 
@@ -1558,19 +1632,9 @@ Préstamo en curso:         {infoPrestamo}
                 Console.ReadKey();
             }
 
-            // Busca un libro por ID y muestra un aviso si no existe para reutilizar la validacion
-        static Libro? BuscarLibroConAviso(string id)
-        {
-            Libro libro = libroService.BuscarPorId(id);
-            if (libro == null)
-            {
-                Console.WriteLine("\nlibro no encontrado.");
-                ShowReturnMenu();
-                return null;
-            }
+   
 
-            return libro;
-        }
+        
     //           static void PruebaPoo()
     //     {
     //         Console.WriteLine(@"
