@@ -246,7 +246,7 @@ OPCIONES:
                 // si tenemos libros registrados, pasamos a leer los libros en la lista y mostrar su detallecompleto
                 foreach(Libro libro in listaLibros)
                 {
-                    Console.WriteLine(libro. DetalleCompleto());
+                    Console.WriteLine(libro.DetalleCompleto());
                 }
             }
             ShowReturnMenu();
@@ -331,33 +331,29 @@ OPCIONES:
             ShowReturnMenu();
         }
 
-// modulo detalle
+// modulo detalle Libro
         static void ViewBookDetail()
         {
             Console.Clear();
-            Console.WriteLine("== DETALLE LIBRO ==");
-            Console.Write("buscar por ID:");
-            string buscarID = Console.ReadLine() ?? "";
-            if(libroID != "" && buscarID == libroID)
-            {
-                string estado = libroDisponible ? "si" : "no";
-string detalle = $@"
-===============================
-ID: {libroID}
-Titulo: {libroTitulo}
-Autor: {libroAutor}
-Categoria: {libroCategoria}
-Año: {libroAño}
-Disponible: {estado}
-estado prestamo:{estadoprestamo}
-===============================";
+            Console.WriteLine("=== DETALLE COMPLETO DE LIBRO ===");
+            Console.Write("Buscar por ID (ej. LIB-101): ");
+            string BuscarId = (Console.ReadLine() ?? "").Trim();
 
-                Console.WriteLine(detalle);
+            // llamamos el modulo buscarporid
+            Libro libro = libroService.BuscarPorId(BuscarId);
+
+            //verificamos que tengamos libros registrados
+            if(libro != null)
+            {
+               Console.WriteLine(libro.DetalleCompleto());
             }
+            // encaso de no tener libros registrados o no encontrados.
             else
             {
-                Console.WriteLine("libro no encontrado");
+                Console.WriteLine("\n[!AVISO] Libro no encontrado o registrado con esa id. ");
             }
+
+            
             ShowReturnMenu();
         }
 
