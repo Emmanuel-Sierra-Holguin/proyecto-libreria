@@ -94,7 +94,7 @@ OPCIONES:
         
 
         // MODULO LIBROS MENU
-        static void ShowBooksMenu()
+static void ShowBooksMenu()
         {
             bool volverMenu = false;
             while (!volverMenu)
@@ -151,13 +151,13 @@ OPCIONES:
 
             // Variables temporales
              Console.Write("Titulo: ");
-            string Titulo = Console.ReadLine() ?? "";
+            string Titulo = (Console.ReadLine() ?? "").Trim();
              Console.Write("Autor: ");
-            string Autor = Console.ReadLine() ?? "";
+            string Autor = (Console.ReadLine() ?? "").Trim();
              Console.Write("Categoria: ");
-            string Categoria = Console.ReadLine() ?? "";
+            string Categoria = (Console.ReadLine() ?? "").Trim();
              Console.Write("Año: ");
-            string Anio = Console.ReadLine() ?? "";
+            string Anio = (Console.ReadLine() ?? "").Trim();
 
             if (string.IsNullOrWhiteSpace(Titulo) || string.IsNullOrWhiteSpace(Autor) || string.IsNullOrWhiteSpace(Categoria)) 
             {
@@ -396,42 +396,65 @@ OPCIONES:
         }
     }
 
-        // submodulos actualizacion libro
-
+// submodulos actualizacion libro
+        // Actualizar titulo libro
         static void EditBookTitle()
         {
             Console.Clear();
-            Console.WriteLine("== editar titulo==");
-            Console.Write("buscar por ID: ");
-            string buscarID = Console.ReadLine() ?? "";
-            if(libroID != "" && buscarID == libroID)
+            Console.WriteLine("== EDITAR TITULO ==");
+            Console.Write("Buscar por ID: ");
+            string BuscarId = (Console.ReadLine() ?? "").Trim();
+
+            // Busca el libro por ID y detiene el flujo si no existe
+            Libro? libro = BuscarLibroConAviso(BuscarId);
+            if (libro == null)
             {
-                Console.Write("editar titulo:");
-                 libroTitulo = Console.ReadLine() ?? "";
-                Console.WriteLine("libro editado");
+                return;
             }
-            else
+            
+            // procedemos a solicitar el nuevo titulo del libro
+            Console.Write($"Titulo actual ({libro.Titulo}) - Nuevo titulo: ");
+            string nuevoTitulo = (Console.ReadLine() ?? "").Trim();
+            if (string.IsNullOrWhiteSpace(nuevoTitulo))
             {
-                Console.WriteLine("libro no encontrado");
+                Console.WriteLine("\nERROR!: El titulo no puede quedar vacio.");
+                ShowReturnMenu();
+                return;
             }
+
+            // el nuevo titulo se carga exitosamente, pero debemos establecer que propiedades contenia para mantener consistencia
+            bool actualizado = libroService.ActualizarLibro(libro.Id, nuevoTitulo,libro.Autor, libro.Categoria, libro.Anio);
+            // Muestra un mensaje segun si la actualizacion fue exitosa o no
+            Console.WriteLine(actualizado ? "\n¡Libro editado con exito!" : "\nNo se pudo actualizar el libro.");
             ShowReturnMenu();
         }
         static void EditBookAuthor()
         {
             Console.Clear();
-            Console.WriteLine("== editar autor==");
+            Console.WriteLine("== EDITAR AUTOR ==");
             Console.Write("buscar por ID: ");
-            string buscarID = Console.ReadLine() ?? "";
-            if(libroID != "" && buscarID == libroID)
+            string BuscarId = (Console.ReadLine() ?? "").Trim();
+
+            // Busca el libro por ID y detiene el flujo si no existe
+            Libro? libro = BuscarLibroConAviso(BuscarId);
+            if (libro == null)
             {
-                Console.Write("editar autor:");
-                 libroAutor = Console.ReadLine() ?? "";
-                Console.WriteLine("libro editado");
+                return;
             }
-            else
+                // procedemos a solicitar el nuevo autor del libro
+            Console.Write($"Autor actual ({libro.Autor}) - Nuevo Autor: ");
+            string nuevoAutor = (Console.ReadLine() ?? "").Trim();
+             if (string.IsNullOrWhiteSpace(nuevoAutor))
             {
-                Console.WriteLine("libro no encontrado");
+                Console.WriteLine("\nERROR!: El Autor no puede quedar vacio.");
+                ShowReturnMenu();
+                return;
             }
+
+            // el nuevo autor se carga exitosamente, pero debemos establecer que propiedades contenia para mantener consistencia
+            bool actualizado = libroService.ActualizarLibro(libro.Id, libro.Titulo,nuevoAutor, libro.Categoria, libro.Anio);
+            // verificamos mediante un operador ternario que la actualizacion fue un exito dependiendo el valor booleano.
+            Console.WriteLine(actualizado ? "\n¡Libro editado con exito!" : "\nNo se pudo actualizar el libro.");
             ShowReturnMenu();
         }
         static void EditBookYearCategory()
@@ -439,60 +462,98 @@ OPCIONES:
             Console.Clear();
             Console.WriteLine("== editar año / categoria ==");
             Console.Write("buscar por ID: ");
-            string buscarID = Console.ReadLine() ?? "";
-            if(libroID != "" && buscarID == libroID)
+            string BuscarId = (Console.ReadLine() ?? "").Trim();
+
+            // Busca el libro por ID y detiene el flujo si no existe
+            Libro? libro = BuscarLibroConAviso(BuscarId);
+            if (libro == null)
             {
-                Console.WriteLine("editar (1)año o (2)categoria");
-                Console.Write("opcion: ");
-                string opcion = Console.ReadLine() ?? "";
-                if(opcion == "1")
+                return;
+            }
+            
+            Console.WriteLine("Editar Año(1) o Categoria(2): ");
+            Console.Write("cual editar: ");
+            string opcion = (Console.ReadLine() ?? "").Trim();
+
+            if(opcion == "1")
+            {
+                // procedemos a solicitar el nuevo año del libro
+            Console.WriteLine($"Año actual ({libro.Anio}) - Nuevo Año: ");
+            Console.Write("Editar Año: ");
+            string textoAnio = (Console.ReadLine() ?? "").Trim();
+            // convertimos string en int
+            if(!int.TryParse(textoAnio, out int nuevoAnio))
                 {
-                    Console.Write("editar año: ");
-                    libroAño =Console.ReadLine() ?? "";
-                    Console.WriteLine("libro editado");
+                    // en caso de quedar vacio el campo
+                    Console.WriteLine("\nERROR!: Año invalido");
+                    ShowReturnMenu();
+                    return;
                 }
-                else if(opcion == "2")
-                {
-                    Console.Write("editar categoria: ");
-                    libroCategoria =Console.ReadLine() ?? "";
-                    Console.WriteLine("libro editado");
-                }
+            // Actualiza el libro conservando titulo, autor y categoria actuales
+            bool actualizado = libroService.ActualizarLibro(libro.Id, libro.Titulo,libro.Autor, libro.Categoria, nuevoAnio);
+            // verificamos mediante un operador ternario que la actualizacion fue un exito dependiendo el valor booleano.
+            Console.WriteLine(actualizado ? "\n¡Libro editado con exito!" : "\nNo se pudo actualizar el libro.");
+            }
+            else if (opcion == "2")
+            {
+            // Solicita la nueva categoria conservando los demas datos del libro
+            Console.WriteLine($"categoria actual ({libro.Categoria}) - Nueva Categoria: ");
+            Console.Write("Editar Categoria: ");
+            string nuevaCategoria = (Console.ReadLine() ?? "").Trim();
+             if (string.IsNullOrWhiteSpace(nuevaCategoria))
+            {
+                // Corrige la concordancia de genero en el mensaje de categoria vacia
+                Console.WriteLine("\nERROR!: La categoria no puede quedar vacia.");
+                ShowReturnMenu();
+                return;
+            } 
+            // Actualiza el libro conservando titulo, autor y año actuales
+            bool actualizado = libroService.ActualizarLibro(libro.Id, libro.Titulo,libro.Autor, nuevaCategoria, libro.Anio);
+            // verificamos mediante un operador ternario que la actualizacion fue un exito dependiendo el valor booleano.
+            Console.WriteLine(actualizado ? "\n¡Libro editado con exito!" : "\nNo se pudo actualizar el libro.");
             }
             else
             {
-                Console.WriteLine("libro no encontrado");
+                Console.WriteLine("\nERROR!: Opcion no valida.");
             }
+
             ShowReturnMenu();
         }
         // modulo eliminar libro
         static void DeleteBook()
         {
           Console.Clear();
-          Console.WriteLine("=== eliminar libro ===");
+          Console.WriteLine("=== ELIMINAR LIBRO ===");
           Console.Write("ingresar id: ");
-          string buscarid = Console.ReadLine() ?? "";
-          if(libroID != "" && buscarid == libroID)
-            {
-                if (prestamoActivo)
-                {
-                    Console.WriteLine("!ADVERTENCIA: prestamo activo");
-                }
-                else
-                {
-                                libroID = "";
-            libroTitulo = "";
-            libroAutor = "";
-            libroCategoria = "";
-            libroAño = "";
-            libroDisponible = false;
+          string BuscarId = (Console.ReadLine() ?? "").Trim();
 
-            Console.WriteLine("¡Libro eliminado exitosamente!");
-                }
-            }
-            else
+            // Busca el libro por ID y detiene el flujo si no existe
+            Libro? libro = BuscarLibroConAviso(BuscarId);
+            if (libro == null)
             {
-                Console.WriteLine("Libro no encontrado o no hay registros.");
+                return;
             }
+            if (!libro.Disponible)
+            {
+                Console.WriteLine("\n!ADVERTENCIA: No se puede eliminar un libro que esta prestado.");
+                ShowReturnMenu();
+                return;
+            }
+
+            // Muestra el libro encontrado y confirmacion de eliminacion.
+            Console.WriteLine("\nLibro encontrado:");
+            Console.WriteLine(libro.ResumenCorto());
+            Console.Write("¿Seguro que deseas eliminarlo? (si/no): ");
+            string confirmar = (Console.ReadLine() ?? "").Trim().ToLower();
+            if (confirmar != "si")
+            {
+                Console.WriteLine("\nEliminacion cancelada.");
+                ShowReturnMenu();
+                return;
+            }
+
+            bool eliminado = libroService.EliminarLibro(BuscarId);
+            Console.WriteLine(eliminado ? "\n¡Libro eliminado exitosamente!" : "\nNo se pudo eliminar el libro.");
             ShowReturnMenu();
         }
             // MODULO USUARIOS
@@ -1496,6 +1557,20 @@ Préstamo en curso:         {infoPrestamo}
                 Console.Write("presiona cualquier tecla: ");
                 Console.ReadKey();
             }
+
+            // Busca un libro por ID y muestra un aviso si no existe para reutilizar la validacion
+        static Libro? BuscarLibroConAviso(string id)
+        {
+            Libro libro = libroService.BuscarPorId(id);
+            if (libro == null)
+            {
+                Console.WriteLine("\nlibro no encontrado.");
+                ShowReturnMenu();
+                return null;
+            }
+
+            return libro;
+        }
     //           static void PruebaPoo()
     //     {
     //         Console.WriteLine(@"
