@@ -1235,6 +1235,7 @@ OPCION:
             }
         }
             // Modulo Buscar libros
+// Modulo Buscar libros
             static void SearchBook()
         {
             Console.Clear();
@@ -1243,58 +1244,79 @@ OPCION:
 1. Buscar por ID
 2. Buscar por Titulo
 3. Buscar por Autor
-4. Buscar por Categoria o ordenar por año
+4. Buscar por Categoria
+5. Ordenar libros por año
 ====================");
 
-            if (libroID == "")
+            // Obtiene la lista completa de libros almacenados en el servicio
+            List<Libro> listaLibros = libroService.ObtenerTodos();
+            if (listaLibros.Count == 0)
             {
                 Console.WriteLine("\n[AVISO]: No hay ningún libro registrado en el sistema actualmente.");
                 ShowReturnMenu();
                 return;
             }
 
-            bool encontrado = false;
+            // Almacena las coincidencias encontradas o la lista ordenada
+            List<Libro> resultados = new List<Libro>();
             Console.Write("elegir opcion: ");
-            string opcion = Console.ReadLine() ?? "";
+            string opcion = (Console.ReadLine() ?? "").Trim();
+
             switch (opcion)
             {
                 case"1":
                 Console.Write("Ingresar por ID: ");
-                String LIBID = Console.ReadLine() ?? "";
-                if (LIBID == libroID) encontrado = true;
+                string LIBID = (Console.ReadLine() ?? "").Trim();
+                // Busca directamente por ID en el servicio
+                Libro porId = libroService.BuscarPorId(LIBID);
+                if (porId != null) resultados.Add(porId);
                 break;
                 case"2":
                 Console.Write("Ingresar por Titulo: ");
-                String LIBTitulo = Console.ReadLine() ?? "";
-                if (LIBTitulo == libroTitulo) encontrado = true;
+                string LIBTitulo = (Console.ReadLine() ?? "").Trim().ToLower();
+                // Filtra solo los libros cuyo titulo coincida con lo ingresado
+                foreach (Libro libro in listaLibros)
+                {
+                    if (libro.Titulo.ToLower().Contains(LIBTitulo)) resultados.Add(libro);
+                }
                 break;
                 case"3":
                 Console.Write("Ingresar por Autor: ");
-                String LIBAutor = Console.ReadLine() ?? "";
-                if (LIBAutor == libroAutor) encontrado = true;
+                string LIBAutor = (Console.ReadLine() ?? "").Trim().ToLower();
+                // Filtra libros cuyo autor contenga el texto ingresado
+                foreach (Libro libro in listaLibros)
+                {
+                    if (libro.Autor.ToLower().Contains(LIBAutor)) resultados.Add(libro);
+                }
                 break;
                 case"4":
                 Console.Write("Ingresar la Categoria: ");
-                String LIBCAT = Console.ReadLine() ?? "";
-                if (LIBCAT == libroCategoria) encontrado = true;
+                string LIBCAT = (Console.ReadLine() ?? "").Trim().ToLower();
+                // Filtra libros por categoria
+                foreach (Libro libro in listaLibros)
+                {
+                    if (libro.Categoria.ToLower().Contains(LIBCAT)) resultados.Add(libro);
+                }
+                break;
+                case"5":
+                // Copia todos los libros y los ordena de mayor a menor por anio
+                resultados = new List<Libro>(listaLibros);
+                resultados.Sort((a, b) => b.Anio.CompareTo(a.Anio));
                 break;
                 default:
                 Console.WriteLine("ERROR!: Opcion no valida");
-                break;
+                ShowReturnMenu();
+                return;
             }
-            if (encontrado)
+
+            if (resultados.Count > 0)
             {
-                string estado = libroDisponible ? "Disponible" : "Prestado";
-                Console.WriteLine($@"
-[¡LIBRO ENCONTRADO!]:
-- ID: {libroID}
-- Título: {libroTitulo}
-- Autor: {libroAutor}
-- Categoría: {libroCategoria}
-- Año: {libroAño}
-- Estado: {estado}
-- estado prestamo:{estadoprestamo}
-");
+                Console.WriteLine("\n[¡RESULTADO(S)!]:");
+                // Muestra el detalle completo de cada libro
+                foreach (Libro libro in resultados)
+                {
+                    Console.WriteLine(libro.DetalleCompleto());
+                }
             }
             else
             {
@@ -1302,7 +1324,7 @@ OPCION:
             }
             ShowReturnMenu();
         }
-            //Modulo buscar usuario
+//Modulo buscar usuario
             static void SearchUser()
         {
             Console.Clear();
@@ -1312,38 +1334,52 @@ OPCION:
 2. Buscar por Nombre o ordenar por nombre
 ============================");
     Console.Write("Seleccionar opcion: ");
-    string opcion = Console.ReadLine() ?? "";
+    string opcion = (Console.ReadLine() ?? "").Trim();
 
-    if(usuarioID == "")
-            {
-            Console.WriteLine("\n[AVISO]: No hay ningún usuario registrado en el sistema actualmente.");
-            ShowReturnMenu();
-             return; 
-            }
-            bool encontrado = false;
-            if(opcion == "1")
-            {
-                Console.Write("ingresa el ID: ");
-                String USRID = Console.ReadLine() ?? "";
-                if(USRID == usuarioID) encontrado = true;
-            }
-            else if(opcion == "2")
-            {
-                Console.Write("ingresa el Nombre: ");
-                String USRNombre = Console.ReadLine() ?? "";
-                if(USRNombre == usuarioNombre) encontrado = true;
-            }
-            if (encontrado)
+    // Obtiene la lista completa de usuarios desde el servicio
+    List<Usuario> listaUsuarios = usuarioService.ObtenerTodos();
+    if (listaUsuarios == null || listaUsuarios.Count == 0)
     {
-        string estadoU = usuarioActivo ? "Activado" : "Desactivado";
-        Console.WriteLine($@"
-[¡USUARIO ENCONTRADO!]:
-- ID: {usuarioID}
-- Nombre: {usuarioNombre}
-- Contacto: {usuarioContacto}
-- Estado: {estadoU}
-- estado prestamo: {estadoprestamo}
-");
+        Console.WriteLine("\n[AVISO]: No hay ningún usuario registrado en el sistema actualmente.");
+        ShowReturnMenu();
+        return; 
+    }
+
+    // Almacena los usuarios que coincidan con el criterio elegido
+    List<Usuario> resultados = new List<Usuario>();
+    if(opcion == "1")
+    {
+        Console.Write("ingresa el ID: ");
+        string USRID = (Console.ReadLine() ?? "").Trim();
+        // Busca el usuario exacto por ID en el servicio
+        Usuario porId = usuarioService.BuscarPorId(USRID);
+        if (porId != null) resultados.Add(porId);
+    }
+    else if(opcion == "2")
+    {
+        Console.Write("ingresa el Nombre: ");
+        string USRNombre = (Console.ReadLine() ?? "").Trim().ToLower();
+        // Filtra usuarios cuyo nombre contenga el texto ingresado
+        foreach (Usuario usuario in listaUsuarios)
+        {
+            if (usuario.Nombre.ToLower().Contains(USRNombre)) resultados.Add(usuario);
+        }
+    }
+    else
+    {
+        Console.WriteLine("\nERROR!: Opcion no valida");
+        ShowReturnMenu();
+        return;
+    }
+
+    if (resultados.Count > 0)
+    {
+        Console.WriteLine("\n[¡USUARIO(S) ENCONTRADO(S)!]:");
+        // Muestra el detalle completo de cada usuario encontrado
+        foreach (Usuario usuario in resultados)
+        {
+            Console.WriteLine(usuario.DetalleCompleto());
+        }
     }
     else
     {
@@ -1395,30 +1431,41 @@ OPCION:
             }
         }
         // subModulos reportes
+        // Submodulo reporte de prestamos por usuario
         static void ReportByUser()
         {
             Console.Clear();
     Console.WriteLine("=== REPORTE: PRÉSTAMOS POR USUARIO ===");
     Console.Write("Ingresa el ID del usuario: ");
-    string buscarID = Console.ReadLine() ?? "";
+    // Limpia espacios sobrantes del ID ingresado
+    string buscarID = (Console.ReadLine() ?? "").Trim();
 
-    if (usuarioID != "" && buscarID == usuarioID)
+    // Busca el usuario en el servicio para verificar que exista
+    Usuario usuario = usuarioService.BuscarPorId(buscarID);
+    if (usuario != null)
     {
-        if (prestamoActivo || !prestamoActivo)
+        // Filtra todos los prestamos asociados al ID del usuario
+        List<Prestamo> prestamosUsuario = new List<Prestamo>();
+        foreach (Prestamo prestamo in prestamoService.ObtenerTodos())
         {
-            Console.WriteLine($@"
-==================================
-- Usuario{usuarioNombre} 
-- usuario ID: {usuarioID}
-- ID Préstamo: {prestamoID}
-- Fecha inicio: {fechaInicio} 
-- Fecha límite: {fechaLimite}
-- Estado del préstamo: {estadoprestamo}
-======================================");
+            if (prestamo.UsuarioId.ToLower() == usuario.Id.ToLower())
+            {
+                prestamosUsuario.Add(prestamo);
+            }
+        }
+
+        if (prestamosUsuario.Count > 0)
+        {
+            Console.WriteLine($"\nUsuario: {usuario.Nombre} ({usuario.Id}) - Total prestamos: {prestamosUsuario.Count}");
+            // Muestra el detalle completo de cada prestamo del usuario
+            foreach (Prestamo prestamo in prestamosUsuario)
+            {
+                Console.WriteLine(prestamo.DetalleCompleto());
+            }
         }
         else
         {
-            Console.WriteLine($"\nEl usuario '{usuarioNombre}' no tiene préstamos registrados.");
+            Console.WriteLine($"\nEl usuario '{usuario.Nombre}' no tiene préstamos registrados.");
         }
     }
     else
@@ -1427,30 +1474,41 @@ OPCION:
     }
     ShowReturnMenu();
         }
+        // Submodulo reporte de prestamos por libro
         static void ReportByBook()
         {
             Console.Clear();
     Console.WriteLine("=== REPORTE: PRÉSTAMOS POR LIBRO ===");
     Console.Write("Ingresa el ID del libro: ");
-    string buscarID = Console.ReadLine() ?? "";
+    // Limpia espacios sobrantes del ID ingresado
+    string buscarID = (Console.ReadLine() ?? "").Trim();
 
-    if (libroID != "" && buscarID == usuarioID)
+    // Busca el libro en el servicio para verificar que exista
+    Libro libro = libroService.BuscarPorId(buscarID);
+    if (libro != null)
     {
-        if (prestamoActivo || !prestamoActivo)
+        // Filtra todos los prestamos asociados al ID del libro
+        List<Prestamo> prestamosLibro = new List<Prestamo>();
+        foreach (Prestamo prestamo in prestamoService.ObtenerTodos())
         {
-Console.WriteLine($@"
-===============================
-- Libro: {libroTitulo} 
-- Libro ID: {libroID}
-- prestamo ID: {prestamoID}
-- Fecha inicio: {fechaInicio}
-- Fecha límite: {fechaLimite}
-- Estado del préstamo: {estadoprestamo}
-======================================");
+            if (prestamo.LibroId.ToLower() == libro.Id.ToLower())
+            {
+                prestamosLibro.Add(prestamo);
+            }
+        }
+
+        if (prestamosLibro.Count > 0)
+        {
+            Console.WriteLine($"\nLibro: {libro.Titulo} ({libro.Id}) - Total prestamos: {prestamosLibro.Count}");
+            // Muestra el detalle completo de cada prestamo del libro
+            foreach (Prestamo prestamo in prestamosLibro)
+            {
+                Console.WriteLine(prestamo.DetalleCompleto());
+            }
         }
         else
         {
-            Console.WriteLine($"\nEl libro: '{libroTitulo}' no tiene préstamos registrados.");
+            Console.WriteLine($"\nEl libro: '{libro.Titulo}' no tiene préstamos registrados.");
         }
     }
     else
@@ -1459,71 +1517,75 @@ Console.WriteLine($@"
     }
     ShowReturnMenu();
         }
+        // Submodulo reporte de prestamos vencidos
         static void ReportOverdue()
         {
             Console.Clear();
             Console.WriteLine("=== REPORTE: PRÉSTAMOS VENCIDOS ===");
 
-    if (prestamoActivo)
+    // Obtiene los prestamos vencidos actualizando su estado desde el servicio
+    List<Prestamo> vencidos = prestamoService.ObtenerVencidos();
+    if (vencidos != null && vencidos.Count > 0)
     {
-Console.WriteLine($@"
-===============================
-Préstamo activo en seguimiento:
-- ID Préstamo: {prestamoID}
-- Usuario: {usuarioNombre}
-- Libro: {libroTitulo}
-- Fecha Límite registrada: {fechaLimite}
-- Estado: {estadoprestamo}
-=============================");
+        // Muestra cada prestamo vencido con su informacion completa
+        foreach (Prestamo prestamo in vencidos)
+        {
+            Console.WriteLine(prestamo.DetalleCompleto());
+        }
     }
     else
     {
-        Console.WriteLine("\nNo hay préstamos activos pendientes de vencimiento en este momento.");
+        Console.WriteLine("\nNo hay préstamos vencidos en este momento.");
     }
     ShowReturnMenu();
         }
+        // Submodulo resumen general del sistema
         static void ReportSummary()
         {
             Console.Clear();
     Console.WriteLine("=== REPORTE: RESUMEN GENERAL ===");
 
-   
-    int totalLibros = libroID != "" ? 1 : 0;
-    int disponibles = (libroID != "" && libroDisponible) ? 1 : 0;
-    int prestados = (libroID != "" && !libroDisponible) ? 1 : 0;
+    // Obtiene las listas actuales de libros, usuarios y prestamos desde sus servicios
+    List<Libro> libros = libroService.ObtenerTodos();
+    List<Usuario> usuarios = usuarioService.ObtenerTodos();
+    List<Prestamo> prestamos = prestamoService.ObtenerTodos();
 
-   
-    string infoUsuario = "Ninguno";
-    if (usuarioID != "")
+    int totalLibros = libros != null ? libros.Count : 0;
+    int disponibles = 0;
+    int prestados = 0;
+
+    // Cuenta libros disponibles y prestados recorriendo la lista en memoria
+    if (libros != null)
     {
-        string estadoUsr = usuarioActivo ? "Activo" : "Desactivado";
-        infoUsuario = $"{usuarioNombre} ({estadoUsr})";
+        foreach (Libro libro in libros)
+        {
+            if (libro.Disponible) disponibles++;
+            else prestados++;
+        }
     }
 
-  
-    string infoPrestamo = "Ninguno";
-    if (prestamoID != "")
-    {
-        infoPrestamo = $"{prestamoID} prestamo en curso. Estado del prestamo: {estadoprestamo}";
-    }
+    int totalUsuarios = usuarios != null ? usuarios.Count : 0;
+    int totalPrestamos = prestamos != null ? prestamos.Count : 0;
+    int prestamosActivos = prestamoService.ObtenerActivos().Count;
+    int prestamosDevueltos = prestamoService.ObtenerDevueltos().Count;
 
-  
     Console.WriteLine($@"
 --------------------------------------------------
 Total de libros en sistema: {totalLibros}
 - Libros disponibles:       {disponibles}
 - Libros prestados:         {prestados}
 
-Usuario registrado:        {infoUsuario}
-Préstamo en curso:         {infoPrestamo}
+Total de usuarios:          {totalUsuarios}
+Total de préstamos:         {totalPrestamos}
+- Préstamos activos:        {prestamosActivos}
+- Préstamos devueltos:      {prestamosDevueltos}
 --------------------------------------------------");
 
     ShowReturnMenu();
         }
+        //  MÓDULO GUARDAR / CARGAR DATOS (Simulado)
 
-        // 5. MÓDULO GUARDAR / CARGAR DATOS (Simulado)
-
-        static void showSavedatamenu()
+static void showSavedatamenu()
         {
             bool volverMenu = false;
             while (!volverMenu)
@@ -1561,42 +1623,51 @@ Préstamo en curso:         {infoPrestamo}
             }
         }
 
-        // Simulación de guardado
+        // Simulación de guardado usando los servicios actuales en memoria
         static void SaveData()
         {
             Console.Clear();
             Console.WriteLine("=== GUARDAR DATOS ===");
             Console.WriteLine("[SIMULACIÓN]: Guardando el estado actual del sistema en memoria...");
-            Console.WriteLine("¡Datos guardados con éxito de manera simulada!");
+
+            // Consulta las cantidades actuales en los servicios para reflejarlas en la simulacion
+            int totalLibros = libroService.ObtenerTodos().Count;
+            int totalUsuarios = usuarioService.ObtenerTodos().Count;
+            int totalPrestamos = prestamoService.ObtenerTodos().Count;
+
             datosGuardados = true;
+            Console.WriteLine($"\n¡Datos guardados con éxito de manera simulada! (Libros: {totalLibros} | Usuarios: {totalUsuarios} | Préstamos: {totalPrestamos})");
             ShowReturnMenu();
         }
 
-        // Simulación de carga
+        // Simulación de carga en memoria
         static void LoadData()
         {
             Console.Clear();
             Console.WriteLine("=== CARGAR DATOS ===");
             Console.WriteLine("[SIMULACIÓN]: Leyendo registros simulados previamente...");
-            Console.WriteLine("¡Datos cargados con éxito en el sistema!");
+
+            // Marca los datos como cargados y sincronizados en la simulacion actual
             datosGuardados = true;
+            Console.WriteLine("¡Datos cargados con éxito en el sistema!");
             ShowReturnMenu();
         }
 
-        // Simulación de reinicio con confirmación (S/N)
+        // Simulación de reinicio con confirmación (Si/No) limpiando los servicios
         static void ResetData()
         {
             Console.Clear();
             Console.WriteLine("=== REINICIAR DATOS ===");
             Console.Write("¿Está seguro de reiniciar y vaciar todos los datos del sistema? (Si/No): ");
-            string confirmacion = Console.ReadLine() ?? "";
+            // Normaliza la entrada para aceptar mayusculas o espacios accidentales
+            string confirmacion = (Console.ReadLine() ?? "").Trim().ToLower();
 
-            if (confirmacion.ToLower() == "si")
+            if (confirmacion == "si")
             {
-                // Limpiamos las variables globales en RAM
-                libroID = ""; libroTitulo = ""; libroAutor = ""; libroCategoria = ""; libroAño = ""; libroDisponible = false;
-                usuarioID = ""; usuarioNombre = ""; usuarioContacto = ""; usuarioActivo = false;
-                prestamoID = ""; prestamoActivo = false; fechaInicio = ""; fechaLimite = ""; fechaDevolucion = "N/A"; estadoprestamo = "inactivo";
+                // Crea nuevas instancias vacias de los servicios en memoria RAM
+                libroService = new LibroService();
+                usuarioService = new UsuarioService();
+                prestamoService = new PrestamoService();
 
                 datosGuardados = false;
                 Console.WriteLine("\n[SIMULACIÓN]: ¡El sistema ha sido limpiado y reiniciado a cero con éxito!");
@@ -1616,24 +1687,30 @@ Préstamo en curso:         {infoPrestamo}
             Console.Clear();
             Console.WriteLine("=== SALIDA DEL SISTEMA ===");
 
+            // Obtiene los conteos actuales en memoria para el recibo simulado
+            int totalLibros = libroService.ObtenerTodos().Count;
+            int totalUsuarios = usuarioService.ObtenerTodos().Count;
+            int totalPrestamos = prestamoService.ObtenerTodos().Count;
+
             if (!datosGuardados)
             {
                 Console.WriteLine("[AVISO]: Hay cambios recientes en el sistema que no se han guardado.");
                 Console.Write("¿Deseas guardar los datos antes de salir? (Si/No): ");
-                string respuesta = Console.ReadLine() ?? "";
+                // Normaliza la respuesta del usuario al salir
+                string respuesta = (Console.ReadLine() ?? "").Trim().ToLower();
 
-                if (respuesta.ToLower() == "si")
+                if (respuesta == "si")
                 {
                     datosGuardados = true;
                     Console.Clear();
-                    Console.WriteLine(@"
+                    Console.WriteLine($@"
 ==================================================
         🧾 RECIBO DE GUARDADO Y CIERRE (SIMULACIÓN)
 ==================================================
  Estado: ¡Datos guardados correctamente en memoria!
-- Libro registrado ID:  " + (libroID != "" ? libroID : "Ninguno") + @"
-- Usuario registrado ID:" + (usuarioID != "" ? usuarioID : "Ninguno") + @"
-- Préstamo en curso ID: " + (prestamoID != "" ? prestamoID : "Ninguno") + @"
+- Libros en memoria:    {totalLibros}
+- Usuarios en memoria:  {totalUsuarios}
+- Préstamos en memoria: {totalPrestamos}
 ==================================================");
                 }
                 else
