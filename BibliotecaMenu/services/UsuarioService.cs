@@ -23,7 +23,7 @@ namespace BibliotecaMenu.Services
             return usuarios;
         }
          // BUSQUEDAS POR CRITERIO
-        public Usuario BuscarPorId(string id)
+        public Usuario? BuscarPorId(string id)
         {
             foreach (Usuario usuario in usuarios)
             {
@@ -53,7 +53,7 @@ namespace BibliotecaMenu.Services
            // ACTUALIZAR USUARIO
         public bool ActualizarUsuario(string id, string nuevoNombre, string nuevoCorreo, string nuevoTelefono)
         {
-            Usuario usuarioEncontrado = BuscarPorId(id);
+            Usuario? usuarioEncontrado = BuscarPorId(id);
 
             if (usuarioEncontrado != null)
             {
@@ -68,7 +68,7 @@ namespace BibliotecaMenu.Services
           //ELIMINAR USUARIO POR ID
         public bool EliminarUsuario(string id)
         {
-            Usuario usuarioEncontrado = BuscarPorId(id);
+            Usuario? usuarioEncontrado = BuscarPorId(id);
 
             if(usuarioEncontrado != null)
             {

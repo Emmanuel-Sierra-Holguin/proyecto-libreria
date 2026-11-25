@@ -23,7 +23,7 @@ namespace BibliotecaMenu.Services
             return libros;
         }
         // BUSQUEDAS POR CRITERIO
-        public Libro BuscarPorId(string id)
+        public Libro? BuscarPorId(string id)
         {
             foreach(Libro libro in libros)
             {
@@ -66,7 +66,7 @@ namespace BibliotecaMenu.Services
         // ACTUALIZAR LIBRO
         public bool ActualizarLibro(string id, string nuevoTitulo, string nuevoAutor, string nuevaCategoria, int nuevoAnio)
         {
-            Libro libroEncontrado = BuscarPorId(id);
+            Libro? libroEncontrado = BuscarPorId(id);
 
             if (libroEncontrado != null)
             {
@@ -83,7 +83,7 @@ namespace BibliotecaMenu.Services
         //ELIMINAR LIBRO POR ID
         public bool EliminarLibro(string id)
         {
-            Libro libroEncontrado = BuscarPorId(id);
+            Libro? libroEncontrado = BuscarPorId(id);
 
             if(libroEncontrado != null)
             {
@@ -94,14 +94,14 @@ namespace BibliotecaMenu.Services
         }
         
         // ORDENAR POR AÑO 
+       // ORDENAR POR AÑO (Mayor a menor)
         public List<Libro> OrdenarPorAnio()
         {
             // Hacemos una copia de la lista para no desordenar la original
             List<Libro> listaOrdenada = new List<Libro>(libros);
-            listaOrdenada.Sort((a, b) => a.Anio.CompareTo(b.Anio));
+            listaOrdenada.Sort((a, b) => b.Anio.CompareTo(a.Anio));
             return listaOrdenada;
         }
-
         // KPI (Contadores)
         public int TotalLibros()
         {

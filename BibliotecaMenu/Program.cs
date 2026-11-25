@@ -1,50 +1,23 @@
 ﻿using System;
-using System.Linq.Expressions;
+using System.Collections.Generic;
 using BibliotecaMenu.Models;
 using BibliotecaMenu.Services;
 
-
-namespace Bibliotecamenu
+namespace BibliotecaMenu
 {
     class Program
     {
-        // variables globales de libros
-        static String libroID = "";
-        static String libroTitulo = "";
-        static String libroAutor = "";
-        static String libroCategoria = "";
-        static String libroAño = "";
-        static bool libroDisponible = false;
-        // variables globales del modulo usuarios
-        static String usuarioID = "";
-        static String usuarioNombre = "";
-        static String usuarioContacto = "";
-        static bool usuarioActivo;
-        // variables globales prestamo
-        static string prestamoID = "";
-        static bool prestamoActivo = false;
-        static String fechaInicio = "";
-        static String fechaLimite = "";
-        static String fechaDevolucion = "N/A";
-        static String estadoprestamo = "inactivo";
-        //variables globales guardar datos
-  static string archivoLibros = "libros.txt";
-   static string archivoUsuarios = "usuarios.txt";
-  static string archivoPrestamos = "prestamos.txt";
-
-        //variables global general
-        static bool datosGuardados = false;
-
-        // INSTANCIAS DE SERVICIOS (administran las listas de cada módulo)
         static LibroService libroService = new LibroService();
         static UsuarioService usuarioService = new UsuarioService();
         static PrestamoService prestamoService = new PrestamoService();
-        static void Main(string[] args){
-        ShowMainMenu();
-        }
-        // Funcion de menu principal 
+        static bool datosGuardados = false;
 
-    static void ShowMainMenu()
+        static void Main(string[] args)
+        {
+            ShowMainMenu();
+        }
+
+        static void ShowMainMenu()
         {
             bool Exit = false;
             while (!Exit){
@@ -52,6 +25,7 @@ namespace Bibliotecamenu
                 Console.WriteLine(@" 
 === MENÚ PRINCIPAL BIBLIOTECA ===
 OPCIONES:
+0. Ejemplo array vs list
 1. Libros
 2. Usuarios
 3. Préstamos
@@ -64,6 +38,9 @@ OPCIONES:
 
                     switch (bibliotecario)
                     {
+                        case "0":
+                         CompararArrayVsList();
+                        break;
                          case "1":
                          ShowBooksMenu();
                         break;
@@ -340,7 +317,7 @@ OPCIONES:
             string BuscarId = (Console.ReadLine() ?? "").Trim();
 
             // llamamos el modulo buscarporid
-            Libro libro = libroService.BuscarPorId(BuscarId);
+            Libro? libro = libroService.BuscarPorId(BuscarId);
 
             //verificamos que tengamos libros registrados
             if(libro != null)
@@ -407,7 +384,7 @@ OPCIONES:
             string BuscarId = (Console.ReadLine() ?? "").Trim();
 
             // Busca el libro por ID en el servicio
-            Libro libro = libroService.BuscarPorId(BuscarId);
+            Libro? libro = libroService.BuscarPorId(BuscarId);
             // Detiene el proceso si no se encuentra un libro con ese ID
             if (libro == null)
             {
@@ -441,7 +418,7 @@ OPCIONES:
             string BuscarId = (Console.ReadLine() ?? "").Trim();
 
             // Busca el libro por ID en el servicio
-            Libro libro = libroService.BuscarPorId(BuscarId);
+            Libro? libro = libroService.BuscarPorId(BuscarId);
             // Detiene el proceso si no se encuentra un libro con ese ID
             if (libro == null)
             {
@@ -474,7 +451,7 @@ OPCIONES:
             string BuscarId = (Console.ReadLine() ?? "").Trim();
 
             // Busca el libro por ID en el servicio
-            Libro libro = libroService.BuscarPorId(BuscarId);
+            Libro? libro = libroService.BuscarPorId(BuscarId);
             // Detiene el proceso si no se encuentra un libro con ese ID
             if (libro == null)
             {
@@ -541,7 +518,7 @@ OPCIONES:
           string BuscarId = (Console.ReadLine() ?? "").Trim();
 
             // Busca el libro por ID en el servicio
-            Libro libro = libroService.BuscarPorId(BuscarId);
+            Libro? libro = libroService.BuscarPorId(BuscarId);
             // Detiene el proceso si no se encuentra un libro con ese ID
             if (libro == null)
             {
@@ -691,7 +668,7 @@ OPCIONES:
             string BuscarId = (Console.ReadLine() ?? "").Trim();
 
             // Busca el usuario correspondiente al ID en el servicio
-            Usuario usuario = usuarioService.BuscarPorId(BuscarId);
+            Usuario? usuario = usuarioService.BuscarPorId(BuscarId);
 
             // Muestra la informacion completa si se encontro el usuario
             if (usuario != null)
@@ -753,7 +730,7 @@ OPCIONES:
             string BuscarId= (Console.ReadLine() ?? "").Trim();
            
            // Busca el usuario por ID en el servicio
-            Usuario usuario = usuarioService.BuscarPorId(BuscarId);
+            Usuario? usuario = usuarioService.BuscarPorId(BuscarId);
 
             if (usuario != null)
             {
@@ -788,7 +765,7 @@ OPCIONES:
             string BuscarId = (Console.ReadLine() ?? "").Trim();
 
             // Busca el usuario por ID en el servicio
-            Usuario usuario = usuarioService.BuscarPorId(BuscarId);
+            Usuario? usuario = usuarioService.BuscarPorId(BuscarId);
             if (usuario != null)
             {
                 Console.Write($"Correo actual ({usuario.Correo}) - Nuevo correo (Enter para mantener): ");
@@ -821,7 +798,7 @@ OPCIONES:
             Console.Write("buscar usuario ID:");
             string BuscarId = (Console.ReadLine() ?? "").Trim();
             // Busca el usuario por ID en el servicio
-            Usuario usuario = usuarioService.BuscarPorId(BuscarId);
+            Usuario? usuario = usuarioService.BuscarPorId(BuscarId);
             if (usuario != null)
             {
                 // Invierte el estado activo/inactivo del usuario encontrado
@@ -844,7 +821,7 @@ OPCIONES:
             string BuscarId = (Console.ReadLine() ?? "").Trim();
 
             // Busca el usuario por ID en el servicio
-            Usuario usuario = usuarioService.BuscarPorId(BuscarId);
+            Usuario? usuario = usuarioService.BuscarPorId(BuscarId);
             if (usuario == null)
             {
                 Console.WriteLine("Usuario no encontrado.");
@@ -937,7 +914,7 @@ OPCION:
             // Busca el usuario por ID en el servicio en lugar de usar variables sueltas
             Console.Write("ingresar ID usuario: ");
             string usuarioId = (Console.ReadLine() ?? "").Trim();
-            Usuario usuario = usuarioService.BuscarPorId(usuarioId);
+            Usuario? usuario = usuarioService.BuscarPorId(usuarioId);
             if (usuario == null)
             {
                 Console.WriteLine("\nERROR: Usuario no encontrado.");
@@ -955,7 +932,7 @@ OPCION:
             // Busca el libro por ID en el servicio
             Console.Write("ingresar ID libro: ");
             string libroId = (Console.ReadLine() ?? "").Trim();
-            Libro libro = libroService.BuscarPorId(libroId);
+            Libro? libro = libroService.BuscarPorId(libroId);
             if (libro == null)
             {
                 Console.WriteLine("\nERROR: Libro no encontrado.");
@@ -1114,7 +1091,7 @@ OPCION:
             Console.Write("ingresa el ID: ");
             // Usa tipo string en minuscula para mantener consistencia
             string BuscarId = (Console.ReadLine() ?? "").Trim();
-            Prestamo prestamo = prestamoService.BuscarPorId(BuscarId);
+            Prestamo? prestamo = prestamoService.BuscarPorId(BuscarId);
 
             // Muestra la informacion completa si se encontro el prestamo
             if (prestamo != null)
@@ -1142,7 +1119,7 @@ OPCION:
             if (devuelto)
             {
                 // Recupera el prestamo ya actualizado para mostrar el titulo del libro
-                Prestamo prestamo = prestamoService.BuscarPorId(BuscarId);
+                Prestamo? prestamo = prestamoService.BuscarPorId(BuscarId);
                 string tituloLibro = prestamo != null ? prestamo.LibroTitulo : "Libro";
                 Console.WriteLine("\n¡Devolución registrada con éxito!");
                 Console.WriteLine($"El libro '{tituloLibro}' ha sido marcado nuevamente como disponible.");
@@ -1162,7 +1139,7 @@ OPCION:
            string buscarID = (Console.ReadLine() ?? "").Trim();
 
             // Busca el prestamo por ID para mostrar su resumen antes de confirmar
-            Prestamo prestamo = prestamoService.BuscarPorId(buscarID);
+            Prestamo? prestamo = prestamoService.BuscarPorId(buscarID);
             if (prestamo == null)
             {
                 Console.WriteLine("No se encontró ningún préstamo con ese ID.");
@@ -1235,7 +1212,6 @@ OPCION:
             }
         }
             // Modulo Buscar libros
-// Modulo Buscar libros
             static void SearchBook()
         {
             Console.Clear();
@@ -1268,7 +1244,7 @@ OPCION:
                 Console.Write("Ingresar por ID: ");
                 string LIBID = (Console.ReadLine() ?? "").Trim();
                 // Busca directamente por ID en el servicio
-                Libro porId = libroService.BuscarPorId(LIBID);
+                Libro? porId = libroService.BuscarPorId(LIBID);
                 if (porId != null) resultados.Add(porId);
                 break;
                 case"2":
@@ -1300,8 +1276,7 @@ OPCION:
                 break;
                 case"5":
                 // Copia todos los libros y los ordena de mayor a menor por anio
-                resultados = new List<Libro>(listaLibros);
-                resultados.Sort((a, b) => b.Anio.CompareTo(a.Anio));
+                resultados = libroService.OrdenarPorAnio();
                 break;
                 default:
                 Console.WriteLine("ERROR!: Opcion no valida");
@@ -1325,13 +1300,14 @@ OPCION:
             ShowReturnMenu();
         }
 //Modulo buscar usuario
-            static void SearchUser()
+static void SearchUser()
         {
             Console.Clear();
     Console.WriteLine(@"
 === 4.2 BUSCAR USUARIO ===
 1. Buscar por ID / Documento
-2. Buscar por Nombre o ordenar por nombre
+2. Buscar por Nombre 
+3. ordenar por Nombre
 ============================");
     Console.Write("Seleccionar opcion: ");
     string opcion = (Console.ReadLine() ?? "").Trim();
@@ -1352,7 +1328,7 @@ OPCION:
         Console.Write("ingresa el ID: ");
         string USRID = (Console.ReadLine() ?? "").Trim();
         // Busca el usuario exacto por ID en el servicio
-        Usuario porId = usuarioService.BuscarPorId(USRID);
+        Usuario? porId = usuarioService.BuscarPorId(USRID);
         if (porId != null) resultados.Add(porId);
     }
     else if(opcion == "2")
@@ -1364,6 +1340,11 @@ OPCION:
         {
             if (usuario.Nombre.ToLower().Contains(USRNombre)) resultados.Add(usuario);
         }
+    }
+    else if(opcion == "3")
+    {
+        // Obtiene los usuarios ordenados alfabeticamente por nombre desde el servicio
+        resultados = usuarioService.OrdenarPorNombre();
     }
     else
     {
@@ -1399,8 +1380,9 @@ OPCION:
 1. Préstamos por usuario
 2. Préstamos por libro
 3. Préstamos vencidos
-4. Resumen general o ordenar por fecha limite
-5. Volver
+4. Resumen general o 
+5. ordenar por fecha limite
+6. Volver
 ========================
 ");
              Console.Write("Seleccionar opcion: ");
@@ -1419,7 +1401,10 @@ OPCION:
                     case"4":
                     ReportSummary();
                     break;
-                    case"5":
+                     case"5":
+                    ReportByDueDate();
+                    break;
+                    case"6":
                     volverMenu = true;
                     break;
                     default:
@@ -1441,7 +1426,7 @@ OPCION:
     string buscarID = (Console.ReadLine() ?? "").Trim();
 
     // Busca el usuario en el servicio para verificar que exista
-    Usuario usuario = usuarioService.BuscarPorId(buscarID);
+    Usuario? usuario = usuarioService.BuscarPorId(buscarID);
     if (usuario != null)
     {
         // Filtra todos los prestamos asociados al ID del usuario
@@ -1484,7 +1469,7 @@ OPCION:
     string buscarID = (Console.ReadLine() ?? "").Trim();
 
     // Busca el libro en el servicio para verificar que exista
-    Libro libro = libroService.BuscarPorId(buscarID);
+    Libro? libro = libroService.BuscarPorId(buscarID);
     if (libro != null)
     {
         // Filtra todos los prestamos asociados al ID del libro
@@ -1543,33 +1528,35 @@ OPCION:
         static void ReportSummary()
         {
             Console.Clear();
-    Console.WriteLine("=== REPORTE: RESUMEN GENERAL ===");
+            Console.WriteLine("=== REPORTE: RESUMEN GENERAL ===");
 
-    // Obtiene las listas actuales de libros, usuarios y prestamos desde sus servicios
-    List<Libro> libros = libroService.ObtenerTodos();
-    List<Usuario> usuarios = usuarioService.ObtenerTodos();
-    List<Prestamo> prestamos = prestamoService.ObtenerTodos();
+            // Obtiene las listas actuales de libros, usuarios y prestamos desde sus servicios
+            List<Libro> libros = libroService.ObtenerTodos();
+            List<Usuario> usuarios = usuarioService.ObtenerTodos();
+            List<Prestamo> prestamos = prestamoService.ObtenerTodos();
 
-    int totalLibros = libros != null ? libros.Count : 0;
-    int disponibles = 0;
-    int prestados = 0;
+            int totalLibros = libros != null ? libros.Count : 0;
+            int disponibles = 0;
+            int prestados = 0;
 
-    // Cuenta libros disponibles y prestados recorriendo la lista en memoria
-    if (libros != null)
-    {
-        foreach (Libro libro in libros)
-        {
-            if (libro.Disponible) disponibles++;
-            else prestados++;
-        }
-    }
+            // Cuenta libros disponibles y prestados recorriendo la lista en memoria
+            if (libros != null)
+            {
+                foreach (Libro libro in libros)
+                {
+                    if (libro.Disponible) disponibles++;
+                    else prestados++;
+                }
+            }
 
-    int totalUsuarios = usuarios != null ? usuarios.Count : 0;
-    int totalPrestamos = prestamos != null ? prestamos.Count : 0;
-    int prestamosActivos = prestamoService.ObtenerActivos().Count;
-    int prestamosDevueltos = prestamoService.ObtenerDevueltos().Count;
+            int totalUsuarios = usuarios != null ? usuarios.Count : 0;
+            int totalPrestamos = prestamoService.TotalPrestamos();
+            int prestamosActivos = prestamoService.PrestamosActivos();
+            int prestamosDevueltos = prestamoService.PrestamosDevueltos();
+            int prestamosVencidos = prestamoService.PrestamosVencidos();
+            double promedioDias = prestamoService.PromedioDiasPrestamo();
 
-    Console.WriteLine($@"
+            Console.WriteLine($@"
 --------------------------------------------------
 Total de libros en sistema: {totalLibros}
 - Libros disponibles:       {disponibles}
@@ -1579,9 +1566,34 @@ Total de usuarios:          {totalUsuarios}
 Total de préstamos:         {totalPrestamos}
 - Préstamos activos:        {prestamosActivos}
 - Préstamos devueltos:      {prestamosDevueltos}
+- Préstamos vencidos:       {prestamosVencidos}
+- Promedio días préstamo:   {promedioDias:F1}
 --------------------------------------------------");
 
-    ShowReturnMenu();
+            ShowReturnMenu();
+        }
+
+        // Submodulo reporte de prestamos ordenados por fecha limite
+        static void ReportByDueDate()
+        {
+            Console.Clear();
+            Console.WriteLine("=== REPORTE: PRÉSTAMOS POR FECHA LÍMITE ===");
+
+            // Obtiene la lista ordenada desde PrestamoService sin alterar el orden original
+            List<Prestamo> ordenados = prestamoService.OrdenarPorFechaLimite();
+            if (ordenados != null && ordenados.Count > 0)
+            {
+                // Muestra cada prestamo con su detalle completo ya ordenado por fecha limite
+                foreach (Prestamo prestamo in ordenados)
+                {
+                    Console.WriteLine(prestamo.DetalleCompleto());
+                }
+            }
+            else
+            {
+                Console.WriteLine("\nNo hay préstamos registrados para ordenar.");
+            }
+            ShowReturnMenu();
         }
         //  MÓDULO GUARDAR / CARGAR DATOS (Simulado)
 
@@ -1647,6 +1659,8 @@ static void showSavedatamenu()
             Console.WriteLine("=== CARGAR DATOS ===");
             Console.WriteLine("[SIMULACIÓN]: Leyendo registros simulados previamente...");
 
+            CargarDatosPrueba();
+            
             // Marca los datos como cargados y sincronizados en la simulacion actual
             datosGuardados = true;
             Console.WriteLine("¡Datos cargados con éxito en el sistema!");
@@ -1680,7 +1694,7 @@ static void showSavedatamenu()
         }
 
         // ==========================================
-        // 6. MÓDULO SALIDA INTELIGENTE CON RECIBO SIMULADO
+        //  MÓDULO SALIDA INTELIGENTE CON RECIBO SIMULADO
         // ==========================================
         static void ConfirmExitAndSave()
         {
@@ -1711,20 +1725,31 @@ static void showSavedatamenu()
 - Libros en memoria:    {totalLibros}
 - Usuarios en memoria:  {totalUsuarios}
 - Préstamos en memoria: {totalPrestamos}
-==================================================");
+==================================================
+");
                 }
                 else
                 {
-                    Console.WriteLine("\n[AVISO]: Saliendo sin guardar los cambios recientes...");
+                    Console.WriteLine("\nSaliendo sin guardar los cambios recientes...");
                 }
             }
             else
             {
-                Console.WriteLine("Los datos ya se encontraban guardados previamente en memoria.");
+                Console.WriteLine($@"
+==================================================
+        RECIBO DE CIERRE (SIMULACIÓN)
+==================================================
+ Estado: Todo al día en memoria.
+- Libros en memoria:    {totalLibros}
+- Usuarios en memoria:  {totalUsuarios}
+- Préstamos en memoria: {totalPrestamos}
+==================================================
+");
             }
 
-            Console.WriteLine("\n--> Saliendo del sistema. ¡Hasta pronto!");
+            Console.WriteLine("¡Hasta pronto!");
         }
+
             // PAUSA GENERAL
             static void ShowReturnMenu()
             {
@@ -1807,5 +1832,56 @@ static void showSavedatamenu()
             prestamoService.CrearPrestamo(libro1, usuario1, 7);
         }
 
+        // =========================================================================
+        // 7. COMPARACIÓN ARRAY vs LIST<T> (EV08)
+        // Ejemplo usando Array y el mismo ejemplo usando List<T>, con explicación
+        // técnica en comentarios. No requiere carpetas adicionales en el proyecto.
+        // =========================================================================
+        static void CompararArrayVsList()
+        {
+            Console.Clear();
+            Console.WriteLine("=== COMPARACIÓN ARRAY vs LIST<T> ===");
+
+            // 1) EJEMPLO USANDO ARRAY (tamaño fijo definido al instanciar)
+            // Un array tiene longitud fija desde su creación: aquí reservamos 3 posiciones.
+            // Ventaja: acceso directo por índice muy rápido y estructura simple.
+            // Limitación: si quieres agregar un 4.º elemento, no puedes "hacerlo crecer"
+            // directamente; si accedes o asignas fuera de rango (índice >= Length),
+            // C# lanza IndexOutOfRangeException.
+            string[] codigosLibrosArray = new string[3];
+            codigosLibrosArray[0] = "LIB-101";
+            codigosLibrosArray[1] = "LIB-102";
+            codigosLibrosArray[2] = "LIB-103";
+
+            Console.WriteLine($"\n[Array] Tamaño fijo (Length = {codigosLibrosArray.Length}):");
+            for (int i = 0; i < codigosLibrosArray.Length; i++)
+            {
+                Console.WriteLine($"  - Índice {i}: {codigosLibrosArray[i]}");
+            }
+
+            // 2) MISMO EJEMPLO USANDO LIST<T> (colección dinámica genérica)
+            // List<T> gestiona internamente un arreglo y lo redimensiona automáticamente
+            // cuando agregas o quitas elementos.
+            // Ventaja: permite Add(), Remove(), Count, Sort() y búsquedas sin fijar
+            // un tamaño rígido de antemano (por eso se usa en LibroService,
+            // UsuarioService y PrestamoService).
+            // Limitación: tiene una ligera sobrecarga al redimensionar cuando crece.
+            List<string> codigosLibrosLista = new List<string>
+            {
+                "LIB-101",
+                "LIB-102",
+                "LIB-103"
+            };
+            codigosLibrosLista.Add("LIB-104"); // Crece dinámicamente sin error de tamaño fijo
+
+            Console.WriteLine($"\n[List<string>] Colección dinámica (Count = {codigosLibrosLista.Count}):");
+            foreach (string codigo in codigosLibrosLista)
+            {
+                Console.WriteLine($"  - Elemento: {codigo}");
+            }
+
+            Console.WriteLine("\nEjemplo de Array vs List<T> ejecutado. Revisa los comentarios en el código para el detalle técnico.");
+            ShowReturnMenu();
+        }
     }
 }

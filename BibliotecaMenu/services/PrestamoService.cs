@@ -106,7 +106,7 @@ namespace BibliotecaMenu.Services
         }
 
         
-        public Prestamo BuscarPorId(string id)
+        public Prestamo? BuscarPorId(string id)
         {
             foreach (Prestamo prestamo in prestamos)
             {
@@ -130,7 +130,7 @@ namespace BibliotecaMenu.Services
         // REGISTRAR DEVOLUCION
         public bool RegistrarDevolucion(string idPrestamo, LibroService libroService)
         {
-            Prestamo encontrado = BuscarPorId(idPrestamo);
+            Prestamo? encontrado = BuscarPorId(idPrestamo);
 
             if (encontrado == null)
             {
@@ -148,7 +148,7 @@ namespace BibliotecaMenu.Services
 
             if (libroService != null)
             {
-                Libro libro = libroService.BuscarPorId(encontrado.LibroId);
+                Libro? libro = libroService.BuscarPorId(encontrado.LibroId);
                 if (libro != null)
                 {
                     libro.Disponible = true;
@@ -160,7 +160,7 @@ namespace BibliotecaMenu.Services
         //  ELIMINAR PRESTAMO
         public bool EliminarPrestamo(string idPrestamo, LibroService libroService)
         {
-            Prestamo encontrado = BuscarPorId(idPrestamo);
+            Prestamo? encontrado = BuscarPorId(idPrestamo);
 
             if (encontrado == null)
             {
@@ -169,7 +169,7 @@ namespace BibliotecaMenu.Services
 
             if (encontrado.PrestamoActivo == true && libroService != null)
             {
-                Libro libro = libroService.BuscarPorId(encontrado.LibroId);
+                Libro? libro = libroService.BuscarPorId(encontrado.LibroId);
                 if (libro != null)
                 {
                     libro.Disponible = true;
@@ -178,6 +178,43 @@ namespace BibliotecaMenu.Services
 
             prestamos.Remove(encontrado);
             return true;
+        }
+        // KPI (Contadores y estadísticas de préstamos)
+        public int TotalPrestamos()
+        {
+            return prestamos.Count;
+        }
+
+        public int PrestamosActivos()
+        {
+            return ObtenerActivos().Count;
+        }
+
+        public int PrestamosDevueltos()
+        {
+            return ObtenerDevueltos().Count;
+        }
+
+        public int PrestamosVencidos()
+        {
+            return ObtenerVencidos().Count;
+        }
+
+        // Promedio de días transcurridos entre todos los préstamos registrados
+        public double PromedioDiasPrestamo()
+        {
+            if (prestamos.Count == 0)
+            {
+                return 0;
+            }
+
+            int sumaDias = 0;
+            foreach (Prestamo prestamo in prestamos)
+            {
+                sumaDias += prestamo.DiasTranscurridos();
+            }
+
+            return (double)sumaDias / prestamos.Count;
         }
     }
 }
