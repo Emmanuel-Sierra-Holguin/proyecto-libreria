@@ -920,6 +920,8 @@ OPCION:
                     volverMenu = true;
                     break;
                     default:
+                    Console.Clear();
+                    Console.WriteLine("ERROR!: Opcion no valida");
                     ShowReturnMenu();
                     break;
                 }
@@ -929,43 +931,66 @@ OPCION:
         // Modulo crear prestamos y validaciones
         static void CreateLoan()
         {
-            if(usuarioID == "")
+            Console.Clear();
+            Console.WriteLine("== REGISTRAR PRESTAMO ==");
+
+            // Busca el usuario por ID en el servicio en lugar de usar variables sueltas
+            Console.Write("ingresar ID usuario: ");
+            string usuarioId = (Console.ReadLine() ?? "").Trim();
+            Usuario usuario = usuarioService.BuscarPorId(usuarioId);
+            if (usuario == null)
             {
-                Console.WriteLine("ERROR: No hay ningún usuario registrado");                
+                Console.WriteLine("\nERROR: Usuario no encontrado.");
+                ShowReturnMenu();
+                return;
             }
-            else if (!usuarioActivo)
+            // Verifica que el usuario este activo antes de permitirle solicitar un libro
+            if (!usuario.Activo)
             {
-                Console.WriteLine("ERROR: usuario desactivado");                
+                Console.WriteLine("\nERROR: usuario desactivado");
+                ShowReturnMenu();
+                return;
             }
-            else if(libroID == "")
+
+            // Busca el libro por ID en el servicio
+            Console.Write("ingresar ID libro: ");
+            string libroId = (Console.ReadLine() ?? "").Trim();
+            Libro libro = libroService.BuscarPorId(libroId);
+            if (libro == null)
             {
-                Console.WriteLine("ERROR: No hay ningún libro registrado");                
+                Console.WriteLine("\nERROR: Libro no encontrado.");
+                ShowReturnMenu();
+                return;
             }
-            else if (!libroDisponible)
+            // Verifica que el libro este disponible antes de prestarlo
+            if (!libro.Disponible)
             {
-                Console.WriteLine("ERROR: libro desactivado");                               
+                Console.WriteLine("\nERROR: libro no disponible");
+                ShowReturnMenu();
+                return;
             }
-            else if (prestamoActivo)
+
+            // Solicita dias de plazo y usa 7 dias por defecto si se deja vacio o invalido
+            Console.Write("dias de plazo (Enter para 7 dias): ");
+            string textoDias = (Console.ReadLine() ?? "").Trim();
+            int diasPlazo = 7;
+            if (!string.IsNullOrWhiteSpace(textoDias) && (!int.TryParse(textoDias, out diasPlazo) || diasPlazo <= 0))
             {
-                Console.WriteLine("!ERROR: prestamo ya activado");
+                Console.WriteLine("\nERROR: Cantidad de dias invalida.");
+                ShowReturnMenu();
+                return;
+            }
+
+            // Registra el prestamo en el servicio y vincula libro y usuario
+            bool creado = prestamoService.CrearPrestamo(libro, usuario, diasPlazo);
+            if (creado)
+            {
+                Console.WriteLine("\nprestamo activado");
+                Console.WriteLine($"Libro: {libro.Titulo} asignado a usuario:{usuario.Nombre}.");
             }
             else
             {
-                Console.Clear();
-                Console.WriteLine("== REGISTRAR PRESTAMO ==");
-                Console.Write("ingresar ID prestamo: ");
-                prestamoID = Console.ReadLine() ?? "";
-                libroDisponible = false;
-                prestamoActivo = true;
-                fechaInicio = DateTime.Now.ToString("dd/MM/yyyy");
-                Console.Write("ingresar fecha limite(ej: 1/12/2026): ");
-                fechaLimite = Console.ReadLine() ?? "";
-                fechaDevolucion = "Pendiente";
-                estadoprestamo = "activo";
-
-                Console.WriteLine("prestamo activado");
-                Console.WriteLine($"Libro: {libroTitulo} asignado a usuario:{usuarioNombre}.");
-
+                Console.WriteLine("\nERROR: No se pudo registrar el prestamo.");
             }
             ShowReturnMenu();
         }
@@ -1010,27 +1035,22 @@ OPCION:
             }
         }
         // subModulos listar
+        // Submodulo Listar todos los prestamos
         static void ListLoansAll()
         {
             Console.Clear();
             Console.WriteLine("== LISTAR TODOS LOS PRESTAMOS ==");
-            if(prestamoID != "")
-            {
-                string detalle = $@"
-=================================
-prestamo ID:{prestamoID}
-usuario ID:{usuarioID}
-libro ID:{libroID}
-Usuario Nombre:{usuarioNombre}
-libro Titulo:{libroTitulo}
-Fecha inicio:{fechaInicio}
-Fecha Limite:{fechaLimite}
-fecha devolucion: {fechaDevolucion}
-Estado prestamo:{estadoprestamo} 
-===================================              
-";
-        Console.WriteLine(detalle);
+            // Obtiene todos los prestamos registrados desde el servicio
+            List<Prestamo> listaPrestamos = prestamoService.ObtenerTodos();
 
+            // Verifica si existen prestamos antes de recorrer la lista
+            if (listaPrestamos.Count > 0)
+            {
+                // Recorre cada prestamo y muestra su detalle completo
+                foreach (Prestamo prestamo in listaPrestamos)
+                {
+                    Console.WriteLine(prestamo.DetalleCompleto());
+                }
             }
             else
             {
@@ -1038,57 +1058,52 @@ Estado prestamo:{estadoprestamo}
             }
             ShowReturnMenu();
         }
+        // Submodulo listar prestamos activos
         static void ListLoansActive()
         {
-                Console.Clear();
+            Console.Clear();
             Console.WriteLine("== LISTAR PRESTAMOS ACTIVOS ==");
-            if(prestamoID != "" && prestamoActivo)
+            // Obtiene unicamente los prestamos activos desde el servicio
+            List<Prestamo> PrestamoActivos = prestamoService.ObtenerActivos();
+            // Muestra elementos activos si la lista contiene registros
+            if (PrestamoActivos.Count > 0)
             {
-                string detalle = $@"
-================================
-prestamo ID:{prestamoID}
-usuario ID:{usuarioID}
-libro ID:{libroID}
-Usuario Nombre:{usuarioNombre}
-libro Titulo:{libroTitulo}
-Fecha inicio:{fechaInicio}
-Fecha Limite:{fechaLimite}
-fecha Devolucion:{fechaDevolucion}
-Estado prestamo:{estadoprestamo}
-==================================               
-";
-                 Console.WriteLine(detalle);
+                // Recorre cada prestamo activo y muestra su detalle completo
+                foreach (Prestamo prestamo in PrestamoActivos)
+                {
+                    Console.WriteLine(prestamo.DetalleCompleto());
+                }
             }
             else
             {
-                Console.WriteLine("No hay prestamos activos en este momento.");
+                // Indica que no hay prestamos activos registrados
+                Console.WriteLine("\nNo hay prestamos activos en este momento.");
             }
+
             ShowReturnMenu();
         }
+        // Submodulo listar prestamos devueltos
         static void ListLoansClosed()
         {
-             Console.Clear();
-            Console.WriteLine("== LISTAR PRESTAMOS CERRADOS ==");
-            if(prestamoID != "" && !prestamoActivo)
+            Console.Clear();
+            Console.WriteLine("== LISTAR PRESTAMOS DEVUELTOS ==");
+            // Obtiene unicamente los prestamos devueltos desde el servicio
+            List<Prestamo> PrestamoDevueltos = prestamoService.ObtenerDevueltos();
+            // Muestra elementos devueltos si la lista contiene registros
+            if (PrestamoDevueltos.Count > 0)
             {
-                string detalle = $@"
-=================================
-prestamo ID:{prestamoID}
-usuario ID:{usuarioID}
-libro ID:{libroID}
-Usuario Nombre:{usuarioNombre}
-libro Titulo:{libroTitulo}
-Fecha inicio:{fechaInicio}
-Fecha devolucion:{fechaDevolucion}
-Estado prestamo:{estadoprestamo}   
-===================================            
-";
-                 Console.WriteLine(detalle);
+                // Recorre cada prestamo devuelto y muestra su detalle completo
+                foreach (Prestamo prestamo in PrestamoDevueltos)
+                {
+                    Console.WriteLine(prestamo.DetalleCompleto());
+                }
             }
             else
             {
-                Console.WriteLine("No hay registros de préstamos cerrados en este momento.");
+                // Indica que no hay prestamos devueltos registrados
+                Console.WriteLine("\nNo hay prestamos devueltos en este momento.");
             }
+
             ShowReturnMenu();
         }
         // Modulo Ver detalle prestamo
@@ -1097,27 +1112,20 @@ Estado prestamo:{estadoprestamo}
             Console.Clear();
             Console.WriteLine("== DETALLE PRESTAMO ==");
             Console.Write("ingresa el ID: ");
-            String buscarID = Console.ReadLine() ?? "";
+            // Usa tipo string en minuscula para mantener consistencia
+            string BuscarId = (Console.ReadLine() ?? "").Trim();
+            Prestamo prestamo = prestamoService.BuscarPorId(BuscarId);
 
-            if(prestamoID != "" && buscarID == prestamoID)
+            // Muestra la informacion completa si se encontro el prestamo
+            if (prestamo != null)
             {
-                string detalle = $@"                
-prestamo ID:{prestamoID}
-usuario ID:{usuarioID}
-libro ID:{libroID}
-Usuario Nombre:{usuarioNombre}
-libro Titulo:{libroTitulo}
-Fecha inicio:{fechaInicio}
-Fecha Limite:{fechaLimite}
-Fecha devolucion:{fechaDevolucion}
-Estado prestamo:{estadoprestamo}               
-";
-                 Console.WriteLine(detalle);
+                Console.WriteLine(prestamo.DetalleCompleto());
             }
             else
             {
-                Console.WriteLine("No hay registros de préstamos en el sistema con ese Numero.");
+                Console.WriteLine("Prestamo no encontrado");
             }
+
             ShowReturnMenu();
         }
         // Modulo Registrar Devolucion
@@ -1125,19 +1133,23 @@ Estado prestamo:{estadoprestamo}
         {
             Console.Clear();
             Console.WriteLine("=== REGISTRAR DEVOLUCION");
-            if (!prestamoActivo)
+            Console.Write("ingresa el ID del prestamo: ");
+            // Usa tipo string en minuscula para mantener consistencia
+            string BuscarId = (Console.ReadLine() ?? "").Trim();
+
+            // Registra la devolucion y libera el libro a traves del servicio
+            bool devuelto = prestamoService.RegistrarDevolucion(BuscarId, libroService);
+            if (devuelto)
             {
-                Console.WriteLine("ERROR: No hay ningún préstamo activo pendiente de devolución.");
+                // Recupera el prestamo ya actualizado para mostrar el titulo del libro
+                Prestamo prestamo = prestamoService.BuscarPorId(BuscarId);
+                string tituloLibro = prestamo != null ? prestamo.LibroTitulo : "Libro";
+                Console.WriteLine("\n¡Devolución registrada con éxito!");
+                Console.WriteLine($"El libro '{tituloLibro}' ha sido marcado nuevamente como disponible.");
             }
             else
             {
-                libroDisponible = true;
-                prestamoActivo = false;
-                fechaDevolucion = DateTime.Now.ToString("dd/MM/yyyy");
-                estadoprestamo = "Devuelto";
-
-                Console.WriteLine("¡Devolución registrada con éxito!");
-                Console.WriteLine($"El libro '{libroTitulo}' ha sido marcado nuevamente como disponible.");
+                Console.WriteLine("\nERROR: No se encontro el prestamo o ya fue devuelto.");
             }
             ShowReturnMenu();
         }
@@ -1147,27 +1159,39 @@ Estado prestamo:{estadoprestamo}
             Console.Clear();
             Console.WriteLine("== ELIMINAR PRESTAMO ==");
             Console.Write("ID prestamo: ");
-            string buscarID = Console.ReadLine() ?? "";
+           string buscarID = (Console.ReadLine() ?? "").Trim();
 
-            if (prestamoID != "" && buscarID == prestamoID)
+            // Busca el prestamo por ID para mostrar su resumen antes de confirmar
+            Prestamo prestamo = prestamoService.BuscarPorId(buscarID);
+            if (prestamo == null)
             {
-                if (prestamoActivo)
-                {
-                    libroDisponible = true;
-                    Console.WriteLine("AVISO: El préstamo estaba activo. El libro asociado ha sido devuelto a disponible automáticamente.");
-                }
-                prestamoID = "";
-                prestamoActivo = false;
-                fechaInicio = "";
-                fechaLimite = "";
-                fechaDevolucion = "N/A";
-                estadoprestamo = "Inactivo";
+                Console.WriteLine("No se encontró ningún préstamo con ese ID.");
+                ShowReturnMenu();
+                return;
+            }
 
-                Console.WriteLine("¡Registro de préstamo eliminado con éxito!");
+            // Muestra el prestamo encontrado y solicita confirmacion antes de eliminarlo
+            Console.WriteLine("\nPrestamo encontrado:");
+            Console.WriteLine(prestamo.ResumenCorto());
+            Console.Write("¿Seguro que deseas eliminarlo? (si/no): ");
+            // Normaliza la respuesta para aceptar mayusculas o espacios accidentales
+            string confirmar = (Console.ReadLine() ?? "").Trim().ToLower();
+            if (confirmar != "si")
+            {
+                Console.WriteLine("\nEliminacion cancelada.");
+                ShowReturnMenu();
+                return;
+            }
+
+            // Elimina el registro en el servicio y devuelve el libro a disponible si estaba activo
+            bool eliminado = prestamoService.EliminarPrestamo(prestamo.Id, libroService);
+            if (eliminado)
+            {
+                Console.WriteLine("\n¡Registro de préstamo eliminado con éxito!");
             }
             else
             {
-                Console.WriteLine("No se encontró ningún préstamo con ese ID.");
+                Console.WriteLine("\nNo se pudo eliminar el préstamo.");
             }
             ShowReturnMenu();
         }
@@ -1179,7 +1203,7 @@ Estado prestamo:{estadoprestamo}
             {
                 Console.Clear();
                 Console.WriteLine(@"
-=== BUSQUEDAS Y REPORTES ===
+=== BUSQUEDAS POR CRITERIO Y REPORTES ===
 1.Buscar libro
 2.Buscar usuario
 3.Reportes
@@ -1219,7 +1243,7 @@ Estado prestamo:{estadoprestamo}
 1. Buscar por ID
 2. Buscar por Titulo
 3. Buscar por Autor
-4. Buscar por Categoria
+4. Buscar por Categoria o ordenar por año
 ====================");
 
             if (libroID == "")
@@ -1285,7 +1309,7 @@ Estado prestamo:{estadoprestamo}
     Console.WriteLine(@"
 === 4.2 BUSCAR USUARIO ===
 1. Buscar por ID / Documento
-2. Buscar por Nombre
+2. Buscar por Nombre o ordenar por nombre
 ============================");
     Console.Write("Seleccionar opcion: ");
     string opcion = Console.ReadLine() ?? "";
@@ -1339,7 +1363,7 @@ Estado prestamo:{estadoprestamo}
 1. Préstamos por usuario
 2. Préstamos por libro
 3. Préstamos vencidos
-4. Resumen general
+4. Resumen general o ordenar por fecha limite
 5. Volver
 ========================
 ");
@@ -1496,9 +1520,9 @@ Préstamo en curso:         {infoPrestamo}
 
     ShowReturnMenu();
         }
-  // ==========================================
+
         // 5. MÓDULO GUARDAR / CARGAR DATOS (Simulado)
-        // ==========================================
+
         static void showSavedatamenu()
         {
             bool volverMenu = false;
